@@ -1,0 +1,18 @@
+name: example
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sketchy_design_lang:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  all_lint_rules_community: ^0.0.38

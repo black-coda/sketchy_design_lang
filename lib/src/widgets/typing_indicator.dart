@@ -1,0 +1,54 @@
+import 'package:flutter/widgets.dart';
+
+import '../theme/sketchy_theme.dart';
+
+class SketchyTypingIndicator extends StatefulWidget {
+  const SketchyTypingIndicator({super.key});
+
+  @override
+  State<SketchyTypingIndicator> createState() => _SketchyTypingIndicatorState();
+}
+
+class _SketchyTypingIndicatorState extends State<SketchyTypingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = SketchyTheme.of(context);
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(3, (index) {
+          final progress = (_controller.value + index * 0.2) % 1.0;
+          final opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
+          return Container(
+            width: 6,
+            height: 6,
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            decoration: BoxDecoration(
+              color: theme.colors.ink.withValues(alpha: opacity),
+              shape: BoxShape.circle,
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
