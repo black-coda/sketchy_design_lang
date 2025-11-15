@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import '../theme/sketchy_typography.dart';
+import 'surface.dart';
 
 /// Tones supported by [SketchyBadge].
 enum SketchyBadgeTone {
@@ -40,22 +41,16 @@ class SketchyBadge extends StatelessWidget {
     final typography = SketchyTypography.of(context);
     final color = switch (tone) {
       SketchyBadgeTone.info => theme.colors.info,
-      SketchyBadgeTone.accent => theme.colors.accent,
+      SketchyBadgeTone.accent => theme.colors.primary,
       SketchyBadgeTone.success => theme.colors.success,
       SketchyBadgeTone.neutral => theme.colors.ink,
     };
 
-    return Container(
+    return SketchySurface(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(color: color.withValues(alpha: 0.2)),
-        shape: RoughBoxShape.rectangle,
-        drawConfig: DrawConfig.build(bowing: 1, curveFitting: 0.8),
-      ),
+      fillColor: color.withValues(alpha: 0.18),
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.pill(fill: SketchyFill.hachure),
       child: Text(
         label,
         style: typography.label.copyWith(color: theme.colors.ink),

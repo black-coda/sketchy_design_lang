@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import '../theme/sketchy_typography.dart';
+import 'surface.dart';
 
 /// Alignment options for [SketchyListTile].
 enum SketchyTileAlignment {
@@ -48,19 +49,17 @@ class SketchyListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
     final typography = SketchyTypography.of(context);
+    final bubbleFill = alignment == SketchyTileAlignment.start
+        ? theme.colors.paper
+        : theme.colors.secondary.withValues(alpha: 0.5);
 
-    final content = Container(
+    final content = SketchySurface(
       padding: const EdgeInsets.all(12),
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(
-          color: alignment == SketchyTileAlignment.start
-              ? theme.colors.paper
-              : theme.colors.accentMuted.withValues(alpha: 0.3),
-        ),
+      fillColor: bubbleFill,
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.roundedRectangle(
+        cornerRadius: theme.borderRadius,
+        fill: SketchyFill.solid,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

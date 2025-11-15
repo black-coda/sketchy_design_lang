@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
+import 'surface.dart';
 
 /// Rough-styled app bar used by Sketchy screens.
 class SketchyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,38 +29,38 @@ class SketchyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
-    return Container(
-      height: preferredSize.height,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
+      child: SketchySurface(
+        height: preferredSize.height,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        fillColor: theme.colors.paper,
+        strokeColor: theme.colors.ink,
+        createPrimitive: () => SketchyPrimitive.roundedRectangle(
+          cornerRadius: theme.borderRadius,
+          fill: SketchyFill.none,
         ),
-        fillStyle: RoughDrawingStyle(color: theme.colors.paper),
-        drawConfig: DrawConfig.build(seed: 9, curveFitting: 0.8, bowing: 1),
-      ),
-      child: Row(
-        children: [
-          leading ?? const SizedBox.shrink(),
-          if (leading != null) const SizedBox(width: 12),
-          Expanded(
-            child: DefaultTextStyle(
-              style: theme.typography.title.copyWith(color: theme.colors.ink),
-              child: title,
-            ),
-          ),
-          if (actions != null && actions!.isNotEmpty) ...[
-            const SizedBox(width: 8),
-            ...actions!.map(
-              (widget) => Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: widget,
+        child: Row(
+          children: [
+            leading ?? const SizedBox.shrink(),
+            if (leading != null) const SizedBox(width: 12),
+            Expanded(
+              child: DefaultTextStyle(
+                style: theme.typography.title.copyWith(color: theme.colors.ink),
+                child: title,
               ),
             ),
+            if (actions != null && actions!.isNotEmpty) ...[
+              const SizedBox(width: 8),
+              ...actions!.map(
+                (widget) => Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: widget,
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

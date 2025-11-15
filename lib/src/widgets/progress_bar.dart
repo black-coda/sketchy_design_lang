@@ -21,7 +21,7 @@ class SketchyProgressBar extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: value.clamp(0, 1),
         alignment: Alignment.centerLeft,
-        child: Container(color: theme.colors.accentMuted),
+        child: Container(color: theme.colors.secondary),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import '../theme/sketchy_typography.dart';
+import 'surface.dart';
 
 /// Choice chip rendered with rough outlines.
 class SketchyChip extends StatelessWidget {
@@ -55,23 +56,22 @@ class SketchyChip extends StatelessWidget {
     final theme = SketchyTheme.of(context);
     final typography = SketchyTypography.of(context);
     final bgColor = filled && selected
-        ? theme.colors.accentMuted
+        ? theme.colors.secondary
         : theme.colors.paper;
+    final fillStyle = filled && selected
+        ? SketchyFill.hachure
+        : SketchyFill.none;
 
-    final chip = Container(
+    final chip = SketchySurface(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(color: bgColor),
-      ),
+      fillColor: bgColor,
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.pill(fill: fillStyle),
       child: Text(
         label,
         style: typography.body.copyWith(
           color: theme.colors.ink,
-          fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+          fontWeight: selected ? FontWeight.w700 : FontWeight.normal,
         ),
       ),
     );

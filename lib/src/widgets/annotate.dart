@@ -86,7 +86,7 @@ class SketchyAnnotate extends StatelessWidget {
     final typography = SketchyTypography.of(context);
     final annotation = switch (type) {
       SketchyAnnotationType.box => RoughBoxAnnotation(
-        color: theme.colors.accent.withValues(alpha: 0.3),
+        color: theme.colors.primary.withValues(alpha: 0.3),
         child: child,
       ),
       SketchyAnnotationType.circle => RoughCircleAnnotation(
@@ -94,11 +94,11 @@ class SketchyAnnotate extends StatelessWidget {
         child: child,
       ),
       SketchyAnnotationType.underline => RoughUnderlineAnnotation(
-        color: theme.colors.accent,
+        color: theme.colors.primary,
         child: child,
       ),
       SketchyAnnotationType.highlight => RoughHighlightAnnotation(
-        color: theme.colors.accentMuted,
+        color: theme.colors.secondary,
         child: child,
       ),
     };

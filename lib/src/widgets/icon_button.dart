@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import 'icons.dart';
+import 'surface.dart';
 
 /// Rough-styled icon button wrapper.
 class SketchyIconButton extends StatelessWidget {
@@ -26,17 +27,12 @@ class SketchyIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
-    final content = Container(
+    final content = SketchySurface(
       width: size,
       height: size,
-      alignment: Alignment.center,
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(color: theme.colors.paper),
-      ),
+      fillColor: theme.colors.paper,
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.circle(fill: SketchyFill.none),
       child: SketchyIcon(icon: icon),
     );
 

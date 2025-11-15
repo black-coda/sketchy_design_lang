@@ -7,83 +7,39 @@ import 'sketchy_typography.dart';
 class SketchyThemeData {
   /// Creates a theme with the provided palette and typography.
   const SketchyThemeData({
+    required this.mode,
     required this.colors,
     required this.typography,
     this.strokeWidth = 2.0,
     this.borderRadius = 12.0,
+    this.roughness = 0.5,
   });
 
   /// Default light theme used by the examples.
-  factory SketchyThemeData.light() {
-    const colors = SketchyColors(
-      ink: Color(0xFF1B1B1B),
-      paper: Color(0xFFFFFBF5),
-      accent: Color(0xFFFC7753),
-      accentMuted: Color(0xFFFFC7B3),
-      info: Color(0xFF4F7CAC),
-      warning: Color(0xFFED6A5A),
-      success: Color(0xFF6C9A8B),
-    );
-
-    return const SketchyThemeData(
-      colors: colors,
-      typography: SketchyTypographyData(
-        headline: TextStyle(
-          fontSize: 28,
-          height: 1.2,
-          fontWeight: FontWeight.w600,
-        ),
-        title: TextStyle(
-          fontSize: 20,
-          height: 1.3,
-          fontWeight: FontWeight.w600,
-        ),
-        body: TextStyle(fontSize: 16, height: 1.4),
-        caption: TextStyle(fontSize: 14, height: 1.3),
-        label: TextStyle(
-          fontSize: 12,
-          height: 1.2,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
+  factory SketchyThemeData.light({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.light, roughness: roughness);
 
   /// Dark-mode variant built from a darker palette.
-  factory SketchyThemeData.dark() {
-    const colors = SketchyColors(
-      ink: Color(0xFFF4F4F4),
-      paper: Color(0xFF1A1A1A),
-      accent: Color(0xFFFFB347),
-      accentMuted: Color(0xFF795548),
-      info: Color(0xFF80CBC4),
-      warning: Color(0xFFF28B82),
-      success: Color(0xFFA5D6A7),
-    );
+  factory SketchyThemeData.dark({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.dark, roughness: roughness);
 
-    return const SketchyThemeData(
-      colors: colors,
-      typography: SketchyTypographyData(
-        headline: TextStyle(
-          fontSize: 28,
-          height: 1.2,
-          fontWeight: FontWeight.w600,
-        ),
-        title: TextStyle(
-          fontSize: 20,
-          height: 1.3,
-          fontWeight: FontWeight.w600,
-        ),
-        body: TextStyle(fontSize: 16, height: 1.4),
-        caption: TextStyle(fontSize: 14, height: 1.3),
-        label: TextStyle(
-          fontSize: 12,
-          height: 1.2,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
+  /// Builds a theme from the predefined [mode].
+  factory SketchyThemeData.fromMode(
+    SketchyColorMode mode, {
+    double roughness = 0.5,
+    SketchyTypographyData? typography,
+  }) => SketchyThemeData(
+    mode: mode,
+    colors: SketchyColors.forMode(mode),
+    typography: typography ?? SketchyTypographyData.comicShanns(),
+    roughness: roughness,
+  );
+
+  /// Named mode factories (e.g. `SketchyThemeData.modes.blue()`).
+  static const modes = _SketchyThemeModeFactory();
+
+  /// Active color mode.
+  final SketchyColorMode mode;
 
   /// Colors used throughout Sketchy widgets.
   final SketchyColors colors;
@@ -97,18 +53,70 @@ class SketchyThemeData {
   /// Default border radius for card-like widgets.
   final double borderRadius;
 
+  /// Normalized roughness control (0 = straight, 1 = max wobble).
+  final double roughness;
+
   /// Returns a new theme with the provided overrides.
   SketchyThemeData copyWith({
+    SketchyColorMode? mode,
     SketchyColors? colors,
     SketchyTypographyData? typography,
     double? strokeWidth,
     double? borderRadius,
-  }) => SketchyThemeData(
-    colors: colors ?? this.colors,
-    typography: typography ?? this.typography,
-    strokeWidth: strokeWidth ?? this.strokeWidth,
-    borderRadius: borderRadius ?? this.borderRadius,
-  );
+    double? roughness,
+  }) {
+    final resolvedMode = mode ?? this.mode;
+    final resolvedColors =
+        colors ??
+        (resolvedMode == this.mode
+            ? this.colors
+            : SketchyColors.forMode(resolvedMode));
+    return SketchyThemeData(
+      mode: resolvedMode,
+      colors: resolvedColors,
+      typography: typography ?? this.typography,
+      strokeWidth: strokeWidth ?? this.strokeWidth,
+      borderRadius: borderRadius ?? this.borderRadius,
+      roughness: roughness ?? this.roughness,
+    );
+  }
+}
+
+class _SketchyThemeModeFactory {
+  const _SketchyThemeModeFactory();
+
+  SketchyThemeData light({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.light, roughness: roughness);
+
+  SketchyThemeData red({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.red, roughness: roughness);
+
+  SketchyThemeData orange({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.orange, roughness: roughness);
+
+  SketchyThemeData yellow({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.yellow, roughness: roughness);
+
+  SketchyThemeData green({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.green, roughness: roughness);
+
+  SketchyThemeData cyan({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.cyan, roughness: roughness);
+
+  SketchyThemeData blue({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.blue, roughness: roughness);
+
+  SketchyThemeData indigo({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.indigo, roughness: roughness);
+
+  SketchyThemeData violet({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.violet, roughness: roughness);
+
+  SketchyThemeData magenta({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.magenta, roughness: roughness);
+
+  SketchyThemeData dark({double roughness = 0.5}) =>
+      SketchyThemeData.fromMode(SketchyColorMode.dark, roughness: roughness);
 }
 
 /// Inherited widget wiring [SketchyThemeData] into the tree.

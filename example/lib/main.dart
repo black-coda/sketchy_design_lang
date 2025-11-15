@@ -7,13 +7,36 @@ void main() {
   runApp(const SketchyExamplesApp());
 }
 
-class SketchyExamplesApp extends StatelessWidget {
+class SketchyExamplesApp extends StatefulWidget {
   const SketchyExamplesApp({super.key});
+
+  @override
+  State<SketchyExamplesApp> createState() => _SketchyExamplesAppState();
+}
+
+class _SketchyExamplesAppState extends State<SketchyExamplesApp> {
+  SketchyColorMode _mode = SketchyColorMode.blue;
+  double _roughness = 0.5;
+
+  void _cycleMode() {
+    const modes = SketchyColorMode.values;
+    final current = modes.indexOf(_mode);
+    setState(() => _mode = modes[(current + 1) % modes.length]);
+  }
+
+  void _handleRoughness(double value) {
+    setState(() => _roughness = value.clamp(0, 1));
+  }
 
   @override
   Widget build(BuildContext context) => SketchyApp(
     title: 'Sketchy Examples',
-    theme: SketchyThemeData.light(),
-    home: const ExampleGallery(),
+    theme: SketchyThemeData.fromMode(_mode, roughness: _roughness),
+    home: ExampleGallery(
+      mode: _mode,
+      onCycleMode: _cycleMode,
+      roughness: _roughness,
+      onRoughnessChanged: _handleRoughness,
+    ),
   );
 }

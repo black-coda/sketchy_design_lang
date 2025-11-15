@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import '../theme/sketchy_typography.dart';
+import 'surface.dart';
 
 /// Available button variants.
 enum SketchyButtonVariant {
@@ -75,32 +76,37 @@ class SketchyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
     final typography = SketchyTypography.of(context);
-    final color = switch (variant) {
+    final textColor = switch (variant) {
       SketchyButtonVariant.primary => theme.colors.paper,
-      SketchyButtonVariant.secondary => theme.colors.ink,
-      SketchyButtonVariant.ghost => theme.colors.ink,
+      _ => theme.colors.ink,
     };
     final background = switch (variant) {
-      SketchyButtonVariant.primary => theme.colors.accent,
-      SketchyButtonVariant.secondary => theme.colors.accentMuted,
+      SketchyButtonVariant.primary => theme.colors.primary,
+      SketchyButtonVariant.secondary => theme.colors.secondary,
       SketchyButtonVariant.ghost => theme.colors.paper,
     };
+    final fill = switch (variant) {
+      SketchyButtonVariant.primary => SketchyFill.solid,
+      SketchyButtonVariant.secondary => SketchyFill.hachure,
+      SketchyButtonVariant.ghost => SketchyFill.none,
+    };
 
-    final button = Container(
+    final button = SketchySurface(
       height: 48,
-      alignment: Alignment.center,
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(color: background),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      fillColor: background,
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.roundedRectangle(
+        cornerRadius: theme.borderRadius,
+        fill: fill,
       ),
-      child: Text(
-        label,
-        style: typography.body.copyWith(
-          color: color,
-          fontWeight: FontWeight.w600,
+      child: Center(
+        child: Text(
+          label,
+          style: typography.body.copyWith(
+            color: textColor,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );

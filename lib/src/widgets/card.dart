@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
+import 'surface.dart';
 
 /// Container with a hand-drawn border and optional padding.
 class SketchyCard extends StatelessWidget {
@@ -25,20 +26,17 @@ class SketchyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
-    final decorated = Container(padding: padding, child: child);
 
-    return Container(
+    return SketchySurface(
       height: height,
-      decoration: RoughBoxDecoration(
-        borderStyle: RoughDrawingStyle(
-          width: theme.strokeWidth,
-          color: theme.colors.ink,
-        ),
-        fillStyle: RoughDrawingStyle(color: theme.colors.paper),
-        drawConfig: DrawConfig.build(curveFitting: 0.9, bowing: 1),
-        filler: ZigZagFiller(),
+      padding: padding,
+      fillColor: theme.colors.paper,
+      strokeColor: theme.colors.ink,
+      createPrimitive: () => SketchyPrimitive.roundedRectangle(
+        cornerRadius: theme.borderRadius,
+        fill: SketchyFill.none,
       ),
-      child: decorated,
+      child: child,
     );
   }
 }

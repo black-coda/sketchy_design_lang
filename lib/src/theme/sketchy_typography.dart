@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'sketchy_theme.dart';
 
+const _defaultFontFamily = 'ComicShanns';
+
 /// Collection of text styles used throughout the Sketchy widgets.
 class SketchyTypographyData {
   /// Creates a typography config with the provided text styles.
@@ -12,6 +14,34 @@ class SketchyTypographyData {
     required this.caption,
     required this.label,
   });
+
+  /// Comic Shanns-powered defaults.
+  factory SketchyTypographyData.comicShanns() => const SketchyTypographyData(
+    headline: TextStyle(
+      fontFamily: _defaultFontFamily,
+      fontSize: 28,
+      height: 1.2,
+      fontWeight: FontWeight.w700,
+    ),
+    title: TextStyle(
+      fontFamily: _defaultFontFamily,
+      fontSize: 20,
+      height: 1.3,
+      fontWeight: FontWeight.w600,
+    ),
+    body: TextStyle(fontFamily: _defaultFontFamily, fontSize: 16, height: 1.4),
+    caption: TextStyle(
+      fontFamily: _defaultFontFamily,
+      fontSize: 14,
+      height: 1.3,
+    ),
+    label: TextStyle(
+      fontFamily: _defaultFontFamily,
+      fontSize: 12,
+      height: 1.2,
+      fontWeight: FontWeight.w600,
+    ),
+  );
 
   /// Style used for large headings.
   final TextStyle headline;
@@ -27,6 +57,21 @@ class SketchyTypographyData {
 
   /// Small label style (badge text, etc.).
   final TextStyle label;
+
+  /// Returns a version with the provided overrides.
+  SketchyTypographyData copyWith({
+    TextStyle? headline,
+    TextStyle? title,
+    TextStyle? body,
+    TextStyle? caption,
+    TextStyle? label,
+  }) => SketchyTypographyData(
+    headline: headline ?? this.headline,
+    title: title ?? this.title,
+    body: body ?? this.body,
+    caption: caption ?? this.caption,
+    label: label ?? this.label,
+  );
 
   /// Returns a copy with each style merged with [other].
   SketchyTypographyData merge(SketchyTypographyData? other) {

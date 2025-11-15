@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:rough_flutter/rough_flutter.dart';
 
+import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import '../theme/sketchy_typography.dart';
+import 'surface.dart';
 
 /// Segmented control used to switch between sections.
 class SketchyTabs extends StatelessWidget {
@@ -33,26 +34,30 @@ class SketchyTabs extends StatelessWidget {
         for (var i = 0; i < tabs.length; i++) ...[
           GestureDetector(
             onTap: () => onChanged(i),
-            child: Container(
-              margin: const EdgeInsets.only(right: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: RoughBoxDecoration(
-                borderStyle: RoughDrawingStyle(
-                  width: theme.strokeWidth,
-                  color: theme.colors.ink,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: SketchySurface(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
                 ),
-                fillStyle: RoughDrawingStyle(
-                  color: i == selectedIndex
-                      ? theme.colors.accentMuted
-                      : theme.colors.paper,
+                fillColor: i == selectedIndex
+                    ? theme.colors.secondary
+                    : theme.colors.paper,
+                strokeColor: theme.colors.ink,
+                createPrimitive: () => SketchyPrimitive.roundedRectangle(
+                  cornerRadius: theme.borderRadius,
+                  fill: i == selectedIndex
+                      ? SketchyFill.solid
+                      : SketchyFill.none,
                 ),
-              ),
-              child: Text(
-                tabs[i],
-                style: typography.body.copyWith(
-                  fontWeight: i == selectedIndex
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                child: Text(
+                  tabs[i],
+                  style: typography.body.copyWith(
+                    fontWeight: i == selectedIndex
+                        ? FontWeight.w700
+                        : FontWeight.normal,
+                  ),
                 ),
               ),
             ),
