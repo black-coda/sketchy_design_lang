@@ -1,15 +1,15 @@
-# Sketchy Design System
+# Sketchy Design System (Flutter)
 
-Sketchy is a hand-drawn, xkcd-inspired design system for Flutter apps (mobile,
-desktop, and web).  
+Sketchy is a hand-drawn, xkcd-inspired **Flutter design system** for mobile,
+desktop, and web.
+
 It combines:
 
 - **Comic Shanns** as the primary typeface  
-- **`wired_elements`** as the widget library that gives everything a sketched
-  look  
-- A small set of **color themes** based on ROYGBIV (+ friends)  
-- A bemused yellow face mascot that represents the “low-fi but honest” attitude
-  of the system  
+- **`wired_elements`** as the sketchy widget engine  
+- A set of **color themes** based on ROYGBIV (+ monochrome)  
+- A bemused yellow-face **mascot** that represents the “low-fi but honest”
+  attitude of the system  
 
 Sketchy is ideal for:
 
@@ -22,20 +22,20 @@ Sketchy is ideal for:
 ## Design Principles
 
 1. **Intentional roughness**  
-   Straight lines are suspicious. Borders wobble, circles are lopsided, and
-   that’s the point.
+   Straight lines are suspicious. Borders wobble and circles are lopsided on
+   purpose.
 
 2. **Clarity first**  
-   Comic Shanns is fun, but still highly readable. Layout and hierarchy should
-   be clear even when the lines are messy.
+   Comic Shanns is fun but highly readable. Layout and hierarchy must stay clear
+   even when the lines are messy.
 
 3. **Low-stakes visuals**  
    Sketchy should make designs feel approachable and changeable. Nothing looks
    “finished” enough to be sacred.
 
 4. **Consistency under the chaos**  
-   Behind the loose look is a consistent set of tokens, themes, and components
-   so implementation stays solid.
+   Behind the loose look is a consistent set of tokens, themes, and widgets so
+   implementation stays solid.
 
 ---
 
@@ -67,10 +67,10 @@ Sketchy defines a base set of themes:
 - `indigo`
 - `violet`
 
-Each theme has a:
+Each theme has:
 
-- **Primary color** – used for accents, app bars, highlights  
-- **Secondary color** – used for softer surfaces, fills and backgrounds  
+- **Primary color** – accents, app bars, highlights  
+- **Secondary color** – softer surfaces, chips, subtle fills  
 
 In **light mode**, the primary and secondary colors are used as defined.  
 In **dark mode**, **primary and secondary swap roles**:
@@ -79,7 +79,7 @@ In **dark mode**, **primary and secondary swap roles**:
 
 This makes dark mode feel like the same world, just inverted.
 
-Example (conceptual):
+Conceptually:
 
 | Theme      | Primary (light) | Secondary (light) |
 | ---------- | --------------- | ----------------- |
@@ -92,30 +92,28 @@ Example (conceptual):
 
 ### Mascot
 
-- **Name:** (TBD, but currently “Meh” in spirit)
-- **Appearance:** Yellow circular face, simple eyes, horizontal “meh” mouth
+- **Name:** Sketchy’s “meh” face (actual name TBD)  
+- **Appearance:** Yellow circular face, simple eyes, horizontal “meh” mouth  
 - **Usage:**
   - Prominent in design-system docs and “about” screens
   - Optional avatar for empty states or playful onboarding
-  - Avoid overuse in critical UX (e.g., error dialogs should be clearer than
-    “meh”)
+  - Use sparingly in critical UX (errors, destructive confirmations)
 
 ---
 
 ### Line Style & Shapes
 
-The look is powered by `wired_elements`:
+The rough look is powered by **`wired_elements`**:
 
 - Double-line, jittery rectangles and circles
 - Slight randomness in stroke path
-- Minimal corner radius (mostly rectangular) but visually softened by stroke
-  wobble
+- Rectangular shapes that feel hand-drawn rather than geometric
 
 Guidelines:
 
-- Prefer **wired components** for core UI surfaces in Sketchy contexts  
-- Keep layouts relatively simple—too many sketchy outlines in one place can
-  become noisy
+- Prefer Sketchy components (which wrap `wired_elements`) for all visible UI.
+- Keep layouts simple—too many outlined things crowded together becomes visually
+  noisy.
 
 ---
 
@@ -123,25 +121,24 @@ Guidelines:
 
 ### Light Mode
 
-- Background: off-white / paper-like  
+- Background: off-white / paper-like (`#FFFDF6` by default)  
 - Primary color: theme primary  
 - Secondary color: theme secondary  
-- Shadows are minimal; hierarchy is driven more by layout and outline than
-  elevation.
+- Shadows are minimal; hierarchy is driven mostly by layout, stroke, and color.
 
 ### Dark Mode
 
-- Background: very dark gray / near-black  
-- Primary color: theme secondary (swapped)  
-- Secondary color: theme primary (swapped)  
-- Text uses lighter gray/white; outlines remain clearly visible.
+- Background: very dark gray / near black  
+- Primary color: **secondary** from the selected theme (swapped)  
+- Secondary color: **primary** from the selected theme (swapped)  
+- Text uses light grays / white; outlines remain clearly visible.
 
-Mode switching is exposed via a Sketchy-styled toggle (two buttons: **Light**
-and **Dark**, both wired buttons).
+Mode switching is exposed via Sketchy-styled toggle buttons: **Light** and
+**Dark**.
 
 ---
 
-## Tokens
+## Tokens (Conceptual)
 
 Even though the look is rough, the system is token-driven.
 
@@ -160,12 +157,12 @@ At minimum:
 - `color.accent.error`
 - `color.accent.warning`
 
-Each theme & mode pair maps these tokens to actual colors; the widgets use the
-tokens, not raw values.
+Each theme & mode pair maps these tokens to actual colors; Sketchy components
+use tokens, not raw color literals.
 
 ### Spacing & Layout
 
-A simple, coarse scale:
+A simple scale:
 
 - `space.xs` = 4
 - `space.sm` = 8
@@ -173,199 +170,373 @@ A simple, coarse scale:
 - `space.lg` = 16
 - `space.xl` = 24
 
-Use these for padding, margins, and gaps between components.
+Use these for padding, margins, and inter-component gaps.
 
 ### Stroke / Outline
 
-- Stroke thickness is generally between **1.5–2.5 px**, but the visual wobble
-  makes it feel looser.
-- Outlines should stay consistent within a view (don’t mix very thin and very
-  thick wired elements on the same screen).
+- Stroke thickness ~ **1.5–2.5 px**, but visually varied by jitter.
+- Outlines should stay roughly consistent within a screen (don’t mix ultra-thin
+  and heavy strokes).
+
+---
+
+## Flutter-Specific Implementation
+
+In Flutter terms, Sketchy is a reusable **design system package** that apps
+depend on.
+
+It has three main layers:
+
+1. **Tokens layer** – Dart types and `ThemeData` / `ThemeExtension`s  
+2. **Components layer** – `Sketchy*` widgets built from tokens +
+   `wired_elements`  
+3. **Docs layer** – the in-app “Sketchy Design System” screen itself  
+
+### Package & Folder Structure
+
+Recommended layout:
+
+```text
+lib/
+  sketchy.dart                     # public exports
+
+  src/
+    tokens/
+      sketchy_palette.dart         # color/theme model (light/dark swap)
+      sketchy_spacing.dart         # spacing constants
+      sketchy_typography.dart      # Comic Shanns text styles
+      sketchy_theme_ext.dart       # ThemeExtension bundling Sketchy tokens
+
+    components/
+      sketchy_button.dart
+      sketchy_input.dart
+      sketchy_divider.dart
+      sketchy_radio.dart
+      sketchy_slider.dart
+      sketchy_progress.dart
+      sketchy_calendar.dart
+
+    docs/
+      sketchy_design_system_page.dart
+````
+
+* **Apps import `package:sketchy/sketchy.dart`**, not `wired_elements` directly.
+* `wired_elements` is an implementation detail hidden in `components/`.
+
+### Tokens as Code
+
+Sketchy tokens are **Dart APIs**, not just conceptual names.
+
+#### Palette
+
+A theme color pair:
+
+```dart
+class SketchyPalette {
+  final String name;
+  final Color primary;
+  final Color secondary;
+
+  const SketchyPalette({
+    required this.name,
+    required this.primary,
+    required this.secondary,
+  });
+}
+```
+
+#### Theme Extension
+
+`SketchyTheme` wraps palette + spacing + any derived colors:
+
+```dart
+@immutable
+class SketchyTheme extends ThemeExtension<SketchyTheme> {
+  final SketchyPalette palette;
+  final double spaceSmall;
+  final double spaceMedium;
+  final double spaceLarge;
+
+  const SketchyTheme({
+    required this.palette,
+    this.spaceSmall = 8,
+    this.spaceMedium = 12,
+    this.spaceLarge = 16,
+  });
+
+  @override
+  SketchyTheme copyWith({
+    SketchyPalette? palette,
+    double? spaceSmall,
+    double? spaceMedium,
+    double? spaceLarge,
+  }) {
+    return SketchyTheme(
+      palette: palette ?? this.palette,
+      spaceSmall: spaceSmall ?? this.spaceSmall,
+      spaceMedium: spaceMedium ?? this.spaceMedium,
+      spaceLarge: spaceLarge ?? this.spaceLarge,
+    );
+  }
+
+  @override
+  SketchyTheme lerp(ThemeExtension<SketchyTheme>? other, double t) {
+    if (other is! SketchyTheme) return this;
+    return this; // non-animated for now; can be refined later
+  }
+}
+```
+
+Added to the app theme:
+
+```dart
+ThemeData buildSketchyTheme(SketchyPalette palette, Brightness brightness) {
+  final isDark = brightness == Brightness.dark;
+
+  final base = ThemeData(
+    brightness: brightness,
+    useMaterial3: true,
+    fontFamily: 'ComicShanns',
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: palette.primary,
+      brightness: brightness,
+    ),
+  );
+
+  return base.copyWith(
+    extensions: <ThemeExtension<dynamic>>[
+      SketchyTheme(palette: palette),
+    ],
+  );
+}
+```
+
+Widgets read tokens with:
+
+```dart
+final sketchy = Theme.of(context).extension<SketchyTheme>()!;
+final primary = sketchy.palette.primary;
+```
+
+This keeps **tokens as the single source of truth** for all Sketchy components.
+
+### Sketchy Components as the Public API
+
+Each public Sketchy widget wraps its `wired_elements` counterpart and
+automatically applies tokens:
+
+* `SketchyButton` → wraps `WiredButton`
+* `SketchyInput` → wraps `WiredInput`
+* `SketchyDivider` → wraps `WiredDivider`
+* `SketchyRadio<T>` → wraps `WiredRadio<T>`
+* `SketchySlider` → wraps `WiredSlider`
+* `SketchyProgress` → wraps `WiredProgress`
+* `SketchyCalendar` → wraps `WiredCalendar`
+
+Example usage from an app:
+
+```dart
+SketchyButton.primary(
+  onPressed: () {},
+  label: 'Submit',
+);
+```
+
+App code **never talks to `WiredButton` directly**; that lets Sketchy evolve
+internals without breaking consumers.
+
+### Docs as Part of the System
+
+The **Sketchy Design System page** is a first-class artifact:
+
+* Shows **all tokens** (palettes, theme names, light/dark swap behavior).
+* Shows **all components** in representative states with realistic content.
+* Acts as a **storybook** for designers and engineers.
+
+You can:
+
+* Ship it as a separate `sketchy_docs` entrypoint, or
+* Expose it behind a debug-only route in the consuming app.
+
+### Testing & Governance
+
+To keep Sketchy stable as it grows:
+
+* Use **golden tests** for core Sketchy widgets to catch visual regressions.
+* Add **widget tests** for theming behavior (e.g., verifying primary/secondary
+  swap in dark mode).
+* Version Sketchy as a standalone package; document:
+
+  * Supported Flutter SDK versions
+  * Breaking changes (token shifts, widget API changes)
+  * Deprecation paths for old widgets or props
 
 ---
 
 ## Component Library
 
-All components are built on `wired_elements` and renamed conceptually as
-**Sketchy** components.
+All components are built on `wired_elements` and exposed as **Sketchy** widgets.
 
 ### 1. Sketchy Buttons
 
-**Base widget:** `WiredButton`
+**Base widget:** `SketchyButton` (wraps `WiredButton`)
 
-Variants:
+Variants (examples):
 
-- Primary Sketchy Button  
-- Secondary actions like **Submit**, **Cancel**  
-- Long-label buttons, e.g., `Long text button … hah`
+* Primary Sketchy Button
+* Secondary actions like **Submit**, **Cancel**
+* Long-label buttons, e.g., `Long text button … hah`
 
 Guidelines:
 
-- Use short, conversational labels.
-- Keep main CTAs visually clear—position and spacing matter more than color in
-  this style.
+* Use short, conversational labels.
+* Use layout and grouping to communicate importance (CTAs at the bottom or in
+  consistent positions).
 
 ---
 
 ### 2. Sketchy Divider
 
-**Base widget:** `WiredDivider`
+**Base widget:** `SketchyDivider` (wraps `WiredDivider`)
 
 Used to:
 
-- Separate paragraphs or sections of content
-- Divide stacked blocks like cards or form sections
+* Separate paragraphs or sections of content
+* Divide stacked blocks like cards or form sections
 
 Typical layout:
 
-- Heading (`Sketchy divider`)
-- Paragraph of Comic-Shanns lorem
-- Divider
-- Another paragraph
+* Heading (`Sketchy divider`)
+* Paragraph of body text
+* Divider
+* Another paragraph
 
 ---
 
 ### 3. Sketchy Text Input
 
-**Base widget:** `WiredInput`
+**Base widget:** `SketchyInput` (wraps `WiredInput`)
 
 Examples:
 
-- **Name** – text input with “Hello sketchy input”
-- **User Email** – “Please enter user email”
-- **Your age** – “Your age please!”
+* **Name** – placeholder “Hello sketchy input”
+* **User Email** – “Please enter user email”
+* **Your age** – “Your age please!”
 
 Guidelines:
 
-- Labels are plain Comic Shanns text outside the input; placeholders inside are
-  light and conversational.
-- Inputs should have generous width and space between them, to stay legible
-  despite the sketchy border.
+* Use Comic Shanns labels outside the input; placeholders inside are light and
+  friendly.
+* Keep horizontal padding generous; the jittery border needs breathing room.
 
 ---
 
 ### 4. Sketchy Radio
 
-**Base widget:** `WiredRadio`
+**Base widget:** `SketchyRadio<T>` (wraps `WiredRadio<T>`)
 
 Example options:
 
-- `Lafayette`
-- `Thomas Jefferson`
+* `Lafayette`
+* `Thomas Jefferson`
 
 Guidelines:
 
-- Ideal for small sets of mutually exclusive choices.
-- Keep labels simple and padded; the hand-drawn circles are part of the charm.
+* Best for small sets of mutually exclusive options.
+* Keep labels concise, with at least `space.sm` between options vertically.
 
 ---
 
 ### 5. Sketchy Slider
 
-**Base widget:** `WiredSlider`
+**Base widget:** `SketchySlider` (wraps `WiredSlider`)
 
-Used for:
+Usage:
 
-- Selecting numeric ranges or percentages (e.g., value label: `20`)
+* Selecting approximate numeric values (e.g., percentage, volume, rating)
 
 Guidelines:
 
-- Show a numeric value next to or above the slider (Sketchy is playful, but
-  still explicit).
-- Prefer sliders for approximate selection, not precise numeric input.
+* Always accompany with a live numeric or semantic label: `Value: 20` or `Loud`,
+  `Normal`, etc.
+* Prefer for “feel” adjustments, not exact numbers.
 
 ---
 
 ### 6. Sketchy Progress
 
-**Base widget:** `WiredProgress`
+**Base widget:** `SketchyProgress` (wraps `WiredProgress`)
 
-Common pattern:
+Pattern:
 
-- Progress bar
-- Three Sketchy buttons: **Start**, **Stop**, **Reset**
+* A progress bar showing completion fraction
+* Control buttons: **Start**, **Stop**, **Reset**
 
 Guidelines:
 
-- Progress changes should be visible but not overly animated; the hand-drawn
-  fill is already visually engaging.
-- Use for longer operations where feedback matters but isn’t critical-path (file
-  uploads, background tasks, etc.).
+* Use for background operations or async tasks where feedback is helpful but not
+  life-or-death.
+* Avoid overly long animations—the scribbled fill is already visually busy.
 
 ---
 
 ### 7. Sketchy Calendar
 
-**Base widget:** `WiredCalendar`
+**Base widget:** `SketchyCalendar` (wraps `WiredCalendar`)
 
 Example:
 
-- Month view for **July 2021** with a circled date (e.g., the 22nd).
+* Month view for a given year, with the selected date scribble-circled.
 
 Guidelines:
 
-- Designed for picking single dates.
-- Use Sketchy text for month name and weekday labels.
-- Highlight the selected date with a scribbled circle, not a solid fill, to
-  preserve the sketch style.
+* Designed primarily for **single date selection**.
+* Use Sketchy typography for month and weekday labels.
+* Selected date should be clearly indicated but still feel hand-drawn.
 
 ---
 
 ## Layout Patterns
 
-Sketchy screens follow a simple structure:
+Sketchy screens follow a straightforward structure:
 
-- **Header row**  
-  - Mascot on the left  
-  - Title (“Sketchy Design System”) and subtitle  
-  - Optional mode/theme metadata
+1. **Header row**
 
-- **Theme strip**  
-  - Primary and secondary color dots for each theme  
-  - Tapping a theme updates the global palette
+   * Mascot on the left
+   * Title (“Sketchy Design System”) and subtitle
+   * Optional mode/theme metadata
 
-- **Mode row**  
-  - Sketchy buttons for **Light** and **Dark**
+2. **Theme strip**
 
-- **Component grid**  
-  - Sections grouped in Sketchy cards (wired rectangles with padding)  
-  - Each card has: title + components + brief description/lorem
+   * Primary and secondary color dots for each theme
+   * Tapping a theme updates the global palette
 
-The “design system board” page is itself an example of how to lay out Sketchy
-content.
+3. **Mode row**
 
----
+   * Sketchy Light/Dark buttons
 
-## Implementation Notes (Flutter)
+4. **Component grid**
 
-- **Packages**
-  - `wired_elements` – provides the sketchy UI primitives.
-  - `Comic Shanns` – added as a custom font in `pubspec.yaml`.
+   * Each group of components lives inside a Sketchy card:
 
-- **Theme**
-  - Defined via `ThemeData` with `fontFamily: 'ComicShanns'`.
-  - `ColorScheme.fromSeed` is used per theme to keep Material integrations sane.
-  - Dark mode is implemented using `ThemeMode` and swapping primary/secondary.
+     * Section title
+     * Demo components
+     * Optional supporting text
 
-- **Palette Model**
-  - `SketchyPalette` struct with `name`, `primary`, `secondary`.
-  - A simple map of theme name → `SketchyPalette`.
-
-The design system page is a single `Scaffold` with a scrollable, responsive
-layout (works on mobile, desktop, and web).
+The design-system board itself is a concrete reference layout.
 
 ---
 
 ## Accessibility
 
-Even though Sketchy looks informal, it should still be accessible:
+Sketchy looks informal, but it should still be accessible:
 
-- Ensure **contrast** between text and background (especially in dark mode).
-- Preserve reasonable **touch targets** for buttons and inputs (at least 44×44
-  dp).
-- Provide clear **focus states** and keyboard navigation on desktop/web.
-- Use meaningful labels for iconography and dismissive actions (e.g., avoid
-  purely visual “meh” faces for critical messaging).
+* Maintain **contrast** between text and background in all themes/modes.
+* Keep touch targets ≥ 44×44 dp.
+* Provide clear **focus states** for keyboard and assistive-tech navigation.
+* Use descriptive labels and semantics for interactive elements (`Semantics`,
+  `aria` on web).
+* Don’t rely solely on color (or squiggles) to signal critical states.
 
 ---
 
@@ -373,36 +544,36 @@ Even though Sketchy looks informal, it should still be accessible:
 
 Use Sketchy when:
 
-- You’re building an internal prototype or workshop tool.
-- You want to deliberately avoid “production-polished” visuals.
-- You’re presenting options and want stakeholders to focus on **flows and
-  content**, not detailed UI polish.
+* You’re prototyping interaction flows or data structures.
+* You want stakeholders to focus on **what** the app does, not **how polished**
+  it looks.
+* You’re building internal tools or playful apps where the aesthetic matches the
+  brand.
 
 Avoid Sketchy when:
 
-- You’re designing a brand that depends on a very serious or formal tone.
-- You need pixel-perfect adherence to an established corporate design system.
-- High-stakes, high-stress UX requires maximum clarity and calm (e.g., medical,
-  finance alerts).
+* You need a serious, formal brand tone (e.g., banking, medical emergencies).
+* Your design must match a rigid corporate design system.
+* High-stress flows require maximum calm and clarity.
 
 ---
 
 ## Roadmap Ideas
 
-Future extensions of the Sketchy design system could include:
+Potential future extensions:
 
-- Sketchy **tabs**, **chips**, and **badges**
-- Sketchy **dialogs**, **toasts**, and **inline alerts**
-- A small **icon set** in the same hand-drawn style
-- Design tokens exported for web and other platforms (JSON, CSS, etc.)
-- Figma / design-tool libraries that mirror the Flutter implementation
+* Sketchy **tabs**, **chips**, **badges**, and **toasts**
+* Sketchy **dialogs**, inline alerts, and banners
+* A small **sketchy icon set** (monochrome but tintable)
+* Figma / design-tool libraries that mirror the Flutter implementation
+* JSON / CSS export of tokens for non-Flutter surfaces
 
 ---
 
 **Summary**
 
-Sketchy turns your app into a living comic-book UI: playful lines, clear
-typography, and ROYGBIV-powered themes, all wired together with a consistent set
-of tokens and components. It’s a design system that doesn’t pretend to be
-perfect, which makes it a great companion for exploring ideas quickly—and
-sometimes shipping them.
+Sketchy is a Flutter-first design system that turns your app into a living
+comic-book UI: playful lines, clear Comic Shanns typography, ROYGBIV-powered
+themes, and a consistent set of tokens & widgets built on top of
+`wired_elements`. It’s intentionally rough, structurally solid, and designed to
+keep conversations centered on user flows and behavior—not pixel-perfect polish.
