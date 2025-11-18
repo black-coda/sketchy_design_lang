@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../../rough/rough.dart';
@@ -26,6 +28,9 @@ class WiredCanvas extends StatelessWidget {
     final baseConfig = drawConfig ?? DrawConfig.defaultValues;
     final effectiveDrawConfig = baseConfig.copyWith(
       roughness: wiredTheme.roughness,
+      maxRandomnessOffset:
+          (baseConfig.maxRandomnessOffset ?? 1) * wiredTheme.roughness,
+      randomizer: Randomizer(seed: Random().nextInt(1 << 31)),
     );
     final effectiveFillerConfig = fillerConfig ?? FillerConfig.defaultConfig;
 

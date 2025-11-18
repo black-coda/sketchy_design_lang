@@ -7,10 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 import 'package:wired_elements/wired_elements.dart';
 
+const Map<String, String> _fontOptions = <String, String>{
+  'Comic Shanns': 'ComicShanns',
+  'Excalifont': 'Excalifont',
+  'xkcd': 'XKCD',
+};
+
 SketchyThemeData _resolveSketchyTheme(
   SketchyColorMode mode,
   bool isDark,
   double roughness,
+  String fontFamily,
 ) {
   final base = SketchyThemeData.fromMode(mode, roughness: roughness);
   var colors = base.colors;
@@ -21,7 +28,8 @@ SketchyThemeData _resolveSketchyTheme(
     );
   }
   colors = colors.copyWith(ink: colors.primary, paper: colors.secondary);
-  return base.copyWith(colors: colors);
+  final typography = _applyFont(base.typography, fontFamily);
+  return base.copyWith(colors: colors, typography: typography);
 }
 
 ThemeData _materialThemeFromSketchy(
@@ -71,6 +79,17 @@ ThemeData _materialThemeFromSketchy(
   );
 }
 
+SketchyTypographyData _applyFont(
+  SketchyTypographyData base,
+  String fontFamily,
+) => base.copyWith(
+  headline: base.headline.copyWith(fontFamily: fontFamily),
+  title: base.title.copyWith(fontFamily: fontFamily),
+  body: base.body.copyWith(fontFamily: fontFamily),
+  caption: base.caption.copyWith(fontFamily: fontFamily),
+  label: base.label.copyWith(fontFamily: fontFamily),
+);
+
 WiredThemeData _wiredThemeFromSketchy(
   SketchyThemeData sketchyTheme,
   bool isDark,
@@ -117,6 +136,7 @@ class _SketchyAppState extends State<SketchyApp> {
   bool _isDark = false;
   String _activePaletteId = 'monochrome';
   double _roughness = 0.5;
+  String _fontFamily = _fontOptions.values.first;
 
   static const List<PaletteOption> _palettes = <PaletteOption>[
     PaletteOption(
@@ -142,6 +162,7 @@ class _SketchyAppState extends State<SketchyApp> {
       _activePalette.mode,
       _isDark,
       _roughness,
+      _fontFamily,
     );
     final materialTheme = _materialThemeFromSketchy(sketchyTheme, _isDark);
 
@@ -179,6 +200,10 @@ class _SketchyAppState extends State<SketchyApp> {
         onRoughnessChanged: (value) {
           setState(() => _roughness = value.clamp(0.0, 1.0));
         },
+        fontFamily: _fontFamily,
+        onFontChanged: (family) {
+          setState(() => _fontFamily = family);
+        },
       ),
     );
   }
@@ -193,6 +218,8 @@ class SketchyDesignSystemPage extends StatefulWidget {
     required this.onThemeChanged,
     required this.roughness,
     required this.onRoughnessChanged,
+    required this.fontFamily,
+    required this.onFontChanged,
     super.key,
   });
 
@@ -203,6 +230,8 @@ class SketchyDesignSystemPage extends StatefulWidget {
   final ValueChanged<String> onThemeChanged;
   final double roughness;
   final ValueChanged<double> onRoughnessChanged;
+  final String fontFamily;
+  final ValueChanged<String> onFontChanged;
 
   @override
   State<SketchyDesignSystemPage> createState() =>
@@ -364,6 +393,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
             option.mode,
             false,
             0.5,
+            widget.fontFamily,
           ).colors;
           return GestureDetector(
             onTap: () => widget.onThemeChanged(option.id),
@@ -473,12 +503,33 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              WiredSlider(
-                value: widget.roughness,
-                onChanged: (value) {
-                  widget.onRoughnessChanged(value.clamp(0.0, 1.0));
-                  return true;
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: WiredSlider(
+                      value: widget.roughness,
+                      onChanged: (value) {
+                        widget.onRoughnessChanged(value.clamp(0.0, 1.0));
+                        return true;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  DropdownButton<String>(
+                    value: widget.fontFamily,
+                    items: _fontOptions.entries
+                        .map(
+                          (entry) => DropdownMenuItem<String>(
+                            value: entry.value,
+                            child: Text(entry.key, style: _bodyStyle(context)),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) widget.onFontChanged(value);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -545,16 +596,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
             WiredButton(
               child: Text(
                 'Cancel',
-                style: _buttonLabelStyle(
-                  context,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.7)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.4),
-                ),
+                style: _buttonLabelStyle(context, color: Colors.grey.shade500),
               ),
               onPressed: () {},
             ),
@@ -564,10 +606,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
         WiredButton(
           child: Text(
             'Long text button … hah',
-            style: _buttonLabelStyle(
-              context,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+            style: _buttonLabelStyle(context),
           ),
           onPressed: () {},
         ),
@@ -717,13 +756,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
             const SizedBox(width: 8),
             WiredButton(
               onPressed: _resetProgress,
-              child: Text(
-                'Reset',
-                style: _buttonLabelStyle(
-                  context,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
+              child: Text('Reset', style: _buttonLabelStyle(context)),
             ),
           ],
         ),
@@ -733,7 +766,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
 
   Widget _buildCalendarSection() => _sectionCard(
     title: 'Sketchy calendar',
-    height: 420,
+    height: 516,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -747,7 +780,7 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
         // The Flutter wrapper's API mirrors the JS version fairly closely;
         // adjust attributes as needed once you wire it up.
         SizedBox(
-          height: 260,
+          height: 385,
           child: WiredCalendar(
             selected:
                 '${_selectedDate.year}'

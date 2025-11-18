@@ -244,49 +244,40 @@ class _WiredCalendarState extends State<WiredCalendar> {
     fontWeight = FontWeight.w500,
     fontSize = 20.0,
     Color? color,
-  }) => selected
-      ? Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              width: width,
-              height: height,
-              child: WiredCanvas(
-                painter: WiredCircleBase(
-                  diameterRatio: .8,
-                  strokeColor: _theme.borderColor,
-                ),
-                fillerType: RoughFilter.NoFiller,
+  }) {
+    final content = Center(
+      child: _wiredText(
+        text,
+        fontWeight: fontWeight,
+        fontSize: fontSize,
+        color: color,
+      ),
+    );
+    if (!selected) {
+      return SizedBox(width: width, height: height, child: content);
+    }
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: width * 0.75,
+            height: height * 0.75,
+            child: WiredCanvas(
+              painter: WiredCircleBase(
+                diameterRatio: 1,
+                strokeColor: _theme.borderColor,
               ),
-            ),
-            SizedBox(
-              width: width,
-              height: height,
-              child: Center(
-                child: _wiredText(
-                  text,
-                  fontWeight: fontWeight,
-                  fontSize: fontSize,
-                  color: color,
-                ),
-              ),
-            ),
-          ],
-        )
-      : SizedBox(
-          width: width,
-          height: height,
-          child: Center(
-            child: _wiredText(
-              text,
-              fontWeight: fontWeight,
-              fontSize: fontSize,
-              color: color,
+              fillerType: RoughFilter.NoFiller,
             ),
           ),
-        );
+          content,
+        ],
+      ),
+    );
+  }
 
   Text _wiredText(
     String text, {

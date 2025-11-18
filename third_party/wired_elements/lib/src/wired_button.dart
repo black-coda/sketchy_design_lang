@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../rough/rough.dart';
 
@@ -29,11 +31,17 @@ class WiredButton extends WiredBaseWidget {
   @override
   Widget buildWiredElement(BuildContext context) {
     final theme = WiredTheme.of(context);
+    final drawConfig = DrawConfig.build(
+      roughness: theme.roughness,
+      maxRandomnessOffset: 2 * theme.roughness,
+      seed: Random().nextInt(1 << 31),
+    );
     return Container(
       padding: EdgeInsets.zero,
       height: 42,
       decoration: RoughBoxDecoration(
         shape: RoughBoxShape.rectangle,
+        drawConfig: drawConfig,
         borderStyle: RoughDrawingStyle(
           width: theme.strokeWidth,
           color: theme.borderColor,
