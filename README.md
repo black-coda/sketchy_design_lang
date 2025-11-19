@@ -60,21 +60,11 @@ class SketchyDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = SketchyThemeData.fromMode(
-      SketchyColorMode.blue,
-      roughness: 0.7,
-    );
-
     return SketchyApp(
       title: 'Sketchy Demo',
-      theme: base,
-      darkTheme: base.copyWith(
-        colors: base.colors.copyWith(
-          primary: base.colors.secondary,
-          secondary: base.colors.primary,
-          ink: base.colors.secondary,
-          paper: base.colors.primary,
-        ),
+      theme: SketchyThemeData.fromMode(
+        SketchyColorMode.blue,
+        roughness: 0.7,
       ),
       themeMode: SketchyThemeMode.system,
       home: const SketchyScaffold(
@@ -159,13 +149,13 @@ widgets read the theme roughness and adapt automatically.
 
 Sketchy mirrors common UI building blocks. Highlights:
 
-| Category   | Widgets                                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------------------------- |
-| Inputs     | `SketchyTextInput`, `SketchyCombo`, `SketchySlider`, `SketchyCheckbox`, `SketchyToggle`, `SketchyRadio` |
-| Actions    | `SketchyButton`, `SketchyIconButton`, `SketchyChip`                                                     |
-| Containers | `SketchyCard`, `SketchyPanel`, `SketchyListTile`, `SketchyDivider`                                      |
-| Feedback   | `SketchyDialog`, `SketchyTooltip`, `SketchyBadge`, `SketchyTypingIndicator`                             |
-| Navigation | `SketchyTabs`, `SketchyAppBar`, `SketchyScaffold`                                                       |
+| Category   | Widgets                                                                                                             |
+| ---------- | ------------------------------------------------------------------------------------------------------------------- |
+| Inputs     | `SketchyTextInput`, `SketchyCombo`, `SketchySlider`, `SketchyCheckbox`, `SketchyToggle`, `SketchyRadio`, `SketchyOptionTile` |
+| Actions    | `SketchyButton`, `SketchyIconButton`, `SketchyChip`                                                                 |
+| Containers | `SketchyCard`, `SketchyPanel`, `SketchyListTile`, `SketchyDivider`                                                  |
+| Feedback   | `SketchyDialog`, `SketchyTooltip`, `SketchyBadge`, `SketchyTypingIndicator`                                         |
+| Navigation | `SketchyTabs`, `SketchyAppBar`, `SketchyScaffold`                                                                   |
 
 ### Quick examples
 
@@ -175,10 +165,26 @@ SketchyButton(
   child: Text('Save', style: SketchyTheme.of(context).typography.label),
 );
 
-SketchyCheckbox(
+SketchyOptionTile.checkbox(
   value: wantsEmails,
-  onChanged: (checked) => setState(() => wantsEmails = checked ?? false),
+  onChanged: (checked) =>
+      setState(() => wantsEmails = checked ?? wantsEmails),
+  label: Text('Email me weekly',
+      style: SketchyTheme.of(context).typography.body),
+  helper: const Text('Includes product updates + comics.'),
 );
+
+SketchyOptionTile.radio<String>(
+  value: 'instant',
+  groupValue: deliverySpeed,
+  onChanged: (value) => setState(() => deliverySpeed = value ?? 'instant'),
+  label: Text('Send instantly',
+      style: SketchyTheme.of(context).typography.body),
+);
+
+`SketchyOptionTile` keeps the checkbox or radio button and its label (any widget)
+in sync and makes the entire row tappable—think of it as SketchyListTile for
+options.
 
 SketchySlider(
   value: roughness,

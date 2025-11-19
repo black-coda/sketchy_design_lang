@@ -625,27 +625,28 @@ Comic Shanns font.
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildRadioOption(theme, 'Lafayette'),
+          SketchyOptionTile<String>.radio(
+            value: 'Lafayette',
+            groupValue: _selectedRadio,
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _selectedRadio = value);
+            },
+            label: SketchyText('Lafayette', style: _bodyStyle(theme)),
+          ),
           const SizedBox(height: 8),
-          _buildRadioOption(theme, 'Thomas Jefferson'),
+          SketchyOptionTile<String>.radio(
+            value: 'Thomas Jefferson',
+            groupValue: _selectedRadio,
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _selectedRadio = value);
+            },
+            label: SketchyText('Thomas Jefferson', style: _bodyStyle(theme)),
+          ),
         ],
       ),
     ),
-  );
-
-  Widget _buildRadioOption(SketchyThemeData theme, String label) => Row(
-    children: [
-      SketchyRadio<String>(
-        value: label,
-        groupValue: _selectedRadio,
-        onChanged: (value) {
-          if (value == null) return;
-          setState(() => _selectedRadio = value);
-        },
-      ),
-      const SizedBox(width: 8),
-      Expanded(child: SketchyText(label, style: _bodyStyle(theme))),
-    ],
   );
 
   Widget _buildSliderSection() => SketchyTheme.consumer(
@@ -719,8 +720,8 @@ Comic Shanns font.
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SketchyText(
-            '${_selectedDate.year} – '
-            '${_selectedDate.month.toString().padLeft(2, '0')} – '
+            '${_selectedDate.year} - '
+            '${_selectedDate.month.toString().padLeft(2, '0')} - '
             '${_selectedDate.day.toString().padLeft(2, '0')}',
             style: _fieldLabelStyle(theme),
           ),
@@ -742,50 +743,33 @@ Comic Shanns font.
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildCheckboxOption(
-            theme: theme,
-            label: 'Send me sketchy release notes',
-            helper: 'Early builds + easter eggs',
+          SketchyOptionTile.checkbox(
             value: _newsletterOptIn,
-            onChanged: (checked) => _newsletterOptIn = checked,
+            onChanged: (checked) =>
+                setState(() => _newsletterOptIn = checked ?? false),
+            label: SketchyText(
+              'Send me sketchy release notes',
+              style: _bodyStyle(theme),
+            ),
+            helper: SketchyText(
+              'Early builds + easter eggs',
+              style: _mutedStyle(theme),
+            ),
           ),
           const SizedBox(height: 12),
-          _buildCheckboxOption(
-            theme: theme,
-            label: 'Mascot mode',
-            helper: 'More sketchy faces',
+          SketchyOptionTile.checkbox(
             value: _mascotOptIn,
-            onChanged: (checked) => _mascotOptIn = checked,
+            onChanged: (checked) =>
+                setState(() => _mascotOptIn = checked ?? false),
+            label: SketchyText('Mascot mode', style: _bodyStyle(theme)),
+            helper: SketchyText(
+              'More sketchy faces',
+              style: _mutedStyle(theme),
+            ),
           ),
         ],
       ),
     ),
-  );
-
-  Widget _buildCheckboxOption({
-    required SketchyThemeData theme,
-    required String label,
-    required String helper,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SketchyCheckbox(
-        value: value,
-        onChanged: (val) => onChanged(val ?? false),
-      ),
-      const SizedBox(width: 12),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SketchyText(label, style: _bodyStyle(theme)),
-            SketchyText(helper, style: _mutedStyle(theme)),
-          ],
-        ),
-      ),
-    ],
   );
 
   Widget _buildToggleSection() => SketchyTheme.consumer(

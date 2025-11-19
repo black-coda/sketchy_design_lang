@@ -131,15 +131,10 @@ class _SketchyControlLabExampleState extends State<SketchyControlLabExample> {
   }) => SketchyTheme.consumer(
     builder: (context, theme) {
       final typography = theme.typography;
-      return Row(
-      children: [
-        SketchyCheckbox(
-          value: value,
-          onChanged: (checked) => onChanged(checked ?? value),
-        ),
-        const SizedBox(width: 12),
-        Expanded(child: Text(label, style: typography.body)),
-      ],
+      return SketchyOptionTile.checkbox(
+        value: value,
+        onChanged: (checked) => onChanged(checked ?? value),
+        label: Text(label, style: typography.body),
       );
     },
   );
@@ -154,18 +149,13 @@ class _SketchyControlLabExampleState extends State<SketchyControlLabExample> {
     builder: (context, theme) {
       final typography = theme.typography;
       return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          SketchyRadio<String>(
-            value: value,
-            groupValue: groupValue,
-            onChanged: onChanged,
-          ),
-          const SizedBox(width: 12),
-          Expanded(child: Text(title, style: typography.body)),
-        ],
-      ),
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: SketchyOptionTile<String>.radio(
+          value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+          label: Text(title, style: typography.body),
+        ),
       );
     },
   );

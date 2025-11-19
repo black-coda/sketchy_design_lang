@@ -16,6 +16,7 @@ export 'chip.dart';
 export 'icon_button.dart';
 export 'icons.dart';
 export 'list_tile.dart';
+export 'option_tile.dart';
 export 'scaffold.dart';
 export 'sketchy_frame.dart';
 export 'surface.dart';

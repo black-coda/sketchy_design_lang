@@ -16,33 +16,37 @@ class SketchyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) => SketchyFrame(
-          height: 42,
-          padding: EdgeInsets.zero,
-          strokeColor: theme.borderColor,
-          strokeWidth: theme.strokeWidth,
-          fill: SketchyFill.none,
-          child: SizedBox(
-            height: double.infinity,
-            child: MouseRegion(
-              cursor: onPressed != null
-                  ? SystemMouseCursors.click
-                  : SystemMouseCursors.basic,
-              child: GestureDetector(
-                onTap: onPressed,
-                behavior: HitTestBehavior.opaque,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                        fontFamily: theme.fontFamily,
-                        color: onPressed != null
-                            ? theme.textColor
-                            : theme.disabledTextColor,
+        builder: (context, theme) => IntrinsicWidth(
+          child: IntrinsicHeight(
+            child: SketchyFrame(
+              height: 42,
+              padding: EdgeInsets.zero,
+              strokeColor: theme.borderColor,
+              strokeWidth: theme.strokeWidth,
+              fill: SketchyFill.none,
+              child: SizedBox(
+                height: double.infinity,
+                child: MouseRegion(
+                  cursor: onPressed != null
+                      ? SystemMouseCursors.click
+                      : SystemMouseCursors.basic,
+                  child: GestureDetector(
+                    onTap: onPressed,
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                            fontFamily: theme.fontFamily,
+                            color: onPressed != null
+                                ? theme.textColor
+                                : theme.disabledTextColor,
+                          ),
+                          child: child,
+                        ),
                       ),
-                      child: child,
                     ),
                   ),
                 ),
