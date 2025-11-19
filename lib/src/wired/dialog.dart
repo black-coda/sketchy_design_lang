@@ -58,6 +58,7 @@ const _kDialogMargin = 24.0;
 ///   ),
 /// ```
 class SketchyDialog extends StatelessWidget {
+  /// Builds a sketchy-styled dialog containing [child].
   const SketchyDialog({required this.child, super.key, this.padding});
 
   /// The content in dialog.

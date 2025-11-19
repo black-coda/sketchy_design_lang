@@ -131,14 +131,12 @@ class _ProgressFill extends StatelessWidget {
   final SketchyFillOptions fillOptions;
 
   @override
-  Widget build(BuildContext context) {
-    return SketchyFrame(
-      fill: SketchyFill.hachure,
-      fillOptions: fillOptions,
-      fillColor: color,
-      strokeColor: const Color(0x00000000),
-      strokeWidth: 0,
-      child: const SizedBox.expand(),
-    );
-  }
+  Widget build(BuildContext context) => SketchyFrame(
+        fill: SketchyFill.hachure,
+        fillOptions: fillOptions,
+        fillColor: color,
+        strokeColor: const Color(0x00000000),
+        strokeWidth: 0,
+        child: const SizedBox.expand(),
+      );
 }

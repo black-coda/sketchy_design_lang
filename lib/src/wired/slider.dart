@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
 
+/// Hand-drawn slider control for adjusting a numeric value.
 class SketchySlider extends StatefulWidget {
+  /// Creates a sketchy slider configured with the provided [value] and bounds.
   const SketchySlider({
     required this.value,
     required this.onChanged,
@@ -14,11 +16,22 @@ class SketchySlider extends StatefulWidget {
     this.max = 1.0,
   });
 
+  /// Current slider value.
   final double value;
+
+  /// Callback fired when the slider thumb moves.
   final ValueChanged<double>? onChanged;
+
+  /// Number of discrete stops between [min] and [max].
   final int? divisions;
+
+  /// Optional textual label describing the slider.
   final String? label;
+
+  /// Minimum value represented by the slider.
   final double min;
+
+  /// Maximum value represented by the slider.
   final double max;
 
   @override

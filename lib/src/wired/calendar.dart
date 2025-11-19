@@ -20,6 +20,7 @@ import '../widgets/sketchy_frame.dart';
 /// )
 /// ```
 class SketchyCalendar extends StatefulWidget {
+  /// Creates a sketchy-styled calendar optionally pre-selecting [selected].
   const SketchyCalendar({super.key, this.selected, this.onSelected});
 
   /// The date to be selected.
@@ -294,7 +295,9 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
 // GLOBAL CONSTANTS
 const int _kMillisecondsPerDay = 24 * 60 * 60 * 1000;
 
+/// Model describing a single day rendered within the calendar grid.
 class CalendarCell {
+  /// Creates a calendar cell to describe the date [value].
   CalendarCell({
     required this.value,
     required this.text,
@@ -303,10 +306,22 @@ class CalendarCell {
     required this.color,
     this.disabled = false,
   });
+
+  /// Concrete date represented by this cell.
   final DateTime value;
+
+  /// Label rendered for the day (typically the day number).
   final String text;
+
+  /// Whether the cell is the currently selected day.
   final bool selected;
+
+  /// Whether the day belongs to the visible month.
   final bool dimmed;
+
+  /// Whether selection/input is disabled for the cell.
   final bool disabled;
+
+  /// Color used when painting the label.
   final Color color;
 }

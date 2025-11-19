@@ -40,6 +40,7 @@ class SketchyComboItem<T> {
 /// ),
 /// ```
 class SketchyCombo<T> extends StatefulWidget {
+  /// Creates a combo box backed by [items] with an optional selected [value].
   const SketchyCombo({
     required this.items,
     super.key,

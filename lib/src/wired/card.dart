@@ -39,6 +39,7 @@ import '../widgets/sketchy_frame.dart';
 /// ),
 /// ```
 class SketchyCard extends StatelessWidget {
+  /// Builds a card with a sketchy border around [child].
   const SketchyCard({
     super.key,
     this.child,

@@ -928,7 +928,8 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'This is a sketchy dialog. It has a title and some content.',
+                              'This is a sketchy dialog. '
+                              'It has a title and some content.',
                               style: _bodyStyle(context),
                             ),
                             const SizedBox(height: 24),

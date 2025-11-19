@@ -21,6 +21,7 @@ import '../widgets/sketchy_frame.dart';
 /// ),
 /// ```
 class SketchyTextInput extends StatefulWidget {
+  /// Creates a sketchy-styled text field.
   const SketchyTextInput({
     super.key,
     this.controller,

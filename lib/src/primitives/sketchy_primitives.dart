@@ -18,6 +18,7 @@ enum SketchyFill {
 
 /// Customization options for how hachure/solid fills are rendered.
 class SketchyFillOptions {
+  /// Creates a bundle of overrides for sketchy fill rendering.
   const SketchyFillOptions({
     this.hachureGap,
     this.fillWeight,

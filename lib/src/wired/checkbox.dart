@@ -17,6 +17,7 @@ import '../widgets/surface.dart';
 /// ),
 /// ```
 class SketchyCheckbox extends StatefulWidget {
+  /// Creates a sketchy checkbox with the provided [value] and [onChanged].
   const SketchyCheckbox({
     required this.value,
     required this.onChanged,

@@ -33,11 +33,6 @@ void main() {
 
     // Find the popup content
     final popupFinder = find.text('Two');
-
-    if (popupFinder.evaluate().isEmpty) {
-      debugDumpApp();
-    }
-
     expect(popupFinder, findsOneWidget);
 
     // Get the size of the popup frame
@@ -47,7 +42,6 @@ void main() {
         .first;
 
     final frameSize = tester.getSize(frameFinder);
-    print('Popup frame size: $frameSize');
 
     // The screen height is 600 by default in tests.
     // The popup should be much smaller than that.
