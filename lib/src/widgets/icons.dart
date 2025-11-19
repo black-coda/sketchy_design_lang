@@ -24,6 +24,9 @@ enum SketchyIconSymbol {
 
   /// Paper-plane “send” icon.
   send,
+
+  /// Checkmark icon.
+  check,
 }
 
 /// Convenience constants for referencing [SketchyIconSymbol]s.
@@ -48,6 +51,9 @@ class SketchyIcons {
 
   /// Send icon symbol.
   static const SketchyIconSymbol send = SketchyIconSymbol.send;
+
+  /// Check icon symbol.
+  static const SketchyIconSymbol check = SketchyIconSymbol.check;
 }
 
 /// Custom painter-based icon rendered in the sketch style.
@@ -150,6 +156,12 @@ class _SketchyIconPainter extends CustomPainter {
           ..lineTo(2, 2)
           ..lineTo(size.width / 3, size.height / 2)
           ..close();
+        canvas.drawPath(path, paint);
+      case SketchyIconSymbol.check:
+        final path = Path()
+          ..moveTo(4, size.height / 2)
+          ..lineTo(size.width / 2.5, size.height - 4)
+          ..lineTo(size.width - 4, 4);
         canvas.drawPath(path, paint);
     }
   }

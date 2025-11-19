@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs
-
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
@@ -22,18 +20,29 @@ class SketchyButton extends StatelessWidget {
       fill: SketchyFill.none,
       child: SizedBox(
         height: double.infinity,
-        child: TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: theme.textColor,
-            disabledForegroundColor: theme.disabledTextColor,
-            textStyle: TextStyle(fontFamily: theme.fontFamily),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
+        child: MouseRegion(
+          cursor: onPressed != null
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
+          child: GestureDetector(
+            onTap: onPressed,
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.center,
+                child: DefaultTextStyle(
+                  style: TextStyle(
+                    fontFamily: theme.fontFamily,
+                    color: onPressed != null
+                        ? theme.textColor
+                        : theme.disabledTextColor,
+                  ),
+                  child: child,
+                ),
+              ),
             ),
           ),
-          onPressed: onPressed,
-          child: Align(alignment: Alignment.center, child: child),
         ),
       ),
     );

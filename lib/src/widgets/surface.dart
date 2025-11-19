@@ -44,7 +44,7 @@ class SketchySurface extends StatefulWidget {
   final double? strokeWidth;
 
   /// Alignment of [child] within the painted area.
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   @override
   State<SketchySurface> createState() => _SketchySurfaceState();
@@ -67,7 +67,9 @@ class _SketchySurfaceState extends State<SketchySurface> {
       ),
       child: Padding(
         padding: widget.padding,
-        child: Align(alignment: widget.alignment, child: widget.child),
+        child: widget.alignment != null
+            ? Align(alignment: widget.alignment!, child: widget.child)
+            : widget.child,
       ),
     );
 

@@ -1,7 +1,8 @@
-// ignore_for_file: public_member_api_docs
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
+import '../widgets/icons.dart';
 import '../widgets/surface.dart';
 
 /// Wired checkbox.
@@ -43,36 +44,43 @@ class _SketchyCheckboxState extends State<SketchyCheckbox> {
   }
 
   @override
+  void didUpdateWidget(covariant SketchyCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _value = widget.value!;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
-    return SketchySurface(
-      width: 27,
-      height: 27,
-      strokeColor: theme.borderColor,
-      strokeWidth: theme.strokeWidth,
-      fillColor: theme.colors.secondary,
-      padding: EdgeInsets.zero,
-      alignment: Alignment.center,
-      createPrimitive: () => SketchyPrimitive.rectangle(fill: SketchyFill.none),
-      child: SizedBox.expand(
-        child: Transform.scale(
-          scale: 1.5,
-          child: Checkbox(
-            fillColor: WidgetStateProperty.all(Colors.transparent),
-            checkColor: theme.borderColor,
-            side: BorderSide(
-              color: theme.borderColor,
-              width: theme.strokeWidth,
-            ),
-            onChanged: (value) {
-              setState(() {
-                widget.onChanged(value);
-                _value = value!;
-              });
-            },
-            value: _value,
-          ),
-        ),
+    return GestureDetector(
+      onTap: () {
+        final newValue = !_value;
+        setState(() {
+          _value = newValue;
+        });
+        widget.onChanged(newValue);
+      },
+      child: SketchySurface(
+        width: 27,
+        height: 27,
+        strokeColor: theme.borderColor,
+        strokeWidth: theme.strokeWidth,
+        fillColor: theme.colors.secondary,
+        padding: EdgeInsets.zero,
+        alignment: Alignment.center,
+        createPrimitive: () =>
+            SketchyPrimitive.rectangle(fill: SketchyFill.none),
+        child: _value
+            ? Transform.scale(
+                scale: 0.7,
+                child: SketchyIcon(
+                  icon: SketchyIcons.check,
+                  color: theme.colors.ink,
+                ),
+              )
+            : const SizedBox(),
       ),
     );
   }

@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs
-
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
@@ -101,12 +99,12 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(
+        GestureDetector(
           onTap: _onPre,
           child: _wiredText('<<', fontWeight: FontWeight.bold, fontSize: 24),
         ),
         _wiredText(_monthYear, fontWeight: FontWeight.bold, fontSize: 22),
-        InkWell(
+        GestureDetector(
           onTap: _onNext,
           child: _wiredText('>>', fontWeight: FontWeight.bold, fontSize: 24),
         ),
@@ -152,7 +150,7 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
     final weekdays = <Widget>[];
     for (final week in _weeks) {
       weekdays.add(
-        InkWell(
+        GestureDetector(
           onTap: () {
             if (_selected == week.value) return;
             _selected = week.value;
@@ -207,7 +205,10 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
               _kMillisecondsPerDay * dayInMonthOffset,
         );
         final isSelected =
-            _selected != null && DateUtils.isSameDay(day, _selected);
+            _selected != null &&
+            day.year == _selected!.year &&
+            day.month == _selected!.month &&
+            day.day == _selected!.day;
 
         _weeks.add(
           CalendarCell(

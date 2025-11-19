@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
@@ -66,13 +65,7 @@ class SketchyCard extends StatelessWidget {
       strokeWidth: theme.strokeWidth,
       fill: fill ? SketchyFill.hachure : SketchyFill.none,
       cornerRadius: theme.borderRadius,
-      child: SizedBox.expand(
-        child: Card(
-          color: Colors.transparent,
-          shadowColor: Colors.transparent,
-          child: child,
-        ),
-      ),
+      child: child ?? const SizedBox.shrink(),
     );
   }
 }

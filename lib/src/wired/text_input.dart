@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
@@ -21,7 +20,7 @@ import '../widgets/sketchy_frame.dart';
 ///   ),
 /// ),
 /// ```
-class SketchyTextInput extends StatelessWidget {
+class SketchyTextInput extends StatefulWidget {
   const SketchyTextInput({
     super.key,
     this.controller,
@@ -56,36 +55,78 @@ class SketchyTextInput extends StatelessWidget {
   final void Function(String)? onChanged;
 
   @override
+  State<SketchyTextInput> createState() => _SketchyTextInputState();
+}
+
+class _SketchyTextInputState extends State<SketchyTextInput> {
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(covariant SketchyTextInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != null && widget.controller != _controller) {
+      _controller = widget.controller!;
+    }
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
     final effectiveLabelStyle =
-        labelStyle ??
+        widget.labelStyle ??
         TextStyle(fontFamily: theme.fontFamily, color: theme.textColor);
     final effectiveStyle =
-        style ??
+        widget.style ??
         TextStyle(fontFamily: theme.fontFamily, color: theme.textColor);
     final effectiveHintStyle =
-        hintStyle ??
+        widget.hintStyle ??
         TextStyle(fontFamily: theme.fontFamily, color: theme.disabledTextColor);
+
     return Row(
       children: [
-        if (labelText != null) Text('$labelText', style: effectiveLabelStyle),
-        if (labelText != null) const SizedBox(width: 10),
+        if (widget.labelText != null)
+          Text('${widget.labelText}', style: effectiveLabelStyle),
+        if (widget.labelText != null) const SizedBox(width: 10),
         Expanded(
           child: SketchyFrame(
             height: 48,
             padding: const EdgeInsets.symmetric(horizontal: 8),
             fill: SketchyFill.none,
             child: Center(
-              child: TextField(
-                controller: controller,
-                style: effectiveStyle,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: effectiveHintStyle,
-                ),
-                onChanged: onChanged,
+              child: Stack(
+                alignment: Alignment.centerLeft,
+                children: [
+                  if (widget.hintText != null && _controller.text.isEmpty)
+                    Text(widget.hintText!, style: effectiveHintStyle),
+                  EditableText(
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    style: effectiveStyle,
+                    cursorColor: theme.colors.ink,
+                    backgroundCursorColor: theme.colors.paper,
+                    onChanged: (value) {
+                      setState(() {}); // To update hint visibility
+                      widget.onChanged?.call(value);
+                    },
+                  ),
+                ],
               ),
             ),
           ),

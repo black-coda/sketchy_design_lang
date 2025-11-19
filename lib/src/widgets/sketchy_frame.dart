@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
@@ -37,7 +37,7 @@ class SketchyFrame extends StatelessWidget {
   final SketchyFill fill;
   final SketchyFrameShape shape;
   final double? cornerRadius;
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class SketchyFrame extends StatelessWidget {
       padding: padding,
       alignment: alignment,
       strokeColor: strokeColor ?? theme.colors.ink,
-      fillColor: fillColor ?? Colors.transparent,
+      fillColor: fillColor ?? const Color(0x00000000),
       strokeWidth: strokeWidth ?? theme.strokeWidth,
       createPrimitive: primitive,
       child: child,

@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
 import '../widgets/sketchy_frame.dart';
@@ -64,13 +63,15 @@ class SketchyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = SketchyTheme.of(context);
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: SketchyFrame(
-        padding: padding ?? const EdgeInsets.all(20),
-        cornerRadius: theme.borderRadius,
-        fill: SketchyFill.none,
-        child: child,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(40),
+        child: SketchyFrame(
+          padding: padding ?? const EdgeInsets.all(20),
+          cornerRadius: theme.borderRadius,
+          fill: SketchyFill.none,
+          child: child,
+        ),
       ),
     );
   }

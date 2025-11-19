@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 const Map<String, String> _fontOptions = <String, String>{
@@ -29,53 +29,6 @@ SketchyThemeData _resolveSketchyTheme(
   colors = colors.copyWith(ink: colors.primary, paper: colors.secondary);
   final typography = _applyFont(base.typography, fontFamily);
   return base.copyWith(colors: colors, typography: typography);
-}
-
-ThemeData _materialThemeFromSketchy(
-  SketchyThemeData sketchyTheme,
-  bool isDark,
-) {
-  final colors = sketchyTheme.colors;
-  final brightness = isDark ? Brightness.dark : Brightness.light;
-  final colorScheme =
-      ColorScheme.fromSeed(
-        seedColor: colors.primary,
-        brightness: brightness,
-      ).copyWith(
-        primary: colors.primary,
-        onPrimary: colors.secondary,
-        secondary: colors.secondary,
-        onSecondary: colors.ink,
-        surface: colors.paper,
-        onSurface: colors.ink,
-      );
-
-  final textTheme = TextTheme(
-    displayLarge: sketchyTheme.typography.headline.copyWith(color: colors.ink),
-    titleLarge: sketchyTheme.typography.title.copyWith(color: colors.ink),
-    bodyLarge: sketchyTheme.typography.body.copyWith(color: colors.ink),
-    bodyMedium: sketchyTheme.typography.body.copyWith(color: colors.ink),
-    bodySmall: sketchyTheme.typography.caption.copyWith(color: colors.ink),
-    labelLarge: sketchyTheme.typography.label.copyWith(color: colors.ink),
-  );
-
-  return ThemeData(
-    brightness: brightness,
-    useMaterial3: true,
-    scaffoldBackgroundColor: colors.paper,
-    colorScheme: colorScheme,
-    fontFamily: sketchyTheme.typography.body.fontFamily,
-    textTheme: textTheme,
-    appBarTheme: AppBarTheme(
-      backgroundColor: colors.primary,
-      foregroundColor: colors.secondary,
-      centerTitle: true,
-      titleTextStyle: sketchyTheme.typography.title.copyWith(
-        color: colors.secondary,
-        fontSize: 24,
-      ),
-    ),
-  );
 }
 
 SketchyTypographyData _applyFont(
@@ -144,21 +97,36 @@ class _SketchyAppState extends State<SketchyApp> {
       _roughness,
       _fontFamily,
     );
-    final materialTheme = _materialThemeFromSketchy(sketchyTheme, _isDark);
 
-    return MaterialApp(
+    return WidgetsApp(
       title: 'Sketchy Design System',
       debugShowCheckedModeBanner: false,
-      theme: materialTheme,
+      color: sketchyTheme.colors.primary,
+      pageRouteBuilder: <T>(settings, builder) {
+        return PageRouteBuilder<T>(
+          settings: settings,
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              builder(context),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        );
+      },
       builder: (context, child) {
         final content = child ?? const SizedBox.shrink();
         return SketchyTheme(
           data: sketchyTheme,
-          child: DefaultTextStyle(
-            style: sketchyTheme.typography.body.copyWith(
-              color: sketchyTheme.colors.ink,
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: DefaultTextStyle(
+              style: sketchyTheme.typography.body.copyWith(
+                color: sketchyTheme.colors.ink,
+              ),
+              child: ColoredBox(
+                color: sketchyTheme.colors.paper,
+                child: content,
+              ),
             ),
-            child: content,
           ),
         );
       },
@@ -272,169 +240,187 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
   @override
   Widget build(BuildContext context) {
     final palette = widget.palette;
+    final theme = SketchyTheme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sketchy Design System')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeaderRow(context, palette),
-            const SizedBox(height: 24),
-            _buildThemeRow(palette),
-            const SizedBox(height: 24),
-            _buildModeToggleRow(),
-            const SizedBox(height: 32),
-            _buildShowcaseBoard(),
-            const SizedBox(height: 32),
-          ],
+    return Column(
+      children: [
+        // AppBar replacement
+        Container(
+          height: 56,
+          color: theme.colors.primary,
+          alignment: Alignment.center,
+          child: Text(
+            'Sketchy Design System',
+            style: theme.typography.title.copyWith(
+              color: theme.colors.secondary,
+              fontSize: 24,
+            ),
+          ),
         ),
-      ),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeaderRow(context, palette),
+                const SizedBox(height: 24),
+                _buildThemeRow(palette),
+                const SizedBox(height: 24),
+                _buildModeToggleRow(),
+                const SizedBox(height: 32),
+                _buildShowcaseBoard(),
+                const SizedBox(height: 32),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildHeaderRow(BuildContext context, PaletteOption palette) => Row(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Tooltip(
-        message: 'meh',
-        textStyle: TextStyle(
-          fontFamily: 'ComicShanns',
-          color: Theme.of(context).colorScheme.onSurface,
+  Widget _buildHeaderRow(BuildContext context, PaletteOption palette) {
+    final theme = SketchyTheme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SketchyFrame(
+          padding: EdgeInsets.zero,
+          fill: SketchyFill.solid,
+          fillColor: theme.colors.paper,
+          strokeColor: theme.colors.ink,
+          child: Image.asset(
+            'assets/images/sketchy_mascot.png',
+            width: 96,
+            height: 96,
+          ),
         ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          border: Border.all(color: Theme.of(context).colorScheme.onSurface),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Image.asset(
-          'assets/images/sketchy_mascot.png',
-          width: 96,
-          height: 96,
-        ),
-      ),
-      const SizedBox(width: 16),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Sketchy',
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sketchy',
+                style: theme.typography.headline.copyWith(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              'An xkcd-inspired design system powered by '
-              'wired_elements + Comic Shanns',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Current theme: ${palette.label} • '
-              'Mode: ${widget.isDark ? 'Dark' : 'Light'}',
-              style: _mutedStyle(context),
-            ),
-          ],
+              Text(
+                'An xkcd-inspired design system powered by '
+                'wired_elements + Comic Shanns',
+                style: theme.typography.title,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Current theme: ${palette.label} • '
+                'Mode: ${widget.isDark ? 'Dark' : 'Light'}',
+                style: _mutedStyle(context),
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 
-  Widget _buildThemeRow(PaletteOption active) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        'Theme colors',
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        'Primary row = light-mode primary • '
-        'Secondary row = light-mode secondary\n'
-        'In dark mode, primary and secondary swap roles.',
-        style: _mutedStyle(context),
-      ),
-      const SizedBox(height: 12),
-      Wrap(
-        spacing: 12,
-        runSpacing: 12,
-        children: widget.palettes.map((option) {
-          final isActive = option.id == active.id;
-          final previewColors = _resolveSketchyTheme(
-            option.mode,
-            false,
-            0.5,
-            widget.fontFamily,
-          ).colors;
-          return GestureDetector(
-            onTap: () => widget.onThemeChanged(option.id),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _colorChip(previewColors.primary, isActive),
-                const SizedBox(height: 4),
-                _colorChip(
-                  previewColors.secondary,
-                  isActive,
-                  stroke: true,
-                  size: 22,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  option.id,
-                  style: TextStyle(
-                    fontWeight: isActive ? FontWeight.bold : FontWeight.w400,
+  Widget _buildThemeRow(PaletteOption active) {
+    final theme = SketchyTheme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Theme colors',
+          style: theme.typography.title.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Primary row = light-mode primary • '
+          'Secondary row = light-mode secondary\n'
+          'In dark mode, primary and secondary swap roles.',
+          style: _mutedStyle(context),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: widget.palettes.map((option) {
+            final isActive = option.id == active.id;
+            final previewColors = _resolveSketchyTheme(
+              option.mode,
+              false,
+              0.5,
+              widget.fontFamily,
+            ).colors;
+            return GestureDetector(
+              onTap: () => widget.onThemeChanged(option.id),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _colorChip(previewColors.primary, isActive),
+                  const SizedBox(height: 4),
+                  _colorChip(
+                    previewColors.secondary,
+                    isActive,
+                    stroke: true,
+                    size: 22,
                   ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
-    ],
-  );
+                  const SizedBox(height: 4),
+                  Text(
+                    option.id,
+                    style: TextStyle(
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
 
   Widget _colorChip(
     Color color,
     bool isActive, {
     bool stroke = false,
     double size = 26,
-  }) => Container(
-    width: size,
-    height: size,
-    decoration: BoxDecoration(
-      color: stroke ? null : color,
-      border: Border.all(
-        color: isActive
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-        width: isActive ? 2.4 : 1.4,
+  }) {
+    final theme = SketchyTheme.of(context);
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: stroke ? null : color,
+        border: Border.all(
+          color: isActive
+              ? theme.colors.primary
+              : theme.colors.ink.withValues(alpha: 0.4),
+          width: isActive ? 2.4 : 1.4,
+        ),
+        shape: BoxShape.circle,
       ),
-      shape: BoxShape.circle,
-    ),
-    child: stroke
-        ? Center(
-            child: Container(
-              width: size * 0.6,
-              height: size * 0.6,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            ),
-          )
-        : null,
-  );
+      child: stroke
+          ? Center(
+              child: Container(
+                width: size * 0.6,
+                height: size * 0.6,
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              ),
+            )
+          : null,
+    );
+  }
 
   Widget _buildModeToggleRow() {
-    final colors = Theme.of(context).colorScheme;
+    final theme = SketchyTheme.of(context);
     final isLightActive = !widget.isDark;
     final isDarkActive = widget.isDark;
-    final labelStyle = Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold);
+    final labelStyle = theme.typography.title.copyWith(
+      fontWeight: FontWeight.bold,
+    );
 
     Widget buildModeControls() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -450,8 +436,8 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
                 style: _buttonLabelStyle(
                   context,
                   color: isLightActive
-                      ? colors.primary
-                      : colors.onSurface.withValues(alpha: 0.5),
+                      ? theme.colors.primary
+                      : theme.colors.ink.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -463,8 +449,8 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
                 style: _buttonLabelStyle(
                   context,
                   color: isDarkActive
-                      ? colors.primary
-                      : colors.onSurface.withValues(alpha: 0.5),
+                      ? theme.colors.primary
+                      : theme.colors.ink.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -491,11 +477,11 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
       children: [
         Text('Font', style: labelStyle),
         const SizedBox(height: 8),
-        DropdownButton<String>(
+        SketchyCombo<String>(
           value: widget.fontFamily,
           items: _fontOptions.entries
               .map(
-                (entry) => DropdownMenuItem<String>(
+                (entry) => SketchyComboItem<String>(
                   value: entry.value,
                   child: Text(entry.key, style: _bodyStyle(context)),
                 ),
@@ -569,49 +555,55 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     );
   }
 
-  Widget _buildButtonsSection() => _sectionCard(
-    title: 'Sketchy buttons',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SketchyButton(
-          child: Text('Sketchy Button', style: _buttonLabelStyle(context)),
-          onPressed: () {},
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            SketchyButton(
-              child: Text(
-                'Submit',
-                style: _buttonLabelStyle(
-                  context,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              onPressed: () {},
-            ),
-            const SizedBox(width: 12),
-            SketchyButton(
-              child: Text(
-                'Cancel',
-                style: _buttonLabelStyle(context, color: Colors.grey.shade500),
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        SketchyButton(
-          child: Text(
-            'Long text button … hah',
-            style: _buttonLabelStyle(context),
+  Widget _buildButtonsSection() {
+    final theme = SketchyTheme.of(context);
+    return _sectionCard(
+      title: 'Sketchy buttons',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SketchyButton(
+            child: Text('Sketchy Button', style: _buttonLabelStyle(context)),
+            onPressed: () {},
           ),
-          onPressed: () {},
-        ),
-      ],
-    ),
-  );
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SketchyButton(
+                child: Text(
+                  'Submit',
+                  style: _buttonLabelStyle(
+                    context,
+                    color: theme.colors.primary,
+                  ),
+                ),
+                onPressed: () {},
+              ),
+              const SizedBox(width: 12),
+              SketchyButton(
+                child: Text(
+                  'Cancel',
+                  style: _buttonLabelStyle(
+                    context,
+                    color: const Color(0xFF9E9E9E),
+                  ),
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SketchyButton(
+            child: Text(
+              'Long text button … hah',
+              style: _buttonLabelStyle(context),
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildDividerSection() => _sectionCard(
     title: 'Sketchy divider',
@@ -698,67 +690,73 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     ],
   );
 
-  Widget _buildSliderSection() => _sectionCard(
-    title: 'Sketchy slider',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Value: ${(100 * _sliderValue).round()}',
-          style: _fieldLabelStyle(
-            context,
-          ).copyWith(color: Theme.of(context).colorScheme.secondary),
-        ),
-        const SizedBox(height: 8),
-        SketchySlider(
-          value: _sliderValue,
-          onChanged: (newValue) =>
-              setState(() => _sliderValue = newValue.clamp(0.0, 1.0)),
-        ),
-      ],
-    ),
-  );
+  Widget _buildSliderSection() {
+    final theme = SketchyTheme.of(context);
+    return _sectionCard(
+      title: 'Sketchy slider',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Value: ${(100 * _sliderValue).round()}',
+            style: _fieldLabelStyle(
+              context,
+            ).copyWith(color: theme.colors.secondary),
+          ),
+          const SizedBox(height: 8),
+          SketchySlider(
+            value: _sliderValue,
+            onChanged: (newValue) =>
+                setState(() => _sliderValue = newValue.clamp(0.0, 1.0)),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget _buildProgressSection() => _sectionCard(
-    title: 'Sketchy progress',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SketchyProgressBar(controller: _progressController, value: 0),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            SketchyButton(
-              onPressed: _startProgress,
-              child: Text(
-                'Start',
-                style: _buttonLabelStyle(
-                  context,
-                  color: Theme.of(context).colorScheme.primary,
+  Widget _buildProgressSection() {
+    final theme = SketchyTheme.of(context);
+    return _sectionCard(
+      title: 'Sketchy progress',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SketchyProgressBar(controller: _progressController, value: 0),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SketchyButton(
+                onPressed: _startProgress,
+                child: Text(
+                  'Start',
+                  style: _buttonLabelStyle(
+                    context,
+                    color: theme.colors.primary,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 8),
-            SketchyButton(
-              onPressed: _stopProgress,
-              child: Text(
-                'Stop',
-                style: _buttonLabelStyle(
-                  context,
-                  color: Theme.of(context).colorScheme.error,
+              const SizedBox(width: 8),
+              SketchyButton(
+                onPressed: _stopProgress,
+                child: Text(
+                  'Stop',
+                  style: _buttonLabelStyle(
+                    context,
+                    color: const Color(0xFFB00020), // Error color
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 8),
-            SketchyButton(
-              onPressed: _resetProgress,
-              child: Text('Reset', style: _buttonLabelStyle(context)),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+              const SizedBox(width: 8),
+              SketchyButton(
+                onPressed: _resetProgress,
+                child: Text('Reset', style: _buttonLabelStyle(context)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildCalendarSection() => _sectionCard(
     title: 'Sketchy calendar',
@@ -773,8 +771,6 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
           style: _fieldLabelStyle(context),
         ),
         const SizedBox(height: 8),
-        // The Flutter wrapper's API mirrors the JS version fairly closely;
-        // adjust attributes as needed once you wire it up.
         SizedBox(
           height: 385,
           child: SketchyCalendar(
@@ -799,8 +795,8 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
         ),
         const SizedBox(height: 12),
         _buildCheckboxOption(
-          label: 'Include mascot doodles',
-          helper: 'The yellow face has strong opinions.',
+          label: 'Mascot mode',
+          helper: 'More sketchy faces',
           value: _mascotOptIn,
           onChanged: (checked) => _mascotOptIn = checked,
         ),
@@ -808,21 +804,42 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     ),
   );
 
+  Widget _buildCheckboxOption({
+    required String label,
+    required String helper,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SketchyCheckbox(
+        value: value,
+        onChanged: (val) => onChanged(val ?? false),
+      ),
+      const SizedBox(width: 12),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: _bodyStyle(context)),
+            Text(helper, style: _mutedStyle(context)),
+          ],
+        ),
+      ),
+    ],
+  );
+
   Widget _buildToggleSection() => _sectionCard(
     title: 'Sketchy toggle',
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          _notificationsOn ? 'Notifications enabled' : 'Notifications paused',
-          style: _fieldLabelStyle(context),
+        _buildToggleOption(
+          label: 'Notifications enabled',
+          value: _notificationsOn,
+          onChanged: (val) => setState(() => _notificationsOn = val),
         ),
         const SizedBox(height: 12),
-        SketchyToggle(
-          value: _notificationsOn,
-          onChanged: (value) => setState(() => _notificationsOn = value),
-        ),
-        const SizedBox(height: 8),
         Text(
           'Use toggles for quick binary actions—no material switch required.',
           style: _mutedStyle(context),
@@ -831,33 +848,40 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     ),
   );
 
+  Widget _buildToggleOption({
+    required String label,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) => Row(
+    children: [
+      SketchyToggle(value: value, onChanged: onChanged),
+      const SizedBox(width: 12),
+      Expanded(child: Text(label, style: _bodyStyle(context))),
+    ],
+  );
+
   Widget _buildComboSection() => _sectionCard(
     title: 'Sketchy combo',
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Cadence', style: _fieldLabelStyle(context)),
-        const SizedBox(height: 8),
-        SketchyCombo(
+        const SizedBox(height: 4),
+        SketchyCombo<String>(
           value: _selectedCadence,
           items: _cadenceOptions
               .map(
-                (option) => DropdownMenuItem<String>(
-                  value: option,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Text(option, style: _bodyStyle(context)),
-                  ),
+                (c) => SketchyComboItem<String>(
+                  value: c,
+                  child: Text(c, style: _bodyStyle(context)),
                 ),
               )
               .toList(),
-          onChanged: (value) {
-            if (value is String) {
-              setState(() => _selectedCadence = value);
-            }
+          onChanged: (val) {
+            if (val != null) setState(() => _selectedCadence = val);
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Text(
           'Currently sending a $_selectedCadence digest.',
           style: _mutedStyle(context),
@@ -873,18 +897,44 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
       children: [
         Text(
           'Dialogs keep the same rough frame and Comic Shanns tone.',
-          style: _bodyStyle(context),
+          style: _mutedStyle(context),
         ),
         const SizedBox(height: 12),
         SketchyButton(
-          onPressed: _showSketchyDialog,
-          child: Text(
-            'Open dialog',
-            style: _buttonLabelStyle(
-              context,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          child: Text('Open dialog', style: _buttonLabelStyle(context)),
+          onPressed: () {
+            unawaited(
+              showGeneralDialog(
+                context: context,
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    SketchyDialog(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'This is a sketchy dialog. It has a title and some content.',
+                            style: _bodyStyle(context),
+                          ),
+                          const SizedBox(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SketchyButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  'Close',
+                                  style: _buttonLabelStyle(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+              ),
+            );
+          },
         ),
       ],
     ),
@@ -895,153 +945,42 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     required Widget child,
     double? height,
   }) {
-    final sketchy = SketchyTheme.of(context);
-    final borderColor = _cardBorderColor(sketchy);
-    final fillColor = widget.isDark
-        ? Color.lerp(sketchy.colors.paper, sketchy.colors.secondary, 0.2)!
-        : sketchy.colors.paper;
-    final textColor = Theme.of(context).colorScheme.onSurface;
-    return SizedBox(
-      width: double.infinity,
-      child: SketchySurface(
-        height: height ?? 250,
+    final theme = SketchyTheme.of(context);
+    return SketchyCard(
+      height: height,
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        strokeColor: borderColor,
-        fillColor: fillColor,
-        child: DefaultTextStyle(
-          style: _bodyStyle(context, color: textColor),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 12),
-              child,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Color _cardBorderColor(SketchyThemeData sketchy) => sketchy.colors.primary;
-
-  Widget _buildCheckboxOption({
-    required String label,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-    String? helper,
-  }) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SketchyCheckbox(
-        value: value,
-        onChanged: (checked) {
-          if (checked == null) return;
-          setState(() => onChanged(checked));
-        },
-      ),
-      const SizedBox(width: 12),
-      Expanded(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: _bodyStyle(context)),
-            if (helper != null) ...[
-              const SizedBox(height: 4),
-              Text(helper, style: _mutedStyle(context)),
-            ],
+            Text(
+              title,
+              style: theme.typography.title.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            child,
           ],
         ),
       ),
-    ],
-  );
-
-  Future<void> _showSketchyDialog() async {
-    final colors = Theme.of(context).colorScheme;
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) => Center(
-        child: SizedBox(
-          width: 420,
-          height: 340,
-          child: SketchyDialog(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Sketchy dialog title',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colors.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Dialogs use the same sketchy primitives—double outlines, '
-                  'Comic Shanns copy, and playful spacing.',
-                  style: _bodyStyle(context),
-                ),
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SketchyButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(),
-                    child: Text(
-                      'Got it',
-                      style: _buttonLabelStyle(context, color: colors.primary),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 
-  TextStyle _bodyStyle(
-    BuildContext context, {
-    double fontSize = 16,
-    FontWeight fontWeight = FontWeight.w500,
-    Color? color,
-  }) {
-    final theme = Theme.of(context);
-    final base =
-        theme.textTheme.bodyMedium ??
-        const TextStyle(fontFamily: 'ComicShanns', fontSize: 16);
-    return base.copyWith(
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      color: color ?? theme.colorScheme.onSurface,
-    );
-  }
+  TextStyle _bodyStyle(BuildContext context) =>
+      SketchyTheme.of(context).typography.body;
 
-  TextStyle _mutedStyle(BuildContext context) => _bodyStyle(
+  TextStyle _mutedStyle(BuildContext context) => SketchyTheme.of(
     context,
-    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-  );
+  ).typography.caption.copyWith(color: const Color(0xFF9E9E9E));
 
-  TextStyle _fieldLabelStyle(BuildContext context) => _bodyStyle(
+  TextStyle _fieldLabelStyle(BuildContext context) => SketchyTheme.of(
     context,
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    color: Theme.of(context).colorScheme.primary,
-  );
+  ).typography.label.copyWith(fontWeight: FontWeight.bold);
 
   TextStyle _buttonLabelStyle(BuildContext context, {Color? color}) =>
-      _bodyStyle(
+      SketchyTheme.of(
         context,
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        color: color ?? Theme.of(context).colorScheme.onSurface,
-      );
+      ).typography.label.copyWith(fontWeight: FontWeight.bold, color: color);
 }
