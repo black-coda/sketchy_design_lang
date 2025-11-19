@@ -67,11 +67,17 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _theme = SketchyTheme.of(context);
-    if (!_didInitTheme) {
+    final newTheme = SketchyTheme.of(context);
+    final shouldRefresh = !_didInitTheme || !identical(newTheme, _theme);
+    final isInitialPass = !_didInitTheme;
+    _theme = newTheme;
+
+    if (shouldRefresh) {
       _refresh();
+    }
+    if (isInitialPass) {
       _didInitTheme = true;
-    } else {
+    } else if (shouldRefresh) {
       setState(() {});
     }
   }
