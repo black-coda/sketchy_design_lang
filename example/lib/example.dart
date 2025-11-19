@@ -891,55 +891,70 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
     ),
   );
 
-  Widget _buildDialogSection() => _sectionCard(
-    title: 'Sketchy dialog',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Dialogs keep the same rough frame and Comic Shanns tone.',
-          style: _mutedStyle(context),
-        ),
-        const SizedBox(height: 12),
-        SketchyButton(
-          child: Text('Open dialog', style: _buttonLabelStyle(context)),
-          onPressed: () {
-            unawaited(
-              showGeneralDialog(
-                context: context,
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    SketchyDialog(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'This is a sketchy dialog. It has a title and some content.',
-                            style: _bodyStyle(context),
+  Widget _buildDialogSection() {
+    final theme = SketchyTheme.of(context);
+    return _sectionCard(
+      title: 'Sketchy dialog',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Dialogs keep the same rough frame and Comic Shanns tone.',
+            style: _mutedStyle(context),
+          ),
+          const SizedBox(height: 12),
+          SketchyButton(
+            child: Text('Open dialog', style: _buttonLabelStyle(context)),
+            onPressed: () {
+              unawaited(
+                showGeneralDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  barrierLabel: 'Dismiss dialog',
+                  barrierColor: theme.colors.ink.withValues(alpha: 0.55),
+                  transitionBuilder:
+                      (context, animation, secondaryAnimation, child) =>
+                          FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOutCubic,
+                            ),
+                            child: child,
                           ),
-                          const SizedBox(height: 24),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SketchyButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text(
-                                  'Close',
-                                  style: _buttonLabelStyle(context),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      SketchyDialog(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'This is a sketchy dialog. It has a title and some content.',
+                              style: _bodyStyle(context),
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SketchyButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text(
+                                    'Close',
+                                    style: _buttonLabelStyle(context),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-              ),
-            );
-          },
-        ),
-      ],
-    ),
-  );
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _sectionCard({
     required String title,

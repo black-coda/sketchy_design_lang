@@ -134,31 +134,34 @@ class _SketchyComboState<T> extends State<SketchyCombo<T>> {
             ),
             child: SizedBox(
               width: size.width,
-              child: SketchyFrame(
-                alignment: null,
-                fill: SketchyFill.solid,
-                fillColor: const Color(0xFFFFFFFF),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: widget.items
-                      .map(
-                        (item) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _value = item.value;
-                            });
-                            widget.onChanged?.call(item.value);
-                            Navigator.of(context).pop();
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: item.child,
+              child: ClipRect(
+                child: SketchyFrame(
+                  alignment: null,
+                  cornerRadius: 0,
+                  fill: SketchyFill.solid,
+                  fillColor: const Color(0xFFFFFFFF),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: widget.items
+                        .map(
+                          (item) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _value = item.value;
+                              });
+                              widget.onChanged?.call(item.value);
+                              Navigator.of(context).pop();
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: item.child,
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ),
