@@ -392,7 +392,7 @@ facet of Sketchy—no multi-step tutorials.
    dividers, illustrating multi-column layout, chart styling via
    `rough_flutter`, and list performance within one file.
 3. **Collaborative Design Critique Board:** A gallery screen framed by
-   `SketchyDecoration`, inline `SketchyBadge` comments, and hover-triggered
+  `SketchyDecoration`, inline `SketchyChip` badges, and hover-triggered
    `SketchyAnnotate.circle` callouts, emphasizing typography overrides,
    iconography, and overlay layering.
 4. **Mobile Expense Tracker Form:** Single-screen stack of `SketchyTextField`,

@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_text_case.dart';
-import '../theme/sketchy_theme.dart';
-import 'surface.dart';
-import 'text.dart';
+import 'chip.dart';
 
 /// Tones supported by [SketchyBadge].
 enum SketchyBadgeTone {
@@ -40,28 +37,17 @@ class SketchyBadge extends StatelessWidget {
   /// Text casing transformation. If null, uses theme default.
   final TextCase? textCase;
 
-  @override
-  Widget build(BuildContext context) => SketchyTheme.consumer(
-    builder: (context, theme) {
-      final color = switch (tone) {
-        SketchyBadgeTone.info => theme.colors.info,
-        SketchyBadgeTone.accent => theme.colors.primary,
-        SketchyBadgeTone.success => theme.colors.success,
-        SketchyBadgeTone.neutral => theme.colors.ink,
+  SketchyChipTone _mapTone() => switch (tone) {
+        SketchyBadgeTone.info => SketchyChipTone.info,
+        SketchyBadgeTone.accent => SketchyChipTone.accent,
+        SketchyBadgeTone.success => SketchyChipTone.success,
+        SketchyBadgeTone.neutral => SketchyChipTone.neutral,
       };
 
-      return SketchySurface(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        fillColor: color.withValues(alpha: 0.18),
-        strokeColor: theme.colors.ink,
-        createPrimitive: () =>
-            SketchyPrimitive.pill(fill: SketchyFill.hachure),
-        child: SketchyText(
-          label,
-          textCase: textCase,
-          style: theme.typography.label.copyWith(color: theme.colors.ink),
-        ),
+  @override
+  Widget build(BuildContext context) => SketchyChip.badge(
+        label: label,
+        tone: _mapTone(),
+        textCase: textCase,
       );
-    },
-  );
 }

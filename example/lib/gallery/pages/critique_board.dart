@@ -34,11 +34,11 @@ class CollaborativeCritiqueBoardExample extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: SketchyBadge(
+                      child: SketchyChip.badge(
                         label: 'v${index + 1}',
                         tone: index.isEven
-                            ? SketchyBadgeTone.info
-                            : SketchyBadgeTone.accent,
+                            ? SketchyChipTone.info
+                            : SketchyChipTone.accent,
                       ),
                     ),
                     Positioned(

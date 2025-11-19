@@ -40,9 +40,9 @@ class _SketchyDialogPlaygroundExampleState
                     const SketchyListTile(
                       title: Text('Onboarding flow retrofit'),
                       subtitle: Text('Shared sprint with growth team.'),
-                      trailing: SketchyBadge(
+                      trailing: SketchyChip.badge(
                         label: 'Due soon',
-                        tone: SketchyBadgeTone.accent,
+                        tone: SketchyChipTone.accent,
                       ),
                     ),
                     const SizedBox(height: 16),

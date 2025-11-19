@@ -163,6 +163,23 @@ class _SketchyDesignSystemPageState extends State<SketchyDesignSystemPage>
   bool _notificationsOn = true;
   String _selectedCadence = 'Weekly';
   static const List<String> _cadenceOptions = ['Daily', 'Weekly', 'Monthly'];
+  bool _pinnedChip = true;
+  bool _snoozedChip = false;
+  bool _archiveChip = true;
+  bool _iconOnlyChip = false;
+  bool _followUpsEnabled = true;
+  int _selectedConversationTab = 0;
+  static const List<String> _conversationTabs = ['Inbox', 'Updates', 'Archive'];
+  static const List<String> _conversationSenders = [
+    'Archie',
+    'Product Ops',
+    'System Bot',
+  ];
+  static const List<String> _conversationMessages = [
+    'Inbox is stacked, so I drafted two quick replies for you.',
+    'Palette tweaks landed in QA. Want me to grab reactions later?',
+    'Archive is empty—want me to auto-file anything over a week old?',
+  ];
 
   // Controllers for showcase widgets
   late final TextEditingController _nameController;
@@ -479,6 +496,9 @@ Comic Shanns font.
   Widget _buildShowcaseBoard() {
     final cards = <Widget>[
       _buildButtonsSection(),
+      _buildChipSection(),
+      _buildIconTileSection(),
+      _buildConversationSection(),
       _buildDividerSection(),
       _buildInputsSection(),
       _buildRadioSection(),
@@ -555,6 +575,279 @@ Comic Shanns font.
         ],
       ),
     ),
+  );
+
+  Widget _buildChipSection() => SketchyTheme.consumer(
+    builder: (context, theme) => _sectionCard(
+      title: 'Sketchy chips',
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _chipGallery(
+                  theme,
+                  'Chip',
+                  const [
+                    SketchyChip(
+                      label: 'New drop',
+                      compact: true,
+                      tone: SketchyChipTone.neutral,
+                    ),
+                    SketchyChip(
+                      label: 'Shipped!',
+                      compact: true,
+                      filled: true,
+                      tone: SketchyChipTone.success,
+                      fillStyle: SketchyFill.solid,
+                    ),
+                    SketchyChip(
+                      label: '',
+                      compact: true,
+                      filled: true,
+                      tone: SketchyChipTone.accent,
+                      icon: SketchyIcons.check,
+                      iconOnly: true,
+                      fillStyle: SketchyFill.solid,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _chipGallery(
+                  theme,
+                  'Choice',
+                  [
+                    SketchyChip.choice(
+                      label: 'Pinned',
+                      selected: _pinnedChip,
+                      fillStyle: SketchyFill.hachure,
+                      onSelected: () =>
+                          setState(() => _pinnedChip = !_pinnedChip),
+                    ),
+                    SketchyChip.choice(
+                      label: 'Snooze',
+                      selected: _snoozedChip,
+                      fillStyle: SketchyFill.hachure,
+                      onSelected: () =>
+                          setState(() => _snoozedChip = !_snoozedChip),
+                    ),
+                    SketchyChip.choice(
+                      label: 'Archive',
+                      selected: _archiveChip,
+                      icon: SketchyIcons.rectangle,
+                      fillStyle: SketchyFill.solid,
+                      onSelected: () =>
+                          setState(() => _archiveChip = !_archiveChip),
+                    ),
+                    SketchyChip.choice(
+                      label: '',
+                      selected: _iconOnlyChip,
+                      icon: SketchyIcons.send,
+                      iconOnly: true,
+                      fillStyle: SketchyFill.solid,
+                      onSelected: () =>
+                          setState(() => _iconOnlyChip = !_iconOnlyChip),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _chipGallery(
+                  theme,
+                  'Badge',
+                  const [
+                    SketchyChip.badge(
+                      label: 'Beta',
+                      tone: SketchyChipTone.info,
+                      fillStyle: SketchyFill.hachure,
+                    ),
+                    SketchyChip.badge(
+                      label: 'Muted',
+                      tone: SketchyChipTone.neutral,
+                    ),
+                    SketchyChip.badge(
+                      label: 'Beta tag',
+                      tone: SketchyChipTone.info,
+                      icon: SketchyIcons.pen,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _chipGallery(
+                  theme,
+                  'Suggestion',
+                  const [
+                    SketchyChip(
+                      label: '#sketchythings',
+                      tone: SketchyChipTone.neutral,
+                    ),
+                    SketchyChip(
+                      label: 'Palette',
+                      tone: SketchyChipTone.info,
+                      fillStyle: SketchyFill.hachure,
+                    ),
+                    SketchyChip(
+                      label: '',
+                      tone: SketchyChipTone.success,
+                      icon: SketchyIcons.plus,
+                      iconOnly: true,
+                      fillStyle: SketchyFill.solid,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _chipGallery(
+    SketchyThemeData theme,
+    String title,
+    List<Widget> chips,
+  ) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SketchyText(title, style: _fieldLabelStyle(theme)),
+      const SizedBox(height: 8),
+      Wrap(
+        spacing: 12,
+        runSpacing: 8,
+        children: chips,
+      ),
+    ],
+  );
+
+  Widget _buildIconTileSection() => SketchyTheme.consumer(
+    builder: (context, theme) => _sectionCard(
+      title: 'Icons & tiles',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              SketchyIconButton(icon: SketchyIcons.plus, onPressed: () {}),
+              const SizedBox(width: 12),
+              SketchyIconButton(icon: SketchyIcons.pen, onPressed: () {}),
+              const SizedBox(width: 12),
+              SketchyIconButton(icon: SketchyIcons.send, onPressed: () {}),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SketchyListTile(
+            leading: const SketchyIcon(icon: SketchyIcons.pen),
+            title: SketchyText('Brand refresh', style: _bodyStyle(theme)),
+            subtitle: SketchyText(
+              'Rally design + docs for review',
+              style: _mutedStyle(theme),
+            ),
+            trailing: SketchyIconButton(
+              icon: SketchyIcons.check,
+              onPressed: () {},
+              size: 32,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SketchyListTile(
+            leading: const SketchyIcon(icon: SketchyIcons.copy),
+            title: SketchyText('Follow-up nudges', style: _bodyStyle(theme)),
+            subtitle: SketchyText(
+              'Mute autopings after 10pm',
+              style: _mutedStyle(theme),
+            ),
+            trailing: SketchyToggle(
+              value: _followUpsEnabled,
+              onChanged: (value) => setState(() {
+                _followUpsEnabled = value;
+              }),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _buildConversationSection() => SketchyTheme.consumer(
+    builder: (context, theme) {
+      final tabIndex = _selectedConversationTab;
+      final sender = _conversationSenders[tabIndex];
+      final message = _conversationMessages[tabIndex];
+      return _sectionCard(
+        title: 'Conversation cues',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SketchyTabs(
+              tabs: _conversationTabs,
+              selectedIndex: tabIndex,
+              detachSelected: true,
+              detachGap: theme.strokeWidth,
+              backgroundColor: theme.colors.paper,
+              onChanged: (index) {
+                setState(() => _selectedConversationTab = index);
+              },
+            ),
+            Transform.translate(
+              offset: Offset(0, -theme.strokeWidth),
+              child: SketchySurface(
+                padding: const EdgeInsets.all(16),
+                strokeColor: theme.colors.ink,
+                fillColor: theme.colors.paper,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SketchyText(
+                      sender,
+                      style: theme.typography.title.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SketchyText(message, style: _bodyStyle(theme)),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 12 - theme.strokeWidth),
+            Row(
+              children: [
+                const SketchyTypingIndicator(),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SketchyText(
+                    'Archie is drafting a reply…',
+                    style: _mutedStyle(theme),
+                  ),
+                ),
+                SketchyButton(
+                  onPressed: () {
+                    SketchyMessage.show(
+                      context,
+                      message: 'Saved ${_conversationTabs[tabIndex]} note',
+                    );
+                  },
+                  child: SketchyText(
+                    'Show toast',
+                    style: _buttonLabelStyle(theme),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
   );
 
   Widget _buildDividerSection() => SketchyTheme.consumer(

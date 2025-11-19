@@ -24,7 +24,7 @@ class SketchySpotlightPanelExample extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SketchyBadge(label: 'Beta'),
+                    const SketchyChip.badge(label: 'Beta'),
                     const SizedBox(height: 12),
                     Text('Team Hub', style: theme.typography.headline),
                     const SizedBox(height: 8),

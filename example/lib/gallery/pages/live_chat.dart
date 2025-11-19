@@ -20,11 +20,11 @@ class LiveChatExample extends StatelessWidget {
               itemBuilder: (context, index) {
                 final message = messages[index];
                 return SketchyListTile(
-                  leading: SketchyBadge(
+                  leading: SketchyChip.badge(
                     label: message.authorInitials,
                     tone: message.isAgent
-                        ? SketchyBadgeTone.info
-                        : SketchyBadgeTone.accent,
+                        ? SketchyChipTone.info
+                        : SketchyChipTone.accent,
                   ),
                   title: Text(message.text),
                   subtitle: Text(message.timestamp),

@@ -129,7 +129,7 @@ a blank Flutter package to a cohesive, hand-drawn design system powered by
   integration:
   - `SketchyButton` (primary/secondary/ghost variants) using `WiredButton`.
   - `SketchyCheckbox`, `Switch`, `Radio`, `Slider`, `TextField`.
-  - `SketchyBadge`, `Chip` built via `WiredToast`, `WiredIconButton`, etc.
+  - `SketchyChip` (chips/badges) built via `WiredToast`, `WiredIconButton`, etc.
 - Normalize APIs to match Flutter conventions (`onPressed`, `style`,
   `FocusNode`, `autofocus`).
 - Provide `SketchyFormField` mixin to reuse validation, error helpers, and to
@@ -311,7 +311,7 @@ storybook or `/example` app without multi-step flows.
    `SketchyAppBar`, sidebar navigation, draggable `SketchyCard`s, and rough list
    dividers to stress multi-column layout and data density.
 3. **Collaborative Design Critique Board** – Gallery file framed by
-   `SketchyDecoration`, inline `SketchyBadge` comments, and hover-triggered
+  `SketchyDecoration`, inline `SketchyChip` badges, and hover-triggered
    circle annotations demonstrating typography overrides and overlay layering.
 4. **Mobile Expense Tracker Form** – Stack of `SketchyTextField`, dropdown, and
    toggle controls with validation-driven Rough Notation error indicators,

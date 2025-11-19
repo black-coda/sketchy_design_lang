@@ -154,7 +154,7 @@ Sketchy mirrors common UI building blocks. Highlights:
 | Inputs     | `SketchyTextInput`, `SketchyCombo`, `SketchySlider`, `SketchyCheckbox`, `SketchyToggle`, `SketchyRadio`, `SketchyOptionTile` |
 | Actions    | `SketchyButton`, `SketchyIconButton`, `SketchyChip`                                                                 |
 | Containers | `SketchyCard`, `SketchyPanel`, `SketchyListTile`, `SketchyDivider`                                                  |
-| Feedback   | `SketchyDialog`, `SketchyTooltip`, `SketchyBadge`, `SketchyTypingIndicator`                                         |
+| Feedback   | `SketchyDialog`, `SketchyTooltip`, `SketchyChip`, `SketchyTypingIndicator`                                           |
 | Navigation | `SketchyTabs`, `SketchyAppBar`, `SketchyScaffold`                                                                   |
 
 ### Quick examples
