@@ -24,91 +24,91 @@ class _SketchyDialogPlaygroundExampleState
     builder: (context, theme) {
       final typography = theme.typography;
       return SketchyScaffold(
-      appBar: const SketchyAppBar(title: Text('Dialog Playground')),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: SketchyCard(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Design sessions', style: typography.headline),
-                    const SizedBox(height: 12),
-                    const SketchyListTile(
-                      title: Text('Onboarding flow retrofit'),
-                      subtitle: Text('Shared sprint with growth team.'),
-                      trailing: SketchyChip.badge(
-                        label: 'Due soon',
-                        tone: SketchyChipTone.accent,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SketchyButton(
-                      onPressed: _toggleDialog,
-                      child: Text(
-                        'Review checklist dialog',
-                        style: typography.label,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          if (_showDialog)
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: SketchyPalette.scrim,
-                  backgroundBlendMode: BlendMode.srcOver,
-                ),
-                child: Center(
-                  child: SketchySurface(
-                    width: 420,
-                    padding: const EdgeInsets.all(24),
-                    createPrimitive: () => SketchyPrimitive.roundedRectangle(
-                      fill: SketchyFill.none,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Review checklist', style: typography.title),
-                        const SizedBox(height: 16),
-                        const SketchyDivider(),
-                        const SizedBox(height: 12),
-                        const Text('- Update color modes to latest palette.'),
-                        const Text('- Add focus state examples.'),
-                        const Text('- Gather perf traces for dashboard.'),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SketchyButton(
-                              onPressed: _toggleDialog,
-                              child: Text('Cancel', style: typography.label),
-                            ),
-                            const SizedBox(width: 8),
-                            SketchyButton(
-                              onPressed: _toggleDialog,
-                              child: Text(
-                                'Mark complete',
-                                style: typography.label,
-                              ),
-                            ),
-                          ],
+        appBar: const SketchyAppBar(title: Text('Dialog Playground')),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: SketchyCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Design sessions', style: typography.headline),
+                      const SizedBox(height: 12),
+                      const SketchyListTile(
+                        title: Text('Onboarding flow retrofit'),
+                        subtitle: Text('Shared sprint with growth team.'),
+                        trailing: SketchyChip.badge(
+                          label: 'Due soon',
+                          tone: SketchyChipTone.accent,
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 16),
+                      SketchyButton(
+                        onPressed: _toggleDialog,
+                        child: Text(
+                          'Review checklist dialog',
+                          style: typography.label,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-        ],
-      ),
+            if (_showDialog)
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: theme.inkColor.withValues(alpha: 0.6),
+                    backgroundBlendMode: BlendMode.srcOver,
+                  ),
+                  child: Center(
+                    child: SketchySurface(
+                      width: 420,
+                      padding: const EdgeInsets.all(24),
+                      createPrimitive: () => SketchyPrimitive.roundedRectangle(
+                        fill: SketchyFill.none,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Review checklist', style: typography.title),
+                          const SizedBox(height: 16),
+                          const SketchyDivider(),
+                          const SizedBox(height: 12),
+                          const Text('- Update color modes to latest palette.'),
+                          const Text('- Add focus state examples.'),
+                          const Text('- Gather perf traces for dashboard.'),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SketchyButton(
+                                onPressed: _toggleDialog,
+                                child: Text('Cancel', style: typography.label),
+                              ),
+                              const SizedBox(width: 8),
+                              SketchyButton(
+                                onPressed: _toggleDialog,
+                                child: Text(
+                                  'Mark complete',
+                                  style: typography.label,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       );
     },
   );

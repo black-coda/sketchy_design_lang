@@ -11,13 +11,21 @@ const Map<String, String> _fontOptions = <String, String>{
 };
 
 SketchyThemeData _resolveSketchyTheme({
-  required SketchyColorMode mode,
+  required SketchyThemes theme,
   required double roughness,
   required String fontFamily,
   required TextCase textCase,
+  required SketchyThemeMode mode,
 }) {
-  final data = SketchyThemeData.fromMode(
-    mode,
+  // Determine brightness based on the app mode setting
+  // Note: In a real app, 'system' would check MediaQuery, but here we simulate.
+  final brightness = mode == SketchyThemeMode.dark
+      ? Brightness.dark
+      : Brightness.light;
+
+  final data = SketchyThemeData.fromTheme(
+    theme,
+    brightness: brightness,
     roughness: roughness,
     textCase: textCase,
   );
@@ -37,12 +45,12 @@ class PaletteOption {
   const PaletteOption({
     required this.id,
     required this.label,
-    required this.mode,
+    required this.theme,
   });
 
   final String id;
   final String label;
-  final SketchyColorMode mode;
+  final SketchyThemes theme;
 }
 
 void main() {
@@ -67,15 +75,21 @@ class _SketchyDesignSystemAppState extends State<SketchyDesignSystemApp> {
     PaletteOption(
       id: 'monochrome',
       label: 'Monochrome',
-      mode: SketchyColorMode.white,
+      theme: SketchyThemes.monochrome,
     ),
-    PaletteOption(id: 'red', label: 'Red', mode: SketchyColorMode.red),
-    PaletteOption(id: 'orange', label: 'Orange', mode: SketchyColorMode.orange),
-    PaletteOption(id: 'yellow', label: 'Yellow', mode: SketchyColorMode.yellow),
-    PaletteOption(id: 'green', label: 'Green', mode: SketchyColorMode.green),
-    PaletteOption(id: 'blue', label: 'Blue', mode: SketchyColorMode.blue),
-    PaletteOption(id: 'indigo', label: 'Indigo', mode: SketchyColorMode.indigo),
-    PaletteOption(id: 'violet', label: 'Violet', mode: SketchyColorMode.violet),
+    PaletteOption(id: 'red', label: 'Red', theme: SketchyThemes.red),
+    PaletteOption(id: 'orange', label: 'Orange', theme: SketchyThemes.orange),
+    PaletteOption(id: 'yellow', label: 'Yellow', theme: SketchyThemes.yellow),
+    PaletteOption(id: 'green', label: 'Green', theme: SketchyThemes.green),
+    PaletteOption(id: 'cyan', label: 'Cyan', theme: SketchyThemes.cyan),
+    PaletteOption(id: 'blue', label: 'Blue', theme: SketchyThemes.blue),
+    PaletteOption(id: 'indigo', label: 'Indigo', theme: SketchyThemes.indigo),
+    PaletteOption(id: 'violet', label: 'Violet', theme: SketchyThemes.violet),
+    PaletteOption(
+      id: 'magenta',
+      label: 'Magenta',
+      theme: SketchyThemes.magenta,
+    ),
   ];
 
   PaletteOption get _activePalette =>
@@ -85,10 +99,19 @@ class _SketchyDesignSystemAppState extends State<SketchyDesignSystemApp> {
   Widget build(BuildContext context) => SketchyApp(
     title: 'Sketchy Design System',
     theme: _resolveSketchyTheme(
-      mode: _activePalette.mode,
+      theme: _activePalette.theme,
       roughness: _roughness,
       fontFamily: _fontFamily,
       textCase: _textCase,
+      mode: SketchyThemeMode.light, // Base theme is light
+    ),
+    // We pass a specific dark theme derived from the same palette but swapped
+    darkTheme: _resolveSketchyTheme(
+      theme: _activePalette.theme,
+      roughness: _roughness,
+      fontFamily: _fontFamily,
+      textCase: _textCase,
+      mode: SketchyThemeMode.dark,
     ),
     themeMode: _themeMode,
     debugShowCheckedModeBanner: false,
@@ -292,22 +315,23 @@ Comic Shanns font.
           runSpacing: 12,
           children: widget.palettes.map((option) {
             final isActive = option.id == active.id;
-            final previewColors = _resolveSketchyTheme(
-              mode: option.mode,
+            final previewTheme = _resolveSketchyTheme(
+              theme: option.theme,
               roughness: 0.5,
               fontFamily: widget.fontFamily,
               textCase: TextCase.none,
-            ).colors;
+              mode: SketchyThemeMode.light,
+            );
 
             return GestureDetector(
               onTap: () => widget.onThemeChanged(option.id),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _colorChip(previewColors.primary, isActive),
+                  _colorChip(previewTheme.primaryColor, isActive),
                   const SizedBox(height: 4),
                   _colorChip(
-                    previewColors.secondary,
+                    previewTheme.secondaryColor,
                     isActive,
                     stroke: true,
                     size: 22,
@@ -341,8 +365,8 @@ Comic Shanns font.
         color: stroke ? null : color,
         border: Border.all(
           color: isActive
-              ? theme.colors.primary
-              : theme.colors.ink.withValues(alpha: 0.4),
+              ? theme.primaryColor
+              : theme.inkColor.withValues(alpha: 0.4),
           width: isActive ? 2.4 : 1.4,
         ),
         shape: BoxShape.circle,
@@ -377,8 +401,8 @@ Comic Shanns font.
               style: _buttonLabelStyle(
                 theme,
                 color: isActive
-                    ? theme.colors.primary
-                    : theme.colors.ink.withValues(alpha: 0.5),
+                    ? theme.primaryColor
+                    : theme.inkColor.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -547,7 +571,7 @@ Comic Shanns font.
               SketchyButton(
                 child: SketchyText(
                   'Submit',
-                  style: _buttonLabelStyle(theme, color: theme.colors.primary),
+                  style: _buttonLabelStyle(theme, color: theme.primaryColor),
                 ),
                 onPressed: () {},
               ),
@@ -585,73 +609,65 @@ Comic Shanns font.
           Row(
             children: [
               Expanded(
-                child: _chipGallery(
-                  theme,
-                  'Chip',
-                  const [
-                    SketchyChip(
-                      label: 'New drop',
-                      compact: true,
-                      tone: SketchyChipTone.neutral,
-                    ),
-                    SketchyChip(
-                      label: 'Shipped!',
-                      compact: true,
-                      filled: true,
-                      tone: SketchyChipTone.success,
-                      fillStyle: SketchyFill.solid,
-                    ),
-                    SketchyChip(
-                      label: '',
-                      compact: true,
-                      filled: true,
-                      tone: SketchyChipTone.accent,
-                      icon: SketchyIcons.check,
-                      iconOnly: true,
-                      fillStyle: SketchyFill.solid,
-                    ),
-                  ],
-                ),
+                child: _chipGallery(theme, 'Chip', const [
+                  SketchyChip(
+                    label: 'New drop',
+                    compact: true,
+                    tone: SketchyChipTone.neutral,
+                  ),
+                  SketchyChip(
+                    label: 'Shipped!',
+                    compact: true,
+                    filled: true,
+                    tone: SketchyChipTone.accent,
+                    fillStyle: SketchyFill.solid,
+                  ),
+                  SketchyChip(
+                    label: '',
+                    compact: true,
+                    filled: true,
+                    tone: SketchyChipTone.accent,
+                    icon: SketchyIcons.check,
+                    iconOnly: true,
+                    fillStyle: SketchyFill.solid,
+                  ),
+                ]),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: _chipGallery(
-                  theme,
-                  'Choice',
-                  [
-                    SketchyChip.choice(
-                      label: 'Pinned',
-                      selected: _pinnedChip,
-                      fillStyle: SketchyFill.hachure,
-                      onSelected: () =>
-                          setState(() => _pinnedChip = !_pinnedChip),
-                    ),
-                    SketchyChip.choice(
-                      label: 'Snooze',
-                      selected: _snoozedChip,
-                      fillStyle: SketchyFill.hachure,
-                      onSelected: () =>
-                          setState(() => _snoozedChip = !_snoozedChip),
-                    ),
-                    SketchyChip.choice(
-                      label: 'Archive',
-                      selected: _archiveChip,
-                      icon: SketchyIcons.rectangle,
-                      fillStyle: SketchyFill.solid,
-                      onSelected: () =>
-                          setState(() => _archiveChip = !_archiveChip),
-                    ),
-                    SketchyChip.choice(
-                      label: '',
-                      selected: _iconOnlyChip,
-                      icon: SketchyIcons.send,
-                      iconOnly: true,
-                      fillStyle: SketchyFill.solid,
-                      onSelected: () =>
-                          setState(() => _iconOnlyChip = !_iconOnlyChip),
-                    ),
-                  ],
-                ),
+                child: _chipGallery(theme, 'Choice', [
+                  SketchyChip.choice(
+                    label: 'Pinned',
+                    selected: _pinnedChip,
+                    fillStyle: SketchyFill.hachure,
+                    onSelected: () =>
+                        setState(() => _pinnedChip = !_pinnedChip),
+                  ),
+                  SketchyChip.choice(
+                    label: 'Snooze',
+                    selected: _snoozedChip,
+                    fillStyle: SketchyFill.hachure,
+                    onSelected: () =>
+                        setState(() => _snoozedChip = !_snoozedChip),
+                  ),
+                  SketchyChip.choice(
+                    label: 'Archive',
+                    selected: _archiveChip,
+                    icon: SketchyIcons.rectangle,
+                    fillStyle: SketchyFill.solid,
+                    onSelected: () =>
+                        setState(() => _archiveChip = !_archiveChip),
+                  ),
+                  SketchyChip.choice(
+                    label: '',
+                    selected: _iconOnlyChip,
+                    icon: SketchyIcons.send,
+                    iconOnly: true,
+                    fillStyle: SketchyFill.solid,
+                    onSelected: () =>
+                        setState(() => _iconOnlyChip = !_iconOnlyChip),
+                  ),
+                ]),
               ),
             ],
           ),
@@ -659,51 +675,43 @@ Comic Shanns font.
           Row(
             children: [
               Expanded(
-                child: _chipGallery(
-                  theme,
-                  'Badge',
-                  const [
-                    SketchyChip.badge(
-                      label: 'Beta',
-                      tone: SketchyChipTone.info,
-                      fillStyle: SketchyFill.hachure,
-                    ),
-                    SketchyChip.badge(
-                      label: 'Muted',
-                      tone: SketchyChipTone.neutral,
-                    ),
-                    SketchyChip.badge(
-                      label: 'Beta tag',
-                      tone: SketchyChipTone.info,
-                      icon: SketchyIcons.pen,
-                    ),
-                  ],
-                ),
+                child: _chipGallery(theme, 'Badge', const [
+                  SketchyChip.badge(
+                    label: 'Beta',
+                    tone: SketchyChipTone.accent,
+                    fillStyle: SketchyFill.hachure,
+                  ),
+                  SketchyChip.badge(
+                    label: 'Muted',
+                    tone: SketchyChipTone.neutral,
+                  ),
+                  SketchyChip.badge(
+                    label: 'Beta tag',
+                    tone: SketchyChipTone.accent,
+                    icon: SketchyIcons.pen,
+                  ),
+                ]),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: _chipGallery(
-                  theme,
-                  'Suggestion',
-                  const [
-                    SketchyChip(
-                      label: '#sketchythings',
-                      tone: SketchyChipTone.neutral,
-                    ),
-                    SketchyChip(
-                      label: 'Palette',
-                      tone: SketchyChipTone.info,
-                      fillStyle: SketchyFill.hachure,
-                    ),
-                    SketchyChip(
-                      label: '',
-                      tone: SketchyChipTone.success,
-                      icon: SketchyIcons.plus,
-                      iconOnly: true,
-                      fillStyle: SketchyFill.solid,
-                    ),
-                  ],
-                ),
+                child: _chipGallery(theme, 'Suggestion', const [
+                  SketchyChip(
+                    label: '#sketchythings',
+                    tone: SketchyChipTone.neutral,
+                  ),
+                  SketchyChip(
+                    label: 'Palette',
+                    tone: SketchyChipTone.accent,
+                    fillStyle: SketchyFill.hachure,
+                  ),
+                  SketchyChip(
+                    label: '',
+                    tone: SketchyChipTone.accent,
+                    icon: SketchyIcons.plus,
+                    iconOnly: true,
+                    fillStyle: SketchyFill.solid,
+                  ),
+                ]),
               ),
             ],
           ),
@@ -721,11 +729,7 @@ Comic Shanns font.
     children: [
       SketchyText(title, style: _fieldLabelStyle(theme)),
       const SizedBox(height: 8),
-      Wrap(
-        spacing: 12,
-        runSpacing: 8,
-        children: chips,
-      ),
+      Wrap(spacing: 12, runSpacing: 8, children: chips),
     ],
   );
 
@@ -793,7 +797,7 @@ Comic Shanns font.
               selectedIndex: tabIndex,
               detachSelected: true,
               detachGap: theme.strokeWidth,
-              backgroundColor: theme.colors.paper,
+              backgroundColor: theme.paperColor,
               eraseSelectedBorder: true,
               onChanged: (index) {
                 setState(() => _selectedConversationTab = index);
@@ -803,8 +807,8 @@ Comic Shanns font.
               offset: Offset(0, -theme.strokeWidth),
               child: SketchySurface(
                 padding: const EdgeInsets.all(16),
-                strokeColor: theme.colors.ink,
-                fillColor: theme.colors.paper,
+                strokeColor: theme.inkColor,
+                fillColor: theme.paperColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -953,7 +957,7 @@ Comic Shanns font.
             'Value: ${(100 * _sliderValue).round()}',
             style: _fieldLabelStyle(
               theme,
-            ).copyWith(color: theme.colors.secondary),
+            ).copyWith(color: theme.secondaryColor),
           ),
           const SizedBox(height: 8),
           SketchySlider(
@@ -980,7 +984,7 @@ Comic Shanns font.
                 onPressed: _startProgress,
                 child: SketchyText(
                   'Start',
-                  style: _buttonLabelStyle(theme, color: theme.colors.primary),
+                  style: _buttonLabelStyle(theme, color: theme.primaryColor),
                 ),
               ),
               const SizedBox(width: 8),
@@ -988,10 +992,7 @@ Comic Shanns font.
                 onPressed: _stopProgress,
                 child: SketchyText(
                   'Stop',
-                  style: _buttonLabelStyle(
-                    theme,
-                    color: const Color(0xFFB00020), // Error color
-                  ),
+                  style: _buttonLabelStyle(theme, color: theme.errorColor),
                 ),
               ),
               const SizedBox(width: 8),
@@ -1154,7 +1155,7 @@ Comic Shanns font.
                   context: context,
                   barrierDismissible: true,
                   barrierLabel: 'Dismiss dialog',
-                  barrierColor: theme.colors.ink.withValues(alpha: 0.55),
+                  barrierColor: theme.inkColor.withValues(alpha: 0.55),
                   transitionBuilder:
                       (context, animation, secondaryAnimation, child) =>
                           FadeTransition(

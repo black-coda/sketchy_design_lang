@@ -119,36 +119,33 @@ class _GalleryShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-    builder: (context, theme) {
-      final modeName = _describeMode(theme.mode);
-      return SketchyScaffold(
-        appBar: SketchyAppBar(
-          title: Text('Sketchy Examples — $modeName'),
-          actions: [
-            _ModeButton(onPressed: onCycleMode),
-            const SizedBox(width: 12),
-            SketchyTooltip(
-              message: 'rough.',
-              child: SizedBox(
-                width: 220,
-                child: SketchySlider(
-                  value: roughness,
-                  onChanged: onRoughnessChanged,
-                ),
+    builder: (context, theme) => SketchyScaffold(
+      appBar: SketchyAppBar(
+        title: const Text('Sketchy Examples'),
+        actions: [
+          _ModeButton(onPressed: onCycleMode),
+          const SizedBox(width: 12),
+          SketchyTooltip(
+            message: 'rough.',
+            child: SizedBox(
+              width: 220,
+              child: SketchySlider(
+                value: roughness,
+                onChanged: onRoughnessChanged,
               ),
             ),
-          ],
-        ),
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: Padding(padding: const EdgeInsets.all(24), child: child),
-            ),
-            const _MascotBadge(),
-          ],
-        ),
-      );
-    },
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Padding(padding: const EdgeInsets.all(24), child: child),
+          ),
+          const _MascotBadge(),
+        ],
+      ),
+    ),
   );
 }
 
@@ -170,9 +167,9 @@ class _ExampleTile extends StatelessWidget {
       child: SketchySurface(
         padding: const EdgeInsets.all(16),
         fillColor: selected
-            ? theme.colors.secondary.withValues(alpha: 0.5)
-            : theme.colors.paper,
-        strokeColor: theme.colors.ink,
+            ? theme.secondaryColor.withValues(alpha: 0.5)
+            : theme.paperColor,
+        strokeColor: theme.inkColor,
         createPrimitive: () => SketchyPrimitive.roundedRectangle(
           cornerRadius: theme.borderRadius,
           fill: selected ? SketchyFill.solid : SketchyFill.none,
@@ -198,15 +195,15 @@ class _ModeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
     builder: (context, theme) => SketchyTooltip(
-      message: 'mode.',
+      message: 'cycle theme.',
       child: GestureDetector(
         onTap: onPressed,
         child: SketchySurface(
           width: 40,
           height: 40,
           padding: EdgeInsets.zero,
-          fillColor: theme.colors.secondary,
-          strokeColor: theme.colors.primary,
+          fillColor: theme.secondaryColor,
+          strokeColor: theme.primaryColor,
           createPrimitive: () =>
               SketchyPrimitive.rectangle(fill: SketchyFill.solid),
           child: const SizedBox.shrink(),
@@ -236,17 +233,3 @@ class _MascotBadge extends StatelessWidget {
     ),
   );
 }
-
-String _describeMode(SketchyColorMode mode) => switch (mode) {
-  SketchyColorMode.white => 'White',
-  SketchyColorMode.red => 'Red',
-  SketchyColorMode.orange => 'Orange',
-  SketchyColorMode.yellow => 'Yellow',
-  SketchyColorMode.green => 'Green',
-  SketchyColorMode.cyan => 'Cyan',
-  SketchyColorMode.blue => 'Blue',
-  SketchyColorMode.indigo => 'Indigo',
-  SketchyColorMode.violet => 'Violet',
-  SketchyColorMode.magenta => 'Magenta',
-  SketchyColorMode.black => 'Black',
-};

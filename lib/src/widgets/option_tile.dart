@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-import '../sketchy_widgets/checkbox.dart';
-import '../sketchy_widgets/radio.dart';
 import '../theme/sketchy_theme.dart';
+import 'checkbox.dart';
+import 'radio.dart';
 
 enum _SketchyOptionTileType { checkbox, radio }
 
@@ -60,10 +60,9 @@ class SketchyOptionTile<T> extends StatelessWidget {
   /// Callback fired when the radio tile is selected.
   final ValueChanged<T?>? onRadioChanged;
 
-  bool get _isEnabled =>
-      _type == _SketchyOptionTileType.checkbox
-          ? onCheckboxChanged != null
-          : onRadioChanged != null;
+  bool get _isEnabled => _type == _SketchyOptionTileType.checkbox
+      ? onCheckboxChanged != null
+      : onRadioChanged != null;
 
   void _handleTap() {
     if (!_isEnabled) return;
@@ -77,41 +76,38 @@ class SketchyOptionTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) {
-          final control = _type == _SketchyOptionTileType.checkbox
-              ? SketchyCheckbox(
-                  value: checkboxValue ?? false,
-                  onChanged: (val) => onCheckboxChanged?.call(val),
-                )
-              : SketchyRadio<T>(
-                  value: radioValue as T,
-                  groupValue: radioGroupValue,
-                  onChanged: onRadioChanged,
-                );
+    builder: (context, theme) {
+      final control = _type == _SketchyOptionTileType.checkbox
+          ? SketchyCheckbox(
+              value: checkboxValue ?? false,
+              onChanged: (val) => onCheckboxChanged?.call(val),
+            )
+          : SketchyRadio<T>(
+              value: radioValue as T,
+              groupValue: radioGroupValue,
+              onChanged: onRadioChanged,
+            );
 
-          final labelColumn = Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              label,
-              if (helper != null) ...[
-                const SizedBox(height: 4),
-                helper!,
-              ],
-            ],
-          );
-
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: _isEnabled ? _handleTap : null,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                control,
-                const SizedBox(width: 12),
-                Expanded(child: labelColumn),
-              ],
-            ),
-          );
-        },
+      final labelColumn = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          label,
+          if (helper != null) ...[const SizedBox(height: 4), helper!],
+        ],
       );
+
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: _isEnabled ? _handleTap : null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            control,
+            const SizedBox(width: 12),
+            Expanded(child: labelColumn),
+          ],
+        ),
+      );
+    },
+  );
 }

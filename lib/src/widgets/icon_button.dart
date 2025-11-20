@@ -30,8 +30,8 @@ class SketchyIconButton extends StatelessWidget {
       final content = SketchySurface(
         width: size,
         height: size,
-        fillColor: theme.colors.paper,
-        strokeColor: theme.colors.ink,
+        fillColor: theme.paperColor,
+        strokeColor: theme.inkColor,
         createPrimitive: () =>
             SketchyPrimitive.rectangle(fill: SketchyFill.none),
         child: SketchyIcon(icon: icon),

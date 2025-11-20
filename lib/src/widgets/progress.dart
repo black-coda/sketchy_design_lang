@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
-import '../widgets/sketchy_frame.dart';
+import 'sketchy_frame.dart';
 
 /// Sketchy progress bar.
 ///
@@ -22,10 +22,7 @@ import '../widgets/sketchy_frame.dart';
 /// ```
 class SketchyProgressBar extends StatefulWidget {
   const SketchyProgressBar({this.controller, super.key, this.value = 0.0})
-      : assert(
-          value >= 0.0 && value <= 1.0,
-          'value must be between 0.0 and 1.0',
-        );
+    : assert(value >= 0.0 && value <= 1.0, 'value must be between 0.0 and 1.0');
 
   /// The current progress value, range is 0.0 ~ 1.0.
   final double value;
@@ -65,54 +62,58 @@ class _SketchyProgressBarState extends State<SketchyProgressBar> {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) {
-          final progress =
-              (widget.controller?.value ?? widget.value).clamp(0.0, 1.0);
-
-          return SizedBox(
-            height: _progressHeight,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final availableWidth = constraints.maxWidth.isFinite
-                    ? constraints.maxWidth
-                    : MediaQuery.sizeOf(context).width;
-                final inset = theme.strokeWidth * 0.35;
-                final verticalInset = theme.strokeWidth * 0.25;
-                final fillOptions = _buildFillOptions(theme.roughness);
-                final interiorWidth =
-                    (availableWidth - inset * 2).clamp(0.0, double.infinity);
-                final fillWidth = interiorWidth * progress;
-
-                return Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    SketchyFrame(
-                      height: _progressHeight,
-                      strokeColor: theme.borderColor,
-                      strokeWidth: theme.strokeWidth,
-                      fill: SketchyFill.none,
-                      child: const SizedBox.expand(),
-                    ),
-                    if (progress > 0)
-                      Positioned(
-                        left: inset,
-                        top: verticalInset,
-                        bottom: verticalInset,
-                        child: SizedBox(
-                          width: fillWidth,
-                          child: _ProgressFill(
-                            color: theme.borderColor,
-                            fillOptions: fillOptions,
-                          ),
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
-          );
-        },
+    builder: (context, theme) {
+      final progress = (widget.controller?.value ?? widget.value).clamp(
+        0.0,
+        1.0,
       );
+
+      return SizedBox(
+        height: _progressHeight,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final availableWidth = constraints.maxWidth.isFinite
+                ? constraints.maxWidth
+                : MediaQuery.sizeOf(context).width;
+            final inset = theme.strokeWidth * 0.35;
+            final verticalInset = theme.strokeWidth * 0.25;
+            final fillOptions = _buildFillOptions(theme.roughness);
+            final interiorWidth = (availableWidth - inset * 2).clamp(
+              0.0,
+              double.infinity,
+            );
+            final fillWidth = interiorWidth * progress;
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                SketchyFrame(
+                  height: _progressHeight,
+                  strokeColor: theme.borderColor,
+                  strokeWidth: theme.strokeWidth,
+                  fill: SketchyFill.none,
+                  child: const SizedBox.expand(),
+                ),
+                if (progress > 0)
+                  Positioned(
+                    left: inset,
+                    top: verticalInset,
+                    bottom: verticalInset,
+                    child: SizedBox(
+                      width: fillWidth,
+                      child: _ProgressFill(
+                        color: theme.borderColor,
+                        fillOptions: fillOptions,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
 
   @override
   void dispose() {
@@ -123,10 +124,7 @@ class _SketchyProgressBarState extends State<SketchyProgressBar> {
   SketchyFillOptions _buildFillOptions(double roughness) {
     final gap = lerpDouble(6, 1.5, roughness) ?? 3;
     final weight = lerpDouble(0.7, 1.6, roughness) ?? 1.0;
-    return SketchyFillOptions(
-      hachureGap: gap,
-      fillWeight: weight,
-    );
+    return SketchyFillOptions(hachureGap: gap, fillWeight: weight);
   }
 }
 
@@ -138,11 +136,11 @@ class _ProgressFill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyFrame(
-        fill: SketchyFill.hachure,
-        fillOptions: fillOptions,
-        fillColor: color,
-        strokeColor: const Color(0x00000000),
-        strokeWidth: 0,
-        child: const SizedBox.expand(),
-      );
+    fill: SketchyFill.hachure,
+    fillOptions: fillOptions,
+    fillColor: color,
+    strokeColor: const Color(0x00000000),
+    strokeWidth: 0,
+    child: const SizedBox.expand(),
+  );
 }

@@ -79,7 +79,7 @@ class SketchyFrame extends StatelessWidget {
         height: height,
         padding: padding,
         alignment: alignment,
-        strokeColor: strokeColor ?? theme.colors.ink,
+        strokeColor: strokeColor ?? theme.inkColor,
         fillColor: fillColor ?? const Color(0x00000000),
         strokeWidth: strokeWidth ?? theme.strokeWidth,
         createPrimitive: primitive,

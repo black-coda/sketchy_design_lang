@@ -108,44 +108,41 @@ class _SketchyTooltipOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) {
-          final casing = textCase ?? theme.textCase;
-          final displayMessage = applyTextCase(message, casing);
-          final textPainter = TextPainter(
-            text: TextSpan(text: displayMessage, style: theme.typography.label),
-            textDirection: TextDirection.ltr,
-          )..layout(maxWidth: MediaQuery.of(context).size.width * 0.8);
-          final tooltipSize =
-              Size(textPainter.width + 16, textPainter.height + 8);
-          final offset = _computeTooltipOffset(
-            target,
-            tooltipSize,
-            MediaQuery.of(context).size,
-            preferBelow,
-          );
-
-          return Positioned(
-            left: offset.dx,
-            top: offset.dy,
-            child: IgnorePointer(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: theme.colors.ink,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: SketchyText(
-                  message,
-                  textCase: textCase,
-                  style: theme.typography.label.copyWith(
-                    color: theme.colors.paper,
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+    builder: (context, theme) {
+      final casing = textCase ?? theme.textCase;
+      final displayMessage = applyTextCase(message, casing);
+      final textPainter = TextPainter(
+        text: TextSpan(text: displayMessage, style: theme.typography.label),
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: MediaQuery.of(context).size.width * 0.8);
+      final tooltipSize = Size(textPainter.width + 16, textPainter.height + 8);
+      final offset = _computeTooltipOffset(
+        target,
+        tooltipSize,
+        MediaQuery.of(context).size,
+        preferBelow,
       );
+
+      return Positioned(
+        left: offset.dx,
+        top: offset.dy,
+        child: IgnorePointer(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: theme.inkColor,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: SketchyText(
+              message,
+              textCase: textCase,
+              style: theme.typography.label.copyWith(color: theme.paperColor),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
 
 Offset _computeTooltipOffset(

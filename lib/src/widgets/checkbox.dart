@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 
 import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
-import '../widgets/icons.dart';
-import '../widgets/surface.dart';
-import '../widgets/value_sync_mixin.dart';
+import 'icons.dart';
+import 'surface.dart';
+import 'value_sync_mixin.dart';
 
 /// Sketchy checkbox.
 ///
@@ -46,32 +46,32 @@ class _SketchyCheckboxState extends State<SketchyCheckbox>
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) => GestureDetector(
-          onTap: () {
-            final newValue = !value;
-            updateValue(newValue);
-            widget.onChanged(newValue);
-          },
-          child: SketchySurface(
-            width: 27,
-            height: 27,
-            strokeColor: theme.borderColor,
-            strokeWidth: theme.strokeWidth,
-            fillColor: theme.colors.secondary,
-            padding: EdgeInsets.zero,
-            alignment: Alignment.center,
-            createPrimitive: () =>
-                SketchyPrimitive.rectangle(fill: SketchyFill.none),
-            child: value
-                ? Transform.scale(
-                    scale: 0.7,
-                    child: SketchyIcon(
-                      icon: SketchyIcons.check,
-                      color: theme.colors.ink,
-                    ),
-                  )
-                : const SizedBox(),
-          ),
-        ),
-      );
+    builder: (context, theme) => GestureDetector(
+      onTap: () {
+        final newValue = !value;
+        updateValue(newValue);
+        widget.onChanged(newValue);
+      },
+      child: SketchySurface(
+        width: 27,
+        height: 27,
+        strokeColor: theme.borderColor,
+        strokeWidth: theme.strokeWidth,
+        fillColor: theme.secondaryColor,
+        padding: EdgeInsets.zero,
+        alignment: Alignment.center,
+        createPrimitive: () =>
+            SketchyPrimitive.rectangle(fill: SketchyFill.none),
+        child: value
+            ? Transform.scale(
+                scale: 0.7,
+                child: SketchyIcon(
+                  icon: SketchyIcons.check,
+                  color: theme.inkColor,
+                ),
+              )
+            : const SizedBox(),
+      ),
+    ),
+  );
 }

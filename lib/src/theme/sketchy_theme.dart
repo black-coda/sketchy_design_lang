@@ -1,16 +1,19 @@
 import 'package:flutter/widgets.dart';
 
-import 'sketchy_color_mode.dart';
 import 'sketchy_colors.dart';
 import 'sketchy_text_case.dart';
+import 'sketchy_themes.dart';
 import 'sketchy_typography.dart';
 
 /// Complete Sketchy configuration (colors, typography, metrics).
 class SketchyThemeData {
   /// Creates a theme with the provided palette and typography.
   const SketchyThemeData({
-    required this.mode,
-    required this.colors,
+    required this.inkColor,
+    required this.paperColor,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.errorColor,
     required this.typography,
     this.strokeWidth = 2.0,
     this.borderRadius = 0,
@@ -18,40 +21,111 @@ class SketchyThemeData {
     this.textCase = TextCase.none,
   });
 
-  /// Default white theme used by the examples.
-  factory SketchyThemeData.white({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.white, roughness: roughness);
-
-  /// Black-mode variant built from a darker palette.
-  factory SketchyThemeData.black({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.black, roughness: roughness);
-
-  /// Builds a theme from the predefined [mode].
-  factory SketchyThemeData.fromMode(
-    SketchyColorMode mode, {
+  /// Builds a theme from the predefined [theme].
+  factory SketchyThemeData.fromTheme(
+    SketchyThemes theme, {
+    Brightness brightness = Brightness.light,
     double roughness = 0.5,
     SketchyTypographyData? typography,
     TextCase textCase = TextCase.none,
     double strokeWidth = 2.0,
     double borderRadius = 0,
-  }) => SketchyThemeData(
-    mode: mode,
-    colors: SketchyColors.forMode(mode),
-    typography: typography ?? SketchyTypographyData.comicShanns(),
-    roughness: roughness,
-    strokeWidth: strokeWidth,
-    textCase: textCase,
-    borderRadius: borderRadius,
-  );
+  }) {
+    final (ink, paper, primary, secondary) = switch (theme) {
+      SketchyThemes.monochrome => (
+        SketchyColors.black,
+        SketchyColors.white,
+        SketchyColors.black,
+        SketchyColors.ash,
+      ),
+      SketchyThemes.red => (
+        SketchyColors.maroon,
+        SketchyColors.blush,
+        SketchyColors.scarlet,
+        SketchyColors.lightCoral,
+      ),
+      SketchyThemes.orange => (
+        SketchyColors.rust,
+        SketchyColors.apricot,
+        SketchyColors.ember,
+        SketchyColors.peach,
+      ),
+      SketchyThemes.yellow => (
+        SketchyColors.ochre,
+        SketchyColors.cream,
+        SketchyColors.lemon,
+        SketchyColors.lightLemon,
+      ),
+      SketchyThemes.green => (
+        SketchyColors.forestGreen,
+        SketchyColors.mint,
+        SketchyColors.lime,
+        SketchyColors.lightSage,
+      ),
+      SketchyThemes.cyan => (
+        SketchyColors.deepTeal,
+        SketchyColors.aqua,
+        SketchyColors.teal,
+        SketchyColors.turquoise,
+      ),
+      SketchyThemes.blue => (
+        SketchyColors.navy,
+        SketchyColors.cloud,
+        SketchyColors.cobalt,
+        SketchyColors.sky,
+      ),
+      SketchyThemes.indigo => (
+        SketchyColors.midnight,
+        SketchyColors.lavender,
+        SketchyColors.indigo,
+        SketchyColors.periwinkle,
+      ),
+      SketchyThemes.violet => (
+        SketchyColors.plum,
+        SketchyColors.orchid,
+        SketchyColors.violet,
+        SketchyColors.lilac,
+      ),
+      SketchyThemes.magenta => (
+        SketchyColors.wine,
+        SketchyColors.rose,
+        SketchyColors.magenta,
+        SketchyColors.pink,
+      ),
+    };
 
-  /// Named mode factories (e.g. `SketchyThemeData.modes.blue()`).
-  static const modes = _SketchyThemeModeFactory();
+    // In dark mode, we swap ink/paper to create a dark theme from the same palette.
+    // We also swap primary/secondary to ensure large fills (secondary) are darker
+    // and accents (primary) pop more.
+    final isDark = brightness == Brightness.dark;
+    return SketchyThemeData(
+      inkColor: isDark ? paper : ink,
+      paperColor: isDark ? ink : paper,
+      primaryColor: isDark ? secondary : primary,
+      secondaryColor: isDark ? primary : secondary,
+      errorColor: SketchyColors.carmine,
+      typography: typography ?? SketchyTypographyData.comicShanns(),
+      roughness: roughness,
+      strokeWidth: strokeWidth,
+      textCase: textCase,
+      borderRadius: borderRadius,
+    );
+  }
 
-  /// Active color mode.
-  final SketchyColorMode mode;
+  /// Primary stroke color used for outlines and text.
+  final Color inkColor;
 
-  /// Colors used throughout Sketchy widgets.
-  final SketchyColors colors;
+  /// Background color emulating paper.
+  final Color paperColor;
+
+  /// Bold accent color for primary actions.
+  final Color primaryColor;
+
+  /// Softer accent variant for fills.
+  final Color secondaryColor;
+
+  /// Semantic color for errors and validation.
+  final Color errorColor;
 
   /// Typography styles used for text rendering.
   final SketchyTypographyData typography;
@@ -70,67 +144,28 @@ class SketchyThemeData {
 
   /// Returns a new theme with the provided overrides.
   SketchyThemeData copyWith({
-    SketchyColorMode? mode,
-    SketchyColors? colors,
+    Color? inkColor,
+    Color? paperColor,
+    Color? primaryColor,
+    Color? secondaryColor,
+    Color? errorColor,
     SketchyTypographyData? typography,
     double? strokeWidth,
     double? borderRadius,
     double? roughness,
     TextCase? textCase,
-  }) {
-    final resolvedMode = mode ?? this.mode;
-    final resolvedColors =
-        colors ??
-        (resolvedMode == this.mode
-            ? this.colors
-            : SketchyColors.forMode(resolvedMode));
-    return SketchyThemeData(
-      mode: resolvedMode,
-      colors: resolvedColors,
-      typography: typography ?? this.typography,
-      strokeWidth: strokeWidth ?? this.strokeWidth,
-      borderRadius: borderRadius ?? this.borderRadius,
-      roughness: roughness ?? this.roughness,
-      textCase: textCase ?? this.textCase,
-    );
-  }
-}
-
-class _SketchyThemeModeFactory {
-  const _SketchyThemeModeFactory();
-
-  SketchyThemeData white({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.white, roughness: roughness);
-
-  SketchyThemeData red({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.red, roughness: roughness);
-
-  SketchyThemeData orange({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.orange, roughness: roughness);
-
-  SketchyThemeData yellow({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.yellow, roughness: roughness);
-
-  SketchyThemeData green({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.green, roughness: roughness);
-
-  SketchyThemeData cyan({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.cyan, roughness: roughness);
-
-  SketchyThemeData blue({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.blue, roughness: roughness);
-
-  SketchyThemeData indigo({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.indigo, roughness: roughness);
-
-  SketchyThemeData violet({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.violet, roughness: roughness);
-
-  SketchyThemeData magenta({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.magenta, roughness: roughness);
-
-  SketchyThemeData black({double roughness = 0.5}) =>
-      SketchyThemeData.fromMode(SketchyColorMode.black, roughness: roughness);
+  }) => SketchyThemeData(
+    inkColor: inkColor ?? this.inkColor,
+    paperColor: paperColor ?? this.paperColor,
+    primaryColor: primaryColor ?? this.primaryColor,
+    secondaryColor: secondaryColor ?? this.secondaryColor,
+    errorColor: errorColor ?? this.errorColor,
+    typography: typography ?? this.typography,
+    strokeWidth: strokeWidth ?? this.strokeWidth,
+    borderRadius: borderRadius ?? this.borderRadius,
+    roughness: roughness ?? this.roughness,
+    textCase: textCase ?? this.textCase,
+  );
 }
 
 /// Inherited widget wiring [SketchyThemeData] into the tree.
@@ -162,7 +197,7 @@ class SketchyTheme extends InheritedWidget {
   /// SketchyTheme.consumer(
   ///   builder: (context, theme) => Text(
   ///     'Hello',
-  ///     style: TextStyle(color: theme.colors.ink),
+  ///     style: TextStyle(color: theme.inkColor),
   ///   ),
   /// )
   /// ```
@@ -180,20 +215,44 @@ class SketchyTheme extends InheritedWidget {
 /// without duplicating configuration objects.
 extension SketchyThemeTokens on SketchyThemeData {
   /// Outlines/text always use the active ink color.
-  Color get borderColor => colors.ink;
+  Color get borderColor => inkColor;
 
   /// Default fill used for primitive backgrounds.
-  Color get fillColor => colors.paper;
+  Color get fillColor => paperColor;
 
   /// Primary text color (also the ink tone).
-  Color get textColor => colors.ink;
+  Color get textColor => inkColor;
 
   /// Disabled text inherits ink with reduced opacity so it remains on-brand.
-  Color get disabledTextColor => colors.ink.withValues(alpha: 0.35);
+  Color get disabledTextColor => inkColor.withValues(alpha: 0.35);
+
+  /// Muted variant of the ink color for secondary text or grid lines.
+  Color get mutedColor => inkColor.withValues(alpha: 0.3);
 
   /// Font family extracted from the body style with a sensible fallback.
   String get fontFamily =>
       typography.body.fontFamily ??
       typography.title.fontFamily ??
       'ComicShanns';
+
+  /// Text color to use on top of the primary color.
+  Color get onPrimaryColor => _bestContrast(primaryColor, inkColor, paperColor);
+
+  /// Text color to use on top of the secondary color.
+  Color get onSecondaryColor =>
+      _bestContrast(secondaryColor, inkColor, paperColor);
+
+  Color _bestContrast(Color bg, Color option1, Color option2) {
+    // Simple luminance check: if bg is dark, we want light text.
+    // If bg is light, we want dark text.
+    final isDark = bg.computeLuminance() < 0.5;
+
+    // We assume one of ink/paper is light and the other is dark.
+    // If ink is light (Dark Mode), we return ink when bg is dark.
+    if (isDark) {
+      return option1.computeLuminance() > 0.5 ? option1 : option2;
+    } else {
+      return option1.computeLuminance() < 0.5 ? option1 : option2;
+    }
+  }
 }

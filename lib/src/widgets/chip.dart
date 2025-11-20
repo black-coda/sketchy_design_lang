@@ -9,14 +9,8 @@ import 'text.dart';
 
 /// Visual tones supported by [SketchyChip].
 enum SketchyChipTone {
-  /// Informational accent (blue/cool tone).
-  info,
-
   /// Primary accent tone.
   accent,
-
-  /// Success/positive tone.
-  success,
 
   /// Neutral ink tone.
   neutral,
@@ -109,14 +103,14 @@ class SketchyChip extends StatelessWidget {
          tone: tone,
          textCase: textCase,
          fillStyle: fillStyle,
-          icon: icon,
-          iconOnly: iconOnly,
+         icon: icon,
+         iconOnly: iconOnly,
        );
 
   /// Compact, non-interactive style that mirrors the old badge widget.
   const SketchyChip.badge({
     required String label,
-    SketchyChipTone tone = SketchyChipTone.info,
+    SketchyChipTone tone = SketchyChipTone.neutral,
     TextCase? textCase,
     SketchyFill? fillStyle,
     SketchyIconSymbol? icon,
@@ -167,56 +161,53 @@ class SketchyChip extends StatelessWidget {
   final bool iconOnly;
 
   Color _toneColor(SketchyThemeData theme) => switch (tone) {
-        SketchyChipTone.info => theme.colors.info,
-        SketchyChipTone.accent => theme.colors.primary,
-        SketchyChipTone.success => theme.colors.success,
-        SketchyChipTone.neutral => theme.colors.ink,
-      };
+    SketchyChipTone.accent => theme.primaryColor,
+    SketchyChipTone.neutral => theme.inkColor,
+  };
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) {
-          final toneColor = _toneColor(theme);
-          final shouldFill = filled || selected;
-          final padding = compact
-              ? const EdgeInsets.symmetric(horizontal: 10, vertical: 6)
-              : const EdgeInsets.symmetric(horizontal: 16, vertical: 10);
-          final textStyleBase = compact
-              ? theme.typography.label
-              : theme.typography.body;
-          final textStyle = textStyleBase.copyWith(
-            color: theme.colors.ink,
-            fontWeight: selected ? FontWeight.w700 : textStyleBase.fontWeight,
-          );
-          final fillColor = shouldFill
-              ? toneColor.withValues(alpha: compact ? 0.35 : 0.2)
-              : theme.colors.paper;
-          final effectiveFill = shouldFill
-              ? (fillStyle ?? SketchyFill.hachure)
-              : SketchyFill.none;
-
-          final content = _buildContent(textStyle, theme);
-
-          final surface = IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: SketchySurface(
-                padding: padding,
-                fillColor: fillColor,
-                strokeColor: theme.colors.ink,
-                createPrimitive: () =>
-                    SketchyPrimitive.pill(fill: effectiveFill),
-                child: content,
-              ),
-            ),
-          );
-
-          if (onPressed == null) return surface;
-          return MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: GestureDetector(onTap: onPressed, child: surface),
-          );
-        },
+    builder: (context, theme) {
+      final toneColor = _toneColor(theme);
+      final shouldFill = filled || selected;
+      final padding = compact
+          ? const EdgeInsets.symmetric(horizontal: 10, vertical: 6)
+          : const EdgeInsets.symmetric(horizontal: 16, vertical: 10);
+      final textStyleBase = compact
+          ? theme.typography.label
+          : theme.typography.body;
+      final textStyle = textStyleBase.copyWith(
+        color: theme.inkColor,
+        fontWeight: selected ? FontWeight.w700 : textStyleBase.fontWeight,
       );
+      final fillColor = shouldFill
+          ? toneColor.withValues(alpha: compact ? 0.35 : 0.2)
+          : theme.paperColor;
+      final effectiveFill = shouldFill
+          ? (fillStyle ?? SketchyFill.hachure)
+          : SketchyFill.none;
+
+      final content = _buildContent(textStyle, theme);
+
+      final surface = IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: SketchySurface(
+            padding: padding,
+            fillColor: fillColor,
+            strokeColor: theme.inkColor,
+            createPrimitive: () => SketchyPrimitive.pill(fill: effectiveFill),
+            child: content,
+          ),
+        ),
+      );
+
+      if (onPressed == null) return surface;
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(onTap: onPressed, child: surface),
+      );
+    },
+  );
 
   Widget _buildContent(TextStyle style, SketchyThemeData theme) {
     final hasIcon = icon != null;
@@ -226,19 +217,11 @@ class SketchyChip extends StatelessWidget {
     if (iconOnly && iconWidget != null) {
       return iconWidget;
     }
-    final labelWidget = SketchyText(
-      label,
-      textCase: textCase,
-      style: style,
-    );
+    final labelWidget = SketchyText(label, textCase: textCase, style: style);
     if (iconWidget == null) return labelWidget;
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        iconWidget,
-        const SizedBox(width: 6),
-        labelWidget,
-      ],
+      children: [iconWidget, const SizedBox(width: 6), labelWidget],
     );
   }
 }

@@ -47,8 +47,8 @@ class SketchyAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: margin.resolve(direction),
         child: SketchySurface(
           padding: resolvedPadding,
-          fillColor: theme.colors.paper,
-          strokeColor: theme.colors.ink,
+          fillColor: theme.paperColor,
+          strokeColor: theme.inkColor,
           createPrimitive: () => SketchyPrimitive.roundedRectangle(
             cornerRadius: theme.borderRadius,
             fill: SketchyFill.none,
@@ -59,8 +59,7 @@ class SketchyAppBar extends StatelessWidget implements PreferredSizeWidget {
               if (leading != null) const SizedBox(width: 12),
               Expanded(
                 child: DefaultTextStyle(
-                  style:
-                      theme.typography.title.copyWith(color: theme.colors.ink),
+                  style: theme.typography.title.copyWith(color: theme.inkColor),
                   child: title,
                 ),
               ),

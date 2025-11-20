@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
-import '../widgets/sketchy_frame.dart';
-import '../widgets/value_sync_mixin.dart';
+import 'sketchy_frame.dart';
+import 'value_sync_mixin.dart';
 
 /// Sketchy toggle
 class SketchyToggle extends StatefulWidget {
@@ -60,44 +60,44 @@ class _SketchyToggleState extends State<SketchyToggle>
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) => GestureDetector(
-          onTap: () {
-            final nextValue = !value;
-            widget.onChanged?.call(nextValue);
-            updateValue(nextValue);
-            _toggle();
-          },
-          child: _buildSwitcher(theme),
-        ),
-      );
+    builder: (context, theme) => GestureDetector(
+      onTap: () {
+        final nextValue = !value;
+        widget.onChanged?.call(nextValue);
+        updateValue(nextValue);
+        _toggle();
+      },
+      child: _buildSwitcher(theme),
+    ),
+  );
 
   Widget _buildSwitcher(SketchyThemeData theme) => Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned(
-            left: _animation.value,
-            top: -_thumbRadius / 2,
-            child: SizedBox(
-              height: _thumbRadius * 2,
-              width: _thumbRadius * 2,
-              child: SketchyFrame(
-                shape: SketchyFrameShape.circle,
-                fill: SketchyFill.solid,
-                fillColor: theme.colors.ink,
-                child: const SizedBox.expand(),
-              ),
-            ),
+    clipBehavior: Clip.none,
+    children: [
+      Positioned(
+        left: _animation.value,
+        top: -_thumbRadius / 2,
+        child: SizedBox(
+          height: _thumbRadius * 2,
+          width: _thumbRadius * 2,
+          child: SketchyFrame(
+            shape: SketchyFrameShape.circle,
+            fill: SketchyFill.solid,
+            fillColor: theme.inkColor,
+            child: const SizedBox.expand(),
           ),
-          SizedBox(
-            width: _thumbRadius * 2.5,
-            height: _thumbRadius,
-            child: const SketchyFrame(
-              fill: SketchyFill.none,
-              child: SizedBox.expand(),
-            ),
-          ),
-        ],
-      );
+        ),
+      ),
+      SizedBox(
+        width: _thumbRadius * 2.5,
+        height: _thumbRadius,
+        child: const SketchyFrame(
+          fill: SketchyFill.none,
+          child: SizedBox.expand(),
+        ),
+      ),
+    ],
+  );
 
   void _toggle() {
     unawaited(value ? _controller.forward() : _controller.reverse());

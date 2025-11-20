@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
-import '../widgets/calendar_utils.dart';
-import '../widgets/sketchy_frame.dart';
+import 'calendar_utils.dart';
+import 'sketchy_frame.dart';
 
 /// Sketchy calendar.
 ///
@@ -212,7 +212,7 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
     _cells = computeCalendarCells(
       firstOfMonth: _firstOfMonthDate,
       selectedDate: _selected,
-      inkColor: theme.colors.ink,
+      inkColor: theme.inkColor,
     );
   }
 
@@ -271,7 +271,7 @@ class _SketchyCalendarState extends State<SketchyCalendar> {
       fontFamily: theme.fontFamily,
       fontWeight: fontWeight,
       fontSize: fontSize,
-      color: color ?? theme.colors.ink,
+      color: color ?? theme.inkColor,
     ),
   );
 }

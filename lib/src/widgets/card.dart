@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
-import '../widgets/sketchy_frame.dart';
+import 'sketchy_frame.dart';
 
 /// Sketchy card.
 ///
@@ -51,14 +51,14 @@ class SketchyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) => SketchyFrame(
-          height: height,
-          padding: const EdgeInsets.all(16),
-          strokeColor: theme.borderColor,
-          strokeWidth: theme.strokeWidth,
-          fill: fill ? SketchyFill.hachure : SketchyFill.none,
-          cornerRadius: theme.borderRadius,
-          child: child ?? const SizedBox.shrink(),
-        ),
-      );
+    builder: (context, theme) => SketchyFrame(
+      height: height,
+      padding: const EdgeInsets.all(16),
+      strokeColor: theme.borderColor,
+      strokeWidth: theme.strokeWidth,
+      fill: fill ? SketchyFill.hachure : SketchyFill.none,
+      cornerRadius: theme.borderRadius,
+      child: child ?? const SizedBox.shrink(),
+    ),
+  );
 }

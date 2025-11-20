@@ -62,8 +62,8 @@ class SketchyDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SketchyApp(
       title: 'Sketchy Demo',
-      theme: SketchyThemeData.fromMode(
-        SketchyColorMode.blue,
+      theme: SketchyThemeData.fromTheme(
+        SketchyThemes.blue,
         roughness: 0.7,
       ),
       themeMode: SketchyThemeMode.system,
@@ -90,8 +90,7 @@ colors so dark mode still feels native without extra setup.
 
 `SketchyThemeData` carries:
 
-- **Colors** – ink, paper, primary/secondary, scrim, accent badges. Modes include
-  monochrome plus Red → Violet families. Dark mode swaps ink/paper automatically.
+- **Colors** – ink, paper, primary/secondary, error. Themes include monochrome plus Red → Violet families. Dark mode swaps ink/paper automatically.
 - **Roughness** – a 0–1 dial that controls wobble, bowing, hachure spacing, and
   randomness (0 = crisp, 1 = sketchbook chaos).
 - **Typography** – defaults to Comic Shanns but you can swap entire families via
@@ -109,7 +108,7 @@ are also available, though `theme.typography` via the consumer is preferred.
 **Traditional pattern:**
 ```dart
 final theme = SketchyTheme.of(context);
-return Text('Hello', style: TextStyle(color: theme.colors.ink));
+return Text('Hello', style: TextStyle(color: theme.inkColor));
 ```
 
 **Consumer pattern (recommended):**
@@ -117,7 +116,7 @@ return Text('Hello', style: TextStyle(color: theme.colors.ink));
 return SketchyTheme.consumer(
   builder: (context, theme) => Text(
     'Hello',
-    style: TextStyle(color: theme.colors.ink),
+    style: TextStyle(color: theme.inkColor),
   ),
 );
 ```
@@ -262,8 +261,8 @@ return SketchyTheme(
 
 ```dart
 SketchySurface(
-  strokeColor: theme.colors.ink,
-  fillColor: theme.colors.paper,
+  strokeColor: theme.inkColor,
+  fillColor: theme.paperColor,
   padding: const EdgeInsets.all(12),
   createPrimitive: () => SketchyPrimitive.roundedRectangle(
     cornerRadius: 24,
@@ -275,19 +274,19 @@ SketchySurface(
 
 ### Respond to mode changes
 
-`SketchyThemeData` exposes `copyWith` and `fromMode`. To toggle at runtime:
+`SketchyThemeData` exposes `copyWith` and `fromTheme`. To toggle at runtime:
 
 ```dart
 void _toggleMode() {
   setState(() {
-    _mode = _mode == SketchyColorMode.white
-        ? SketchyColorMode.indigo
-        : SketchyColorMode.white;
+    _theme = _theme == SketchyThemes.monochrome
+        ? SketchyThemes.indigo
+        : SketchyThemes.monochrome;
   });
 }
 ```
 
-Wrap your subtree with a new `SketchyTheme` using the updated mode.
+Wrap your subtree with a new `SketchyTheme` using the updated theme.
 
 ---
 

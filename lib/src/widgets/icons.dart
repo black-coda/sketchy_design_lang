@@ -83,7 +83,7 @@ class SketchyIcon extends StatelessWidget {
       child: CustomPaint(
         painter: _SketchyIconPainter(
           icon: icon,
-          color: color ?? theme.colors.ink,
+          color: color ?? theme.inkColor,
         ),
       ),
     ),

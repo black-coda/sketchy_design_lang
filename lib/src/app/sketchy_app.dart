@@ -125,7 +125,7 @@ class SketchyApp extends StatelessWidget {
   Widget build(BuildContext context) => WidgetsApp(
     navigatorKey: navigatorKey,
     title: title,
-    color: theme.colors.paper,
+    color: theme.paperColor,
     locale: locale,
     supportedLocales: supportedLocales,
     localizationsDelegates: [
@@ -148,7 +148,7 @@ class SketchyApp extends StatelessWidget {
         data: activeTheme,
         child: DefaultTextStyle(
           style: activeTheme.typography.body.copyWith(
-            color: activeTheme.colors.ink,
+            color: activeTheme.inkColor,
           ),
           child: content,
         ),
@@ -193,13 +193,10 @@ class SketchyApp extends StatelessWidget {
     return theme;
   }
 
-  SketchyThemeData _deriveDarkTheme(SketchyThemeData base) {
-    final colors = base.colors.copyWith(
-      ink: base.colors.paper,
-      paper: base.colors.ink,
-      primary: base.colors.secondary,
-      secondary: base.colors.primary,
-    );
-    return base.copyWith(colors: colors);
-  }
+  SketchyThemeData _deriveDarkTheme(SketchyThemeData base) => base.copyWith(
+    inkColor: base.paperColor,
+    paperColor: base.inkColor,
+    primaryColor: base.secondaryColor,
+    secondaryColor: base.primaryColor,
+  );
 }

@@ -23,7 +23,7 @@ class LiveChatExample extends StatelessWidget {
                   leading: SketchyChip.badge(
                     label: message.authorInitials,
                     tone: message.isAgent
-                        ? SketchyChipTone.info
+                        ? SketchyChipTone.neutral
                         : SketchyChipTone.accent,
                   ),
                   title: Text(message.text),

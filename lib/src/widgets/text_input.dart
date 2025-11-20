@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
-import '../widgets/sketchy_frame.dart';
+import 'sketchy_frame.dart';
 
 /// Sketchy text input.
 ///
@@ -12,13 +12,13 @@ import '../widgets/sketchy_frame.dart';
 /// SketchyTextInput(
 ///   controller: controller1,
 ///   style: TextStyle(
-/// 	fontFamily: handWriting2,
-/// 	fontSize: 18.0,
+///   fontFamily: handWriting2,
+///   fontSize: 18.0,
 ///   ),
 ///   labelText: 'Name',
 ///   labelStyle: TextStyle(
-/// 	fontFamily: handWriting2,
-/// 	fontSize: 18.0,
+///   fontFamily: handWriting2,
+///   fontSize: 18.0,
 ///   ),
 /// )
 /// ```
@@ -80,12 +80,13 @@ class SketchyTextInput extends StatefulWidget {
   /// Called when the text changes.
   final ValueChanged<String>? onChanged;
 
-  /// Called when the user indicates that they are done editing the text in the field.
+  /// Called when the user indicates that they are done editing the text in the
+  /// field.
   final ValueChanged<String>? onSubmitted;
 
   /// Text casing transformation for label and hint. If null, uses theme
-  /// default. Note: This does NOT affect the actual input text, only the
-  /// label and hint.
+  /// default. Note: This does NOT affect the actual input text, only the label
+  /// and hint.
   final TextCase? textCase;
 
   /// The type of keyboard to use for editing the text.
@@ -121,22 +122,26 @@ class SketchyTextInput extends StatefulWidget {
   /// Whether to show the cursor.
   final bool? showCursor;
 
-  /// The maximum number of characters (Unicode scalar values) to allow in the text field.
+  /// The maximum number of characters (Unicode scalar values) to allow in the
+  /// text field.
   final int? maxLength;
 
   /// Called for each distinct tap except for every second tap of a double tap.
   final GestureTapCallback? onTap;
 
-  /// Called for each tap that occurs outside of the [TextFieldTapRegion] group when the text field is focused.
+  /// Called for each tap that occurs outside of the [TextFieldTapRegion] group
+  /// when the text field is focused.
   final TapRegionCallback? onTapOutside;
 
   /// Optional input validation and formatting overrides.
   final List<TextInputFormatter>? inputFormatters;
 
-  /// If false the text field is "disabled": it ignores taps and its [decoration] is rendered in grey.
+  /// If false the text field is "disabled": it ignores taps and its
+  /// decoration is rendered in grey.
   final bool? enabled;
 
-  /// Whether this text field should focus itself if nothing else is already focused.
+  /// Whether this text field should focus itself if nothing else is already
+  /// focused.
   final bool autofocus;
 
   @override
@@ -224,9 +229,9 @@ class _SketchyTextInputState extends State<SketchyTextInput> {
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     textSelectionTheme: TextSelectionThemeData(
-                      cursorColor: theme.colors.ink,
-                      selectionColor: theme.colors.primary.withOpacity(0.3),
-                      selectionHandleColor: theme.colors.ink,
+                      cursorColor: theme.inkColor,
+                      selectionColor: theme.primaryColor.withValues(alpha: 0.3),
+                      selectionHandleColor: theme.inkColor,
                     ),
                   ),
                   child: Material(
@@ -235,7 +240,7 @@ class _SketchyTextInputState extends State<SketchyTextInput> {
                       controller: _controller,
                       focusNode: _focusNode,
                       style: effectiveStyle,
-                      cursorColor: theme.colors.ink,
+                      cursorColor: theme.inkColor,
                       decoration: InputDecoration(
                         hintText: displayHint,
                         hintStyle: effectiveHintStyle,

@@ -46,53 +46,55 @@ class SketchyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-        builder: (context, theme) {
-          final bubbleFill = alignment == SketchyTileAlignment.start
-              ? theme.colors.paper
-              : theme.colors.secondary.withValues(alpha: 0.5);
+    builder: (context, theme) {
+      final bubbleFill = alignment == SketchyTileAlignment.start
+          ? theme.paperColor
+          : theme.secondaryColor.withValues(alpha: 0.5);
 
-          final content = SketchySurface(
-            padding: const EdgeInsets.all(12),
-            fillColor: bubbleFill,
-            strokeColor: theme.colors.ink,
-            createPrimitive: () => SketchyPrimitive.roundedRectangle(
-              cornerRadius: theme.borderRadius,
-              fill: SketchyFill.solid,
+      final content = SketchySurface(
+        padding: const EdgeInsets.all(12),
+        fillColor: bubbleFill,
+        strokeColor: theme.inkColor,
+        createPrimitive: () => SketchyPrimitive.roundedRectangle(
+          cornerRadius: theme.borderRadius,
+          fill: SketchyFill.solid,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (leading != null) ...[leading!, const SizedBox(width: 12)],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (title != null)
+                    DefaultTextStyle(
+                      style: theme.typography.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      child: title!,
+                    ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4),
+                    DefaultTextStyle(
+                      style: theme.typography.caption,
+                      child: subtitle!,
+                    ),
+                  ],
+                ],
+              ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (leading != null) ...[leading!, const SizedBox(width: 12)],
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (title != null)
-                        DefaultTextStyle(
-                          style: theme.typography.body.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                          child: title!,
-                        ),
-                      if (subtitle != null) ...[
-                        const SizedBox(height: 4),
-                        DefaultTextStyle(
-                            style: theme.typography.caption, child: subtitle!),
-                      ],
-                    ],
-                  ),
-                ),
-                if (trailing != null) ...[const SizedBox(width: 12), trailing!],
-              ],
-            ),
-          );
-
-          final bubble = alignment == SketchyTileAlignment.end
-              ? Align(alignment: Alignment.centerRight, child: content)
-              : Align(alignment: Alignment.centerLeft, child: content);
-
-          if (onTap == null) return bubble;
-          return GestureDetector(onTap: onTap, child: bubble);
-        },
+            if (trailing != null) ...[const SizedBox(width: 12), trailing!],
+          ],
+        ),
       );
+
+      final bubble = alignment == SketchyTileAlignment.end
+          ? Align(alignment: Alignment.centerRight, child: content)
+          : Align(alignment: Alignment.centerLeft, child: content);
+
+      if (onTap == null) return bubble;
+      return GestureDetector(onTap: onTap, child: bubble);
+    },
+  );
 }

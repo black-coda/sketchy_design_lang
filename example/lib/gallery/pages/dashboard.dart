@@ -14,114 +14,119 @@ class WireframeDashboardExample extends StatelessWidget {
       final typography = theme.typography;
 
       return SketchyScaffold(
-      appBar: const SketchyAppBar(
-        title: Text('Wireframe Productivity Dashboard'),
-        actions: [
-          SketchyTooltip(
-            message: 'New board',
-            child: SketchyIconButton(icon: SketchyIcons.plus),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth > 900;
-            return Flex(
-              direction: isWide ? Axis.horizontal : Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: isWide ? 240 : double.infinity,
-                  child: SketchyCard(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Spaces', style: typography.title),
-                          const SizedBox(height: 12),
-                          ...['Inbox', 'Team board', 'Ideas', 'Archive'].map(
-                            (item) => SketchyListTile(
-                              title: Text(item),
-                              leading: const Text('—'),
-                              onTap: () {},
+        appBar: const SketchyAppBar(
+          title: Text('Wireframe Productivity Dashboard'),
+          actions: [
+            SketchyTooltip(
+              message: 'New board',
+              child: SketchyIconButton(icon: SketchyIcons.plus),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth > 900;
+              return Flex(
+                direction: isWide ? Axis.horizontal : Axis.vertical,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: isWide ? 240 : double.infinity,
+                    child: SketchyCard(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Spaces', style: typography.title),
+                            const SizedBox(height: 12),
+                            ...['Inbox', 'Team board', 'Ideas', 'Archive'].map(
+                              (item) => SketchyListTile(
+                                title: Text(item),
+                                leading: const Text('—'),
+                                onTap: () {},
+                              ),
                             ),
-                          ),
-                          const SketchyDivider(),
-                          SketchyButton(
-                            onPressed: () {},
-                            child: Text('Add space', style: typography.label),
-                          ),
-                        ],
+                            const SketchyDivider(),
+                            SketchyButton(
+                              onPressed: () {},
+                              child: Text('Add space', style: typography.label),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                if (isWide)
-                  const SizedBox(width: 24)
-                else
-                  const SizedBox(height: 24),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Wrap(
-                        spacing: 24,
-                        runSpacing: 24,
-                        children: [
-                          const _DashboardCard(
-                            title: 'Weekly throughput',
-                            child: SizedBox(
-                              height: 180,
-                              child: RoughChart(data: [12, 16, 10, 20, 14, 18]),
-                            ),
-                          ),
-                          _DashboardCard(
-                            title: 'Active flows',
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Storyboard revamp',
-                                  style: typography.body,
+                  if (isWide)
+                    const SizedBox(width: 24)
+                  else
+                    const SizedBox(height: 24),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Wrap(
+                          spacing: 24,
+                          runSpacing: 24,
+                          children: [
+                            const _DashboardCard(
+                              title: 'Weekly throughput',
+                              child: SizedBox(
+                                height: 180,
+                                child: RoughChart(
+                                  data: [12, 16, 10, 20, 14, 18],
                                 ),
-                                const SizedBox(height: 4),
-                                const SketchyProgressBar(value: 0.62),
-                                const SizedBox(height: 12),
-                                Text('Billing polish', style: typography.body),
-                                const SizedBox(height: 4),
-                                const SketchyProgressBar(value: 0.31),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      _DashboardCard(
-                        title: 'Feed',
-                        child: Column(
-                          children: List.generate(
-                            3,
-                            (index) => SketchyListTile(
-                              title: Text('Concept draft #$index'),
-                              subtitle: const Text('Updated 2m ago'),
-                              trailing: const SketchyIconButton(
-                                icon: SketchyIcons.chevronRight,
                               ),
-                              onTap: () {},
+                            ),
+                            _DashboardCard(
+                              title: 'Active flows',
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Storyboard revamp',
+                                    style: typography.body,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const SketchyProgressBar(value: 0.62),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    'Billing polish',
+                                    style: typography.body,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const SketchyProgressBar(value: 0.31),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        _DashboardCard(
+                          title: 'Feed',
+                          child: Column(
+                            children: List.generate(
+                              3,
+                              (index) => SketchyListTile(
+                                title: Text('Concept draft #$index'),
+                                subtitle: const Text('Updated 2m ago'),
+                                trailing: const SketchyIconButton(
+                                  icon: SketchyIcons.chevronRight,
+                                ),
+                                onTap: () {},
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
-      ),
       );
     },
   );
@@ -137,17 +142,17 @@ class _DashboardCard extends StatelessWidget {
     builder: (context, theme) {
       final typography = theme.typography;
       return SketchyCard(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: typography.title),
-            const SizedBox(height: 12),
-            child,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: typography.title),
+              const SizedBox(height: 12),
+              child,
+            ],
+          ),
         ),
-      ),
       );
     },
   );
@@ -170,7 +175,7 @@ class _ChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = SketchyPalette.black
+      ..color = SketchyColors.black
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

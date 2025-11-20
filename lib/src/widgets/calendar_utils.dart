@@ -68,35 +68,30 @@ String formatMonthYear(DateTime date) =>
     '${monthNames[date.month - 1]} ${date.year}';
 
 /// Gets the first day of the month for the given date.
-DateTime getFirstOfMonth(DateTime date) =>
-    DateTime(date.year, date.month, 1);
+DateTime getFirstOfMonth(DateTime date) => DateTime(date.year, date.month, 1);
 
 /// Gets the first day of the next month.
-DateTime getNextMonth(DateTime currentFirstOfMonth) => DateTime(
-      currentFirstOfMonth.year,
-      currentFirstOfMonth.month + 1,
-      1,
-    );
+DateTime getNextMonth(DateTime currentFirstOfMonth) =>
+    DateTime(currentFirstOfMonth.year, currentFirstOfMonth.month + 1, 1);
 
 /// Gets the first day of the previous month.
-DateTime getPreviousMonth(DateTime currentFirstOfMonth) => DateTime(
-      currentFirstOfMonth.year,
-      currentFirstOfMonth.month - 1,
-      1,
-    );
+DateTime getPreviousMonth(DateTime currentFirstOfMonth) =>
+    DateTime(currentFirstOfMonth.year, currentFirstOfMonth.month - 1, 1);
 
 /// Calculates the day offset needed to align the calendar grid.
 ///
 /// Returns a negative offset representing how many days before the 1st
 /// of the month should be displayed to align the grid with weekdays.
-int calculateDayOffset(DateTime firstOfMonth) =>
-    0 - (firstOfMonth.weekday % 7);
+int calculateDayOffset(DateTime firstOfMonth) => 0 - (firstOfMonth.weekday % 7);
 
 /// Calculates the number of weeks needed to display the month.
 int calculateWeekCount(DateTime firstOfMonth) {
   final dayOffset = calculateDayOffset(firstOfMonth);
-  final lastDayOfMonth =
-      DateTime(firstOfMonth.year, firstOfMonth.month + 1, 0).day;
+  final lastDayOfMonth = DateTime(
+    firstOfMonth.year,
+    firstOfMonth.month + 1,
+    0,
+  ).day;
   final totalDays = lastDayOfMonth - dayOffset;
   return (totalDays / 7).ceil();
 }
@@ -137,9 +132,7 @@ List<CalendarCell> computeCalendarCells({
           text: day.day.toString(),
           selected: isSelected,
           dimmed: !isCurrentMonth,
-          color: isCurrentMonth
-              ? inkColor
-              : inkColor.withValues(alpha: 0.35),
+          color: isCurrentMonth ? inkColor : inkColor.withValues(alpha: 0.35),
           disabled: false,
         ),
       );

@@ -19,10 +19,7 @@ enum SketchyFill {
 /// Customization options for how hachure/solid fills are rendered.
 class SketchyFillOptions {
   /// Creates a bundle of overrides for sketchy fill rendering.
-  const SketchyFillOptions({
-    this.hachureGap,
-    this.fillWeight,
-  });
+  const SketchyFillOptions({this.hachureGap, this.fillWeight});
 
   /// Overrides the spacing between hachure lines.
   final double? hachureGap;
@@ -120,7 +117,7 @@ class SketchyPrimitive {
     return _cachedDrawable!;
   }
 
-DrawConfig _buildConfig(double roughness) => DrawConfig.build(
+  DrawConfig _buildConfig(double roughness) => DrawConfig.build(
     seed: _seed,
     roughness: lerpDouble(0.35, 2.2, roughness),
     bowing: lerpDouble(0.04, 1.1, roughness),
@@ -188,10 +185,8 @@ Filler _buildFiller(
 ) {
   final fillerConfig = FillerConfig.build(
     drawConfig: config,
-    hachureGap:
-        options?.hachureGap ?? (lerpDouble(6, 16, 1 - roughness) ?? 10),
-    fillWeight:
-        options?.fillWeight ?? (lerpDouble(0.6, 1.8, roughness) ?? 1),
+    hachureGap: options?.hachureGap ?? (lerpDouble(6, 16, 1 - roughness) ?? 10),
+    fillWeight: options?.fillWeight ?? (lerpDouble(0.6, 1.8, roughness) ?? 1),
   );
 
   switch (fill) {

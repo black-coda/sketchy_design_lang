@@ -15,13 +15,13 @@ class SketchyExamplesApp extends StatefulWidget {
 }
 
 class _SketchyExamplesAppState extends State<SketchyExamplesApp> {
-  SketchyColorMode _mode = SketchyColorMode.blue;
+  SketchyThemes _theme = SketchyThemes.blue;
   double _roughness = 0.5;
 
   void _cycleMode() {
-    const modes = SketchyColorMode.values;
-    final current = modes.indexOf(_mode);
-    setState(() => _mode = modes[(current + 1) % modes.length]);
+    const themes = SketchyThemes.values;
+    final current = themes.indexOf(_theme);
+    setState(() => _theme = themes[(current + 1) % themes.length]);
   }
 
   void _handleRoughness(double value) {
@@ -31,7 +31,7 @@ class _SketchyExamplesAppState extends State<SketchyExamplesApp> {
   @override
   Widget build(BuildContext context) => SketchyApp(
     title: 'Sketchy Examples',
-    theme: SketchyThemeData.fromMode(_mode, roughness: _roughness),
+    theme: SketchyThemeData.fromTheme(_theme, roughness: _roughness),
     debugShowCheckedModeBanner: false,
     home: ExampleGallery(
       onCycleMode: _cycleMode,

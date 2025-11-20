@@ -1,163 +1,165 @@
-import 'package:flutter/painting.dart';
+import 'dart:ui';
 
-import 'sketchy_color_mode.dart';
-import 'sketchy_palette.dart';
+import '../../sketchy_design_lang.dart'
+    show SketchyThemeData, SketchyThemeTokens;
+import 'sketchy_theme.dart' show SketchyThemeData, SketchyThemeTokens;
 
-/// Palette describing the “ink and paper” colors Sketchy components use.
+/// Static raw color palette for the Sketchy design language.
+///
+/// These are the primitive values used to build [SketchyThemeData].
+/// Do not use these directly in widgets; prefer [SketchyThemeTokens].
 class SketchyColors {
-  /// Creates a palette with the provided role colors.
-  const SketchyColors({
-    required this.mode,
-    required this.ink,
-    required this.paper,
-    required this.primary,
-    required this.secondary,
-    required this.info,
-    required this.warning,
-    required this.success,
-  });
+  const SketchyColors._();
 
-  /// Builds colors for the provided [mode].
-  factory SketchyColors.forMode(SketchyColorMode mode) {
-    final palette = _modePalettes[mode]!;
-    return SketchyColors(
-      mode: mode,
-      ink: palette.ink,
-      paper: palette.paper,
-      primary: palette.primary,
-      secondary: palette.secondary,
-      info: SketchyPalette.info,
-      warning: SketchyPalette.warning,
-      success: SketchyPalette.success,
-    );
-  }
+  // -- Base --
+  /// Pure black.
+  static const Color black = Color(0xFF000000);
 
-  /// Active color mode.
-  final SketchyColorMode mode;
+  /// Pure white.
+  static const Color white = Color(0xFFFFFFFF);
 
-  /// Primary stroke color used for outlines and text.
-  final Color ink;
+  /// Transparent.
+  static const Color transparent = Color(0x00000000);
 
-  /// Background color emulating paper.
-  final Color paper;
+  // -- Grays --
+  /// Dark charcoal gray.
+  static const Color charcoal = Color(0xFF0F0F0F);
 
-  /// Bold accent color for primary actions.
-  final Color primary;
+  /// Slate gray.
+  static const Color slate = Color(0xFF3A3A3A);
 
-  /// Softer accent variant for fills.
-  final Color secondary;
+  /// Light ash gray.
+  static const Color ash = Color(0xFFE0E0E0);
 
-  /// Informational accent color.
-  final Color info;
+  /// Very light gray.
+  static const Color lightGray = Color(0xFFF5F5F5);
 
-  /// Warning accent color.
-  final Color warning;
+  // -- Reds --
+  /// Bright scarlet red.
+  static const Color scarlet = Color(0xFFE53935);
 
-  /// Success accent color.
-  final Color success;
+  /// Deep maroon red.
+  static const Color maroon = Color(0xFF5C1111);
 
-  /// Returns a copy of this palette with the provided overrides.
-  SketchyColors copyWith({
-    SketchyColorMode? mode,
-    Color? ink,
-    Color? paper,
-    Color? primary,
-    Color? secondary,
-    Color? info,
-    Color? warning,
-    Color? success,
-  }) => SketchyColors(
-    mode: mode ?? this.mode,
-    ink: ink ?? this.ink,
-    paper: paper ?? this.paper,
-    primary: primary ?? this.primary,
-    secondary: secondary ?? this.secondary,
-    info: info ?? this.info,
-    warning: warning ?? this.warning,
-    success: success ?? this.success,
-  );
+  /// Pale blush red.
+  static const Color blush = Color(0xFFFFF3F0);
+
+  /// Light coral red.
+  static const Color lightCoral = Color(0xFFFFCDD2);
+
+  /// Carmine red (used for errors).
+  static const Color carmine = Color(0xFFD64550);
+
+  /// Salmon red (used for warnings).
+  static const Color salmon = Color(0xFFED6A5A);
+
+  // -- Oranges --
+  /// Ember orange.
+  static const Color ember = Color(0xFFFB8C00);
+
+  /// Rust orange.
+  static const Color rust = Color(0xFF7A2F05);
+
+  /// Apricot orange.
+  static const Color apricot = Color(0xFFFFF4E9);
+
+  /// Peach orange.
+  static const Color peach = Color(0xFFFFE0B2);
+
+  // -- Yellows --
+  /// Lemon yellow.
+  static const Color lemon = Color(0xFFFBC02D);
+
+  /// Ochre yellow.
+  static const Color ochre = Color(0xFF7C5B04);
+
+  /// Cream yellow.
+  static const Color cream = Color(0xFFFFFBE6);
+
+  /// Light lemon yellow.
+  static const Color lightLemon = Color(0xFFFFF59D);
+
+  // -- Greens --
+  /// Lime green.
+  static const Color lime = Color(0xFF2E7D32);
+
+  /// Forest green.
+  static const Color forestGreen = Color(0xFF184B2B);
+
+  /// Mint green.
+  static const Color mint = Color(0xFFF1FFF4);
+
+  /// Light sage green.
+  static const Color lightSage = Color(0xFFC8E6C9);
+
+  /// Seafoam green (used for success).
+  static const Color seafoam = Color(0xFF6C9A8B);
+
+  // -- Cyans --
+  /// Teal cyan.
+  static const Color teal = Color(0xFF00ACC1);
+
+  /// Deep teal cyan.
+  static const Color deepTeal = Color(0xFF06464E);
+
+  /// Aqua cyan.
+  static const Color aqua = Color(0xFFF0FDFF);
+
+  /// Turquoise cyan.
+  static const Color turquoise = Color(0xFFB2EBF2);
+
+  // -- Blues --
+  /// Cobalt blue.
+  static const Color cobalt = Color(0xFF1976D2);
+
+  /// Navy blue.
+  static const Color navy = Color(0xFF0F305D);
+
+  /// Cloud blue.
+  static const Color cloud = Color(0xFFF0F6FF);
+
+  /// Sky blue.
+  static const Color sky = Color(0xFFBBDEFB);
+
+  /// Steel blue (used for info).
+  static const Color steel = Color(0xFF4F7CAC);
+
+  // -- Indigos --
+  /// Indigo.
+  static const Color indigo = Color(0xFF5C6BC0);
+
+  /// Midnight indigo.
+  static const Color midnight = Color(0xFF261E61);
+
+  /// Lavender indigo.
+  static const Color lavender = Color(0xFFF4F0FF);
+
+  /// Periwinkle indigo.
+  static const Color periwinkle = Color(0xFFD1C4E9);
+
+  // -- Violets --
+  /// Violet.
+  static const Color violet = Color(0xFF8E24AA);
+
+  /// Plum violet.
+  static const Color plum = Color(0xFF3C164D);
+
+  /// Orchid violet.
+  static const Color orchid = Color(0xFFFFF0FF);
+
+  /// Lilac violet.
+  static const Color lilac = Color(0xFFE1BEE7);
+
+  // -- Magentas --
+  /// Magenta.
+  static const Color magenta = Color(0xFFD81B60);
+
+  /// Wine magenta.
+  static const Color wine = Color(0xFF5A0E2A);
+
+  /// Rose magenta.
+  static const Color rose = Color(0xFFFFF1F7);
+
+  /// Pink magenta.
+  static const Color pink = Color(0xFFF8BBD0);
 }
-
-class _ModePalette {
-  const _ModePalette({
-    required this.ink,
-    required this.paper,
-    required this.primary,
-    required this.secondary,
-  });
-
-  final Color ink;
-  final Color paper;
-  final Color primary;
-  final Color secondary;
-}
-
-const Map<SketchyColorMode, _ModePalette> _modePalettes =
-    <SketchyColorMode, _ModePalette>{
-      SketchyColorMode.white: _ModePalette(
-        ink: SketchyPalette.ink,
-        paper: SketchyPalette.paper,
-        primary: SketchyPalette.black,
-        secondary: SketchyPalette.ash,
-      ),
-      SketchyColorMode.red: _ModePalette(
-        ink: SketchyPalette.redInk,
-        paper: SketchyPalette.redPaper,
-        primary: SketchyPalette.scarlet,
-        secondary: SketchyPalette.lightCoral,
-      ),
-      SketchyColorMode.orange: _ModePalette(
-        ink: SketchyPalette.orangeInk,
-        paper: SketchyPalette.orangePaper,
-        primary: SketchyPalette.ember,
-        secondary: SketchyPalette.lightPeach,
-      ),
-      SketchyColorMode.yellow: _ModePalette(
-        ink: SketchyPalette.yellowInk,
-        paper: SketchyPalette.yellowPaper,
-        primary: SketchyPalette.lemon,
-        secondary: SketchyPalette.lightLemon,
-      ),
-      SketchyColorMode.green: _ModePalette(
-        ink: SketchyPalette.greenInk,
-        paper: SketchyPalette.greenPaper,
-        primary: SketchyPalette.lime,
-        secondary: SketchyPalette.lightSage,
-      ),
-      SketchyColorMode.cyan: _ModePalette(
-        ink: SketchyPalette.cyanInk,
-        paper: SketchyPalette.cyanPaper,
-        primary: SketchyPalette.teal,
-        secondary: SketchyPalette.lightTurquoise,
-      ),
-      SketchyColorMode.blue: _ModePalette(
-        ink: SketchyPalette.blueInk,
-        paper: SketchyPalette.bluePaper,
-        primary: SketchyPalette.cobalt,
-        secondary: SketchyPalette.lightSkyBlue,
-      ),
-      SketchyColorMode.indigo: _ModePalette(
-        ink: SketchyPalette.indigoInk,
-        paper: SketchyPalette.indigoPaper,
-        primary: SketchyPalette.indigo,
-        secondary: SketchyPalette.lightPeriwinkle,
-      ),
-      SketchyColorMode.violet: _ModePalette(
-        ink: SketchyPalette.violetInk,
-        paper: SketchyPalette.violetPaper,
-        primary: SketchyPalette.violet,
-        secondary: SketchyPalette.lightLilac,
-      ),
-      SketchyColorMode.magenta: _ModePalette(
-        ink: SketchyPalette.magentaInk,
-        paper: SketchyPalette.magentaPaper,
-        primary: SketchyPalette.magenta,
-        secondary: SketchyPalette.lightPink,
-      ),
-      SketchyColorMode.black: _ModePalette(
-        ink: SketchyPalette.white,
-        paper: SketchyPalette.black,
-        primary: SketchyPalette.white,
-        secondary: SketchyPalette.slate,
-      ),
-    };

@@ -21,73 +21,73 @@ class _DocsViewerExampleState extends State<DocsViewerExample> {
       final typography = theme.typography;
 
       return SketchyScaffold(
-      appBar: const SketchyAppBar(title: Text('Docs Viewer')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            SketchyTabs(
-              tabs: const ['Getting started', 'API reference', 'Cookbook'],
-              selectedIndex: _index,
-              onChanged: (value) => setState(() => _index = value),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: SketchyCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ListView(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              _docs[_index].title,
-                              style: typography.headline,
+        appBar: const SketchyAppBar(title: Text('Docs Viewer')),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              SketchyTabs(
+                tabs: const ['Getting started', 'API reference', 'Cookbook'],
+                selectedIndex: _index,
+                onChanged: (value) => setState(() => _index = value),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: SketchyCard(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ListView(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _docs[_index].title,
+                                style: typography.headline,
+                              ),
                             ),
-                          ),
-                          SketchyTooltip(
-                            message: 'copy link.',
-                            child: SketchyIconButton(
-                              icon: SketchyIcons.copy,
-                              onPressed: () async {
-                                await Clipboard.setData(
-                                  ClipboardData(text: _docs[_index].title),
-                                );
-                                if (!context.mounted) return;
-                                SketchyMessage.show(
-                                  context,
-                                  message: 'Link copied.',
-                                );
-                              },
+                            SketchyTooltip(
+                              message: 'copy link.',
+                              child: SketchyIconButton(
+                                icon: SketchyIcons.copy,
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                    ClipboardData(text: _docs[_index].title),
+                                  );
+                                  if (!context.mounted) return;
+                                  SketchyMessage.show(
+                                    context,
+                                    message: 'Link copied.',
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      const SketchyDivider(),
-                      const SizedBox(height: 12),
-                      ..._docs[_index].sections.map(
-                        (section) => Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(section.title, style: typography.title),
-                              const SizedBox(height: 4),
-                              Text(section.body, style: typography.body),
-                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        const SketchyDivider(),
+                        const SizedBox(height: 12),
+                        ..._docs[_index].sections.map(
+                          (section) => Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(section.title, style: typography.title),
+                                const SizedBox(height: 4),
+                                Text(section.body, style: typography.body),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       );
     },
   );

@@ -66,7 +66,7 @@ class SketchyTabs extends StatelessWidget {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: i == selectedIndex
-                              ? backgroundColor ?? theme.colors.paper
+                              ? backgroundColor ?? theme.paperColor
                               : const Color(0x00000000),
                         ),
                       ),
@@ -82,20 +82,14 @@ class SketchyTabs extends StatelessWidget {
 
   Widget _buildTabSurface(SketchyThemeData theme, int i) {
     final isSelected = i == selectedIndex;
-    final radius = theme.borderRadius;
-    final primitiveBuilder = radius <= 0
-        ? () => SketchyPrimitive.rectangle(
-            fill: isSelected ? SketchyFill.solid : SketchyFill.none,
-          )
-        : () => SketchyPrimitive.roundedRectangle(
-            cornerRadius: radius,
-            fill: isSelected ? SketchyFill.solid : SketchyFill.none,
-          );
+    SketchyPrimitive primitiveBuilder() => SketchyPrimitive.rectangle(
+      fill: isSelected ? SketchyFill.solid : SketchyFill.none,
+    );
 
     Widget surface = SketchySurface(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      fillColor: isSelected ? theme.colors.secondary : theme.colors.paper,
-      strokeColor: theme.colors.ink,
+      fillColor: isSelected ? theme.secondaryColor : theme.paperColor,
+      strokeColor: theme.inkColor,
       createPrimitive: primitiveBuilder,
       child: SketchyText(
         tabs[i],
@@ -119,7 +113,7 @@ class SketchyTabs extends StatelessWidget {
               height: theme.strokeWidth,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: backgroundColor ?? theme.colors.paper,
+                  color: backgroundColor ?? theme.paperColor,
                 ),
               ),
             ),

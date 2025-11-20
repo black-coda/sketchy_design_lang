@@ -2,7 +2,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
-import '../widgets/sketchy_frame.dart';
+import 'sketchy_frame.dart';
 
 /// Sketchy radio button group.
 ///
@@ -79,7 +79,7 @@ class _SketchyRadioState<T> extends State<SketchyRadio<T>> {
                   height: 20,
                   shape: SketchyFrameShape.circle,
                   fill: SketchyFill.solid,
-                  fillColor: theme.colors.ink,
+                  fillColor: theme.inkColor,
                   child: const SizedBox.expand(),
                 ),
               ),

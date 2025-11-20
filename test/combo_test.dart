@@ -7,7 +7,7 @@ void main() {
     await tester.pumpWidget(
       SketchyApp(
         title: 'Test',
-        theme: SketchyThemeData.white(),
+        theme: SketchyThemeData.fromTheme(SketchyThemes.monochrome),
         home: Scaffold(
           body: Center(
             child: SketchyCombo<String>(

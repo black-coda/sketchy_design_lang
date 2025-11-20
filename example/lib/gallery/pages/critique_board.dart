@@ -28,7 +28,7 @@ class CollaborativeCritiqueBoardExample extends StatelessWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: theme.colors.paper,
+                        color: theme.paperColor,
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -37,7 +37,7 @@ class CollaborativeCritiqueBoardExample extends StatelessWidget {
                       child: SketchyChip.badge(
                         label: 'v${index + 1}',
                         tone: index.isEven
-                            ? SketchyChipTone.info
+                            ? SketchyChipTone.neutral
                             : SketchyChipTone.accent,
                       ),
                     ),

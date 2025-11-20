@@ -25,9 +25,9 @@ class _WhiteboardPaletteExampleState extends State<WhiteboardPaletteExample> {
         children: [
           Positioned.fill(
             child: ColoredBox(
-              color: theme.colors.paper,
+              color: theme.paperColor,
               child: CustomPaint(
-                painter: _WhiteboardPainter(showGrid: _showGrid),
+                painter: _WhiteboardPainter(showGrid: _showGrid, theme: theme),
               ),
             ),
           ),
@@ -85,14 +85,15 @@ class _WhiteboardPaletteExampleState extends State<WhiteboardPaletteExample> {
 }
 
 class _WhiteboardPainter extends CustomPainter {
-  _WhiteboardPainter({required this.showGrid});
+  _WhiteboardPainter({required this.showGrid, required this.theme});
   final bool showGrid;
+  final SketchyThemeData theme;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (showGrid) {
       final paint = Paint()
-        ..color = SketchyPalette.canvasShadow
+        ..color = theme.inkColor.withValues(alpha: 0.1)
         ..strokeWidth = 1;
       const gap = 32.0;
       for (var x = 0.0; x < size.width; x += gap) {
@@ -104,11 +105,11 @@ class _WhiteboardPainter extends CustomPainter {
     }
 
     final strokePaint = Paint()
-      ..color = SketchyPalette.gridLine
+      ..color = theme.mutedColor
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
     final fillPaint = Paint()
-      ..color = SketchyPalette.cream
+      ..color = SketchyColors.cream
       ..style = PaintingStyle.fill;
 
     final circleCenter = size.center(const Offset(-80, -40));
@@ -118,7 +119,7 @@ class _WhiteboardPainter extends CustomPainter {
     final rectTopLeft = size.center(const Offset(40, 20));
     final rect = Rect.fromLTWH(rectTopLeft.dx, rectTopLeft.dy, 140, 80);
     final rectFill = Paint()
-      ..color = SketchyPalette.sky
+      ..color = SketchyColors.sky
       ..style = PaintingStyle.fill;
     canvas.drawRect(rect, rectFill);
     canvas.drawRect(rect, strokePaint);
@@ -126,5 +127,5 @@ class _WhiteboardPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _WhiteboardPainter oldDelegate) =>
-      oldDelegate.showGrid != showGrid;
+      oldDelegate.showGrid != showGrid || oldDelegate.theme != theme;
 }
