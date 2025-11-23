@@ -220,6 +220,25 @@ class _SketchyDropdownButtonState<T> extends State<SketchyDropdownButton<T>>
     final box = context.findRenderObject()! as RenderBox;
     final position = box.localToGlobal(Offset.zero);
     final size = box.size;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final overlaySize = overlay.size;
+
+    // Calculate available space below and above
+    final spaceBelow = overlaySize.height - (position.dy + size.height);
+    final spaceAbove = position.dy;
+
+    // Estimate menu height (rough calculation based on items)
+    // We add some padding/border overhead (vertical padding 8 * 2 = 16)
+    final estimatedHeight =
+        (widget.items.length * (widget.itemHeight ?? 48.0)) + 16;
+
+    final fitsBelow = spaceBelow >= estimatedHeight;
+    final fitsAbove = spaceAbove >= estimatedHeight;
+
+    // Show below if it fits, or if it doesn't fit above either and there's more
+    // space below.
+    final showBelow = fitsBelow || (!fitsAbove && spaceBelow >= spaceAbove);
 
     unawaited(
       showGeneralDialog(
@@ -227,53 +246,59 @@ class _SketchyDropdownButtonState<T> extends State<SketchyDropdownButton<T>>
         barrierColor: const Color(0x00000000),
         barrierDismissible: true,
         barrierLabel: 'Dismiss',
-        pageBuilder: (context, animation, secondaryAnimation) => Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.only(
+        transitionDuration: Duration.zero,
+        pageBuilder: (context, animation, secondaryAnimation) => Stack(
+          children: [
+            Positioned(
               left: position.dx,
-              top: position.dy + size.height,
-            ),
-            child: SizedBox(
               width: size.width,
-              child: ClipRect(
-                child: SketchyFrame(
-                  alignment: null,
-                  cornerRadius: 0,
-                  fill: SketchyFill.solid,
-                  fillColor: widget.dropdownColor ?? theme.paperColor,
-                  strokeColor: theme.borderColor,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: widget.items
-                        .map(
-                          (item) => GestureDetector(
-                            onTap: () {
-                              updateValue(item.value);
-                              widget.onChanged?.call(item.value);
-                              Navigator.of(context).pop();
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: DefaultTextStyle(
-                                style:
-                                    widget.style ??
-                                    theme.typography.body.copyWith(
-                                      color: theme.inkColor,
-                                    ),
-                                child: item.child,
+              top: showBelow ? position.dy + size.height : null,
+              bottom: showBelow ? null : overlaySize.height - position.dy,
+              child: SketchyFrame(
+                alignment: null,
+                cornerRadius: 0,
+                fill: SketchyFill.solid,
+                fillColor: widget.dropdownColor ?? theme.paperColor,
+                strokeColor: theme.borderColor,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: (showBelow ? spaceBelow : spaceAbove) - 16,
+                  ),
+                  child: ClipRect(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: widget.items
+                            .map(
+                              (item) => GestureDetector(
+                                onTap: () {
+                                  updateValue(item.value);
+                                  widget.onChanged?.call(item.value);
+                                  Navigator.of(context).pop();
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: DefaultTextStyle(
+                                    style:
+                                        widget.style ??
+                                        theme.typography.body.copyWith(
+                                          color: theme.inkColor,
+                                        ),
+                                    child: item.child,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                            )
+                            .toList(),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
