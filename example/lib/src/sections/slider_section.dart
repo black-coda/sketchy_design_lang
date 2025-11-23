@@ -21,7 +21,7 @@ class _SliderSectionState extends State<SliderSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          SketchyText(
             'Value: ${(100 * _sliderValue).round()}',
             style: fieldLabelStyle(theme).copyWith(color: theme.secondaryColor),
           ),

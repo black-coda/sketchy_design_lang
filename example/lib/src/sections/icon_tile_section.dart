@@ -42,8 +42,8 @@ class _IconTileSectionState extends State<IconTileSection> {
           const SizedBox(height: 16),
           SketchyListTile(
             leading: const SketchySymbol(symbol: SketchySymbols.plus),
-            title: Text('Brand refresh', style: bodyStyle(theme)),
-            subtitle: Text(
+            title: SketchyText('Brand refresh', style: bodyStyle(theme)),
+            subtitle: SketchyText(
               'Rally design + docs for review',
               style: mutedStyle(theme),
             ),
@@ -56,8 +56,8 @@ class _IconTileSectionState extends State<IconTileSection> {
           const SizedBox(height: 12),
           SketchyListTile(
             leading: const SketchySymbol(symbol: SketchySymbols.chevronRight),
-            title: Text('Follow-up nudges', style: bodyStyle(theme)),
-            subtitle: Text(
+            title: SketchyText('Follow-up nudges', style: bodyStyle(theme)),
+            subtitle: SketchyText(
               'Mute autopings after 10pm',
               style: mutedStyle(theme),
             ),

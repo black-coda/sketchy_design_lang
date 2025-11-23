@@ -23,7 +23,7 @@ class _ToggleSectionState extends State<ToggleSection> {
     children: [
       SketchySwitch(value: value, onChanged: onChanged),
       const SizedBox(width: 12),
-      Expanded(child: Text(label, style: bodyStyle(theme))),
+      Expanded(child: SketchyText(label, style: bodyStyle(theme))),
     ],
   );
 
@@ -41,7 +41,7 @@ class _ToggleSectionState extends State<ToggleSection> {
             onChanged: (val) => setState(() => _notificationsOn = val),
           ),
           const SizedBox(height: 12),
-          Text(
+          SketchyText(
             'Use toggles for quick binary actions—no material switch required.',
             style: mutedStyle(theme),
           ),

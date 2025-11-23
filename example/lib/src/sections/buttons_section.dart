@@ -27,14 +27,20 @@ class _ButtonsSectionState extends State<ButtonsSection> {
           Row(
             children: [
               SketchyButton(
-                child: Text('Sketchy Button', style: buttonLabelStyle(theme)),
+                child: SketchyText(
+                  'Sketchy Button',
+                  style: buttonLabelStyle(theme),
+                ),
                 onPressed: () => setState(() => _showFirst = !_showFirst),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Opacity(
                   opacity: _showFirst ? 1.0 : 0.0,
-                  child: Text('<- Sketchy button', style: mutedStyle(theme)),
+                  child: SketchyText(
+                    '<- Sketchy button',
+                    style: mutedStyle(theme),
+                  ),
                 ),
               ),
             ],
@@ -43,7 +49,7 @@ class _ButtonsSectionState extends State<ButtonsSection> {
           Row(
             children: [
               SketchyButton(
-                child: Text(
+                child: SketchyText(
                   'Submit',
                   style: buttonLabelStyle(theme, color: theme.primaryColor),
                 ),
@@ -51,7 +57,7 @@ class _ButtonsSectionState extends State<ButtonsSection> {
               ),
               const SizedBox(width: 12),
               SketchyButton(
-                child: Text(
+                child: SketchyText(
                   'Cancel',
                   style: buttonLabelStyle(
                     theme,
@@ -66,12 +72,12 @@ class _ButtonsSectionState extends State<ButtonsSection> {
                   children: [
                     Opacity(
                       opacity: _showSubmit ? 1.0 : 0.0,
-                      child: Text('<- Submit', style: mutedStyle(theme)),
+                      child: SketchyText('<- Submit', style: mutedStyle(theme)),
                     ),
                     const SizedBox(width: 12),
                     Opacity(
                       opacity: _showCancel ? 1.0 : 0.0,
-                      child: Text('<- Cancel', style: mutedStyle(theme)),
+                      child: SketchyText('<- Cancel', style: mutedStyle(theme)),
                     ),
                   ],
                 ),
@@ -82,7 +88,7 @@ class _ButtonsSectionState extends State<ButtonsSection> {
           Row(
             children: [
               SketchyButton(
-                child: Text(
+                child: SketchyText(
                   'Long text button … hah',
                   style: buttonLabelStyle(theme),
                 ),
@@ -92,7 +98,7 @@ class _ButtonsSectionState extends State<ButtonsSection> {
               Expanded(
                 child: Opacity(
                   opacity: _showLong ? 1.0 : 0.0,
-                  child: Text('<- Long', style: mutedStyle(theme)),
+                  child: SketchyText('<- Long', style: mutedStyle(theme)),
                 ),
               ),
             ],

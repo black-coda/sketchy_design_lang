@@ -16,14 +16,14 @@ class DialogSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          SketchyText(
             'Dialogs keep the same rough frame and '
             'Comic Shanns tone.',
             style: mutedStyle(theme),
           ),
           const SizedBox(height: 12),
           SketchyButton(
-            child: Text('Open dialog', style: buttonLabelStyle(theme)),
+            child: SketchyText('Open dialog', style: buttonLabelStyle(theme)),
             onPressed: () {
               unawaited(
                 showGeneralDialog(
@@ -51,12 +51,12 @@ class DialogSection extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  SketchyText(
                                     'This is a sketchy dialog.',
                                     style: titleStyle(dialogTheme),
                                   ),
                                   const SizedBox(height: 24),
-                                  Text(
+                                  SketchyText(
                                     'It has a title and some content.',
                                     style: bodyStyle(dialogTheme),
                                   ),
@@ -67,7 +67,7 @@ class DialogSection extends StatelessWidget {
                                       SketchyButton(
                                         onPressed: () =>
                                             Navigator.of(context).pop(),
-                                        child: Text(
+                                        child: SketchyText(
                                           'Close',
                                           style: buttonLabelStyle(dialogTheme),
                                         ),

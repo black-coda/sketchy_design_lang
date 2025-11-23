@@ -61,7 +61,7 @@ class ConfigSection extends StatelessWidget {
         padding: const EdgeInsets.only(right: 8),
         child: SketchyButton(
           onPressed: isActive ? null : () => onThemeModeChanged(mode),
-          child: Text(
+          child: SketchyText(
             label,
             style: labelStyle.copyWith(
               color: isActive
@@ -104,7 +104,7 @@ class ConfigSection extends StatelessWidget {
               .map(
                 (entry) => SketchyDropdownMenuItem<String>(
                   value: entry.value,
-                  child: Text(entry.key, style: theme.typography.body),
+                  child: SketchyText(entry.key, style: theme.typography.body),
                 ),
               )
               .toList(),
@@ -123,7 +123,7 @@ class ConfigSection extends StatelessWidget {
               .map(
                 (casing) => SketchyDropdownMenuItem<TextCase>(
                   value: casing,
-                  child: Text(
+                  child: SketchyText(
                     textCaseLabel(casing),
                     style: theme.typography.body,
                   ),
@@ -158,7 +158,7 @@ class _ControlGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
+        SketchyText(
           label,
           style: theme.typography.title.copyWith(
             fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class _ThemeColorsControl extends StatelessWidget {
                   size: 22,
                 ),
                 const SizedBox(height: 4),
-                Text(
+                SketchyText(
                   option.name,
                   style: TextStyle(
                     fontSize: 12,

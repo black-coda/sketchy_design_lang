@@ -32,12 +32,12 @@ class _ChipSectionState extends State<ChipSection> {
                   title: 'Chip',
                   chips: [
                     const SketchyChip(
-                      label: Text('New drop'),
+                      label: SketchyText('New drop'),
                       compact: true,
                       tone: SketchyChipTone.neutral,
                     ),
                     SketchyChip(
-                      label: const Text('Shipped!'),
+                      label: const SketchyText('Shipped!'),
                       compact: true,
                       backgroundColor: theme.primaryColor.withValues(
                         alpha: 0.35,
@@ -45,7 +45,7 @@ class _ChipSectionState extends State<ChipSection> {
                       tone: SketchyChipTone.accent,
                     ),
                     SketchyChip(
-                      label: const Text(''),
+                      label: const SketchyText(''),
                       compact: true,
                       backgroundColor: theme.primaryColor.withValues(
                         alpha: 0.35,
@@ -63,23 +63,23 @@ class _ChipSectionState extends State<ChipSection> {
                   title: 'Choice',
                   chips: [
                     SketchyChoiceChip(
-                      label: const Text('Pinned'),
+                      label: const SketchyText('Pinned'),
                       selected: _pinnedChip,
                       onSelected: (val) => setState(() => _pinnedChip = val),
                     ),
                     SketchyChoiceChip(
-                      label: const Text('Snooze'),
+                      label: const SketchyText('Snooze'),
                       selected: _snoozedChip,
                       onSelected: (val) => setState(() => _snoozedChip = val),
                     ),
                     SketchyChoiceChip(
-                      label: const Text('Archive'),
+                      label: const SketchyText('Archive'),
                       selected: _archiveChip,
                       avatar: const FaIcon(FontAwesomeIcons.square),
                       onSelected: (val) => setState(() => _archiveChip = val),
                     ),
                     SketchyChoiceChip(
-                      label: const Text(''),
+                      label: const SketchyText(''),
                       selected: _iconOnlyChip,
                       avatar: const FaIcon(FontAwesomeIcons.paperPlane),
                       onSelected: (val) => setState(() => _iconOnlyChip = val),
@@ -98,7 +98,7 @@ class _ChipSectionState extends State<ChipSection> {
                   title: 'Badge',
                   chips: [
                     SketchyChip(
-                      label: const Text('Beta'),
+                      label: const SketchyText('Beta'),
                       compact: true,
                       tone: SketchyChipTone.accent,
                       backgroundColor: theme.primaryColor.withValues(
@@ -106,13 +106,13 @@ class _ChipSectionState extends State<ChipSection> {
                       ),
                     ),
                     SketchyChip(
-                      label: const Text('Muted'),
+                      label: const SketchyText('Muted'),
                       compact: true,
                       tone: SketchyChipTone.neutral,
                       backgroundColor: theme.paperColor,
                     ),
                     const SketchyChip(
-                      label: Text('Beta tag'),
+                      label: SketchyText('Beta tag'),
                       compact: true,
                       tone: SketchyChipTone.accent,
                       avatar: FaIcon(FontAwesomeIcons.pen),
@@ -127,17 +127,17 @@ class _ChipSectionState extends State<ChipSection> {
                   title: 'Suggestion',
                   chips: [
                     SketchyActionChip(
-                      label: const Text('#sketchythings'),
+                      label: const SketchyText('#sketchythings'),
                       onPressed: () {},
                       tone: SketchyChipTone.neutral,
                     ),
                     SketchyActionChip(
-                      label: const Text('Palette'),
+                      label: const SketchyText('Palette'),
                       onPressed: () {},
                       tone: SketchyChipTone.accent,
                     ),
                     SketchyActionChip(
-                      label: const Text(''),
+                      label: const SketchyText(''),
                       onPressed: () {},
                       tone: SketchyChipTone.accent,
                       avatar: const FaIcon(FontAwesomeIcons.plus),
@@ -168,7 +168,7 @@ class _ChipGallery extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(title, style: fieldLabelStyle(theme)),
+      SketchyText(title, style: fieldLabelStyle(theme)),
       const SizedBox(height: 8),
       Wrap(spacing: 12, runSpacing: 8, children: chips),
     ],

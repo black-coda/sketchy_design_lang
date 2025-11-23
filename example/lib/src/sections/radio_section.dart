@@ -28,7 +28,7 @@ class _RadioSectionState extends State<RadioSection> {
               if (value == null) return;
               setState(() => _selectedRadio = value);
             },
-            title: Text('Lafayette', style: bodyStyle(theme)),
+            title: SketchyText('Lafayette', style: bodyStyle(theme)),
           ),
           const SizedBox(height: 8),
           SketchyRadioListTile<String>(
@@ -38,7 +38,7 @@ class _RadioSectionState extends State<RadioSection> {
               if (value == null) return;
               setState(() => _selectedRadio = value);
             },
-            title: Text('Thomas Jefferson', style: bodyStyle(theme)),
+            title: SketchyText('Thomas Jefferson', style: bodyStyle(theme)),
           ),
         ],
       ),

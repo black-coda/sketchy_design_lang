@@ -26,11 +26,11 @@ class _CheckboxSectionState extends State<CheckboxSection> {
             value: _newsletterOptIn,
             onChanged: (checked) =>
                 setState(() => _newsletterOptIn = checked ?? false),
-            title: Text(
+            title: SketchyText(
               'Send me sketchy release notes',
               style: bodyStyle(theme),
             ),
-            subtitle: Text(
+            subtitle: SketchyText(
               'Early builds + easter eggs',
               style: mutedStyle(theme),
             ),
@@ -40,8 +40,11 @@ class _CheckboxSectionState extends State<CheckboxSection> {
             value: _mascotOptIn,
             onChanged: (checked) =>
                 setState(() => _mascotOptIn = checked ?? false),
-            title: Text('Mascot mode', style: bodyStyle(theme)),
-            subtitle: Text('More sketchy faces', style: mutedStyle(theme)),
+            title: SketchyText('Mascot mode', style: bodyStyle(theme)),
+            subtitle: SketchyText(
+              'More sketchy faces',
+              style: mutedStyle(theme),
+            ),
           ),
         ],
       ),

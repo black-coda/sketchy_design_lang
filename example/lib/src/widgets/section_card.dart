@@ -26,7 +26,7 @@ class SectionCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: titleStyle(theme)),
+              SketchyText(title, style: titleStyle(theme)),
               const SizedBox(height: 16),
               child,
             ],

@@ -64,7 +64,7 @@ class _ConversationSectionState extends State<ConversationSection>
           children: [
             SketchyTabBar(
               controller: _conversationTabController,
-              tabs: [for (final t in _conversationTabs) Text(t)],
+              tabs: [for (final t in _conversationTabs) SketchyText(t)],
               detachSelected: true,
               detachGap: theme.strokeWidth,
               backgroundColor: theme.paperColor,
@@ -82,14 +82,14 @@ class _ConversationSectionState extends State<ConversationSection>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    SketchyText(
                       sender,
                       style: theme.typography.title.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(message, style: bodyStyle(theme)),
+                    SketchyText(message, style: bodyStyle(theme)),
                   ],
                 ),
               ),
@@ -100,7 +100,7 @@ class _ConversationSectionState extends State<ConversationSection>
                 const SketchyTypingIndicator(),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: SketchyText(
                     'Archie is drafting a reply…',
                     style: mutedStyle(theme),
                   ),
@@ -112,7 +112,10 @@ class _ConversationSectionState extends State<ConversationSection>
                       message: 'Saved ${_conversationTabs[tabIndex]} note',
                     );
                   },
-                  child: Text('Show toast', style: buttonLabelStyle(theme)),
+                  child: SketchyText(
+                    'Show toast',
+                    style: buttonLabelStyle(theme),
+                  ),
                 ),
               ],
             ),

@@ -30,7 +30,7 @@ class HeroAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          SketchyText(
             'Sketchy',
             style: theme.typography.headline.copyWith(
               fontSize: 32,
@@ -38,7 +38,7 @@ class HeroAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text('''
+          SketchyText('''
 A hand-drawn, xkcd-inspired design language for Flutter on mobile, desktop, and
 web powered by the wired_elements code, the flutter_rough package and the
 Comic Shanns font.

@@ -14,7 +14,7 @@ class DividerSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          SketchyText(
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do '
             'eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
             style: bodyStyle(theme),
@@ -22,7 +22,7 @@ class DividerSection extends StatelessWidget {
           const SizedBox(height: 12),
           const SketchyDivider(),
           const SizedBox(height: 12),
-          Text(
+          SketchyText(
             'Duis aute irure dolor in reprehenderit in voluptate velit esse '
             'cillum dolore eu fugiat nulla pariatur.',
             style: bodyStyle(theme),

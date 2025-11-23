@@ -63,7 +63,7 @@ class _ProgressSectionState extends State<ProgressSection>
             children: [
               SketchyButton(
                 onPressed: _startProgress,
-                child: Text(
+                child: SketchyText(
                   'Start',
                   style: buttonLabelStyle(theme, color: theme.primaryColor),
                 ),
@@ -71,7 +71,7 @@ class _ProgressSectionState extends State<ProgressSection>
               const SizedBox(width: 8),
               SketchyButton(
                 onPressed: _stopProgress,
-                child: Text(
+                child: SketchyText(
                   'Stop',
                   style: buttonLabelStyle(theme, color: theme.errorColor),
                 ),
@@ -79,7 +79,7 @@ class _ProgressSectionState extends State<ProgressSection>
               const SizedBox(width: 8),
               SketchyButton(
                 onPressed: _resetProgress,
-                child: Text('Reset', style: buttonLabelStyle(theme)),
+                child: SketchyText('Reset', style: buttonLabelStyle(theme)),
               ),
             ],
           ),
