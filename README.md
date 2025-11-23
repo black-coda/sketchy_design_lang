@@ -39,7 +39,7 @@ the Sketchy Mode color brief.
 
 ## Look 'n' Feel
 
-![alt text](readme/design-system.gif)
+![](https://raw.githubusercontent.com/csells/sketchy_design_lang/refs/heads/main/readme/design-system.gif)
 
 ## Getting started
 
