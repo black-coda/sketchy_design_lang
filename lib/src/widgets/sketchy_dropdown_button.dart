@@ -10,10 +10,10 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_frame.dart';
 import 'value_sync_mixin.dart';
 
-/// A item for [DropdownButton].
-class DropdownMenuItem<T> {
+/// A item for [SketchyDropdownButton].
+class SketchyDropdownMenuItem<T> {
   /// Creates an item for a combo box.
-  const DropdownMenuItem({required this.value, required this.child});
+  const SketchyDropdownMenuItem({required this.value, required this.child});
 
   /// The value to return if the user selects this item.
   final T value;
@@ -23,9 +23,9 @@ class DropdownMenuItem<T> {
 }
 
 /// Sketchy combo box.
-class DropdownButton<T> extends StatefulWidget {
+class SketchyDropdownButton<T> extends StatefulWidget {
   /// Creates a combo box backed by [items] with an optional selected [value].
-  const DropdownButton({
+  const SketchyDropdownButton({
     required this.items,
     super.key,
     this.value,
@@ -58,7 +58,7 @@ class DropdownButton<T> extends StatefulWidget {
   final T? value;
 
   /// The selection items for combo.
-  final List<DropdownMenuItem<T>> items;
+  final List<SketchyDropdownMenuItem<T>> items;
 
   /// Called when the combo selected value changed.
   final ValueChanged<T?>? onChanged;
@@ -134,18 +134,19 @@ class DropdownButton<T> extends StatefulWidget {
   static const double kMinInteractiveDimension = 48;
 
   @override
-  State<DropdownButton<T>> createState() => _DropdownButtonState<T>();
+  State<SketchyDropdownButton<T>> createState() =>
+      _SketchyDropdownButtonState<T>();
 }
 
-class _DropdownButtonState<T> extends State<DropdownButton<T>>
-    with ValueSyncMixin<T?, DropdownButton<T>> {
+class _SketchyDropdownButtonState<T> extends State<SketchyDropdownButton<T>>
+    with ValueSyncMixin<T?, SketchyDropdownButton<T>> {
   final double _height = 56;
 
   @override
   T? get widgetValue => widget.value;
 
   @override
-  T? getOldWidgetValue(DropdownButton<T> oldWidget) => oldWidget.value;
+  T? getOldWidgetValue(SketchyDropdownButton<T> oldWidget) => oldWidget.value;
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(

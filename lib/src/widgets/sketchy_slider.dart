@@ -5,9 +5,9 @@ import 'sketchy_frame.dart';
 import 'value_sync_mixin.dart';
 
 /// Hand-drawn slider control for adjusting a numeric value.
-class Slider extends StatefulWidget {
+class SketchySlider extends StatefulWidget {
   /// Creates a sketchy slider configured with the provided [value] and bounds.
-  const Slider({
+  const SketchySlider({
     required this.value,
     required this.onChanged,
     super.key,
@@ -41,15 +41,16 @@ class Slider extends StatefulWidget {
   final double max;
 
   @override
-  State<Slider> createState() => _SliderState();
+  State<SketchySlider> createState() => _SketchySliderState();
 }
 
-class _SliderState extends State<Slider> with ValueSyncMixin<double, Slider> {
+class _SketchySliderState extends State<SketchySlider>
+    with ValueSyncMixin<double, SketchySlider> {
   @override
   double get widgetValue => widget.value;
 
   @override
-  double getOldWidgetValue(Slider oldWidget) => oldWidget.value;
+  double getOldWidgetValue(SketchySlider oldWidget) => oldWidget.value;
 
   void _updateValue(double localDx, double width) {
     final range = widget.max - widget.min;

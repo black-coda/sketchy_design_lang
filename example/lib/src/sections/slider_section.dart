@@ -26,7 +26,7 @@ class _SliderSectionState extends State<SliderSection> {
             style: fieldLabelStyle(theme).copyWith(color: theme.secondaryColor),
           ),
           const SizedBox(height: 8),
-          Slider(
+          SketchySlider(
             value: _sliderValue,
             onChanged: (newValue) =>
                 setState(() => _sliderValue = newValue.clamp(0.0, 1.0)),

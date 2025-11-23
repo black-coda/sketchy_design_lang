@@ -17,9 +17,13 @@ import 'value_sync_mixin.dart';
 ///   },
 /// ),
 /// ```
-class Checkbox extends StatefulWidget {
+class SketchyCheckbox extends StatefulWidget {
   /// Creates a sketchy checkbox with the provided [value] and [onChanged].
-  const Checkbox({required this.value, required this.onChanged, super.key});
+  const SketchyCheckbox({
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
 
   /// Determines the checkbox checked or not.
   final bool? value;
@@ -29,16 +33,16 @@ class Checkbox extends StatefulWidget {
   final void Function(bool?) onChanged;
 
   @override
-  State<Checkbox> createState() => _CheckboxState();
+  State<SketchyCheckbox> createState() => _SketchyCheckboxState();
 }
 
-class _CheckboxState extends State<Checkbox>
-    with ValueSyncMixin<bool, Checkbox> {
+class _SketchyCheckboxState extends State<SketchyCheckbox>
+    with ValueSyncMixin<bool, SketchyCheckbox> {
   @override
   bool get widgetValue => widget.value!;
 
   @override
-  bool getOldWidgetValue(Checkbox oldWidget) => oldWidget.value!;
+  bool getOldWidgetValue(SketchyCheckbox oldWidget) => oldWidget.value!;
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(

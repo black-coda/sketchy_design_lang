@@ -8,18 +8,22 @@ import 'sketchy_frame.dart';
 import 'value_sync_mixin.dart';
 
 /// Sketchy toggle
-class Switch extends StatefulWidget {
-  const Switch({required this.value, required this.onChanged, super.key});
+class SketchySwitch extends StatefulWidget {
+  const SketchySwitch({
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
   final bool value;
   final ValueChanged<bool>? onChanged;
 
   @override
-  State<Switch> createState() => _SwitchState();
+  State<SketchySwitch> createState() => _SketchySwitchState();
 }
 
 // ignore: library_private_types_in_public_api
-class _SwitchState extends State<Switch>
-    with SingleTickerProviderStateMixin, ValueSyncMixin<bool, Switch> {
+class _SketchySwitchState extends State<SketchySwitch>
+    with SingleTickerProviderStateMixin, ValueSyncMixin<bool, SketchySwitch> {
   final double _thumbRadius = 18;
   late Animation<double> _animation;
   late AnimationController _controller;
@@ -28,7 +32,7 @@ class _SwitchState extends State<Switch>
   bool get widgetValue => widget.value;
 
   @override
-  bool getOldWidgetValue(Switch oldWidget) => oldWidget.value;
+  bool getOldWidgetValue(SketchySwitch oldWidget) => oldWidget.value;
 
   @override
   void initState() {
@@ -49,7 +53,7 @@ class _SwitchState extends State<Switch>
   }
 
   @override
-  void didUpdateWidget(covariant Switch oldWidget) {
+  void didUpdateWidget(covariant SketchySwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
     _toggle();
   }

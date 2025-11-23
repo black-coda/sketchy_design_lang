@@ -4,9 +4,9 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_frame.dart';
 
 /// Sketchy card.
-class Card extends StatelessWidget {
+class SketchyCard extends StatelessWidget {
   /// Builds a card with a sketchy border around [child].
-  const Card({
+  const SketchyCard({
     super.key,
     this.child,
     this.color,

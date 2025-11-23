@@ -22,7 +22,7 @@ class _CheckboxSectionState extends State<CheckboxSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CheckboxListTile(
+          SketchyCheckboxListTile(
             value: _newsletterOptIn,
             onChanged: (checked) =>
                 setState(() => _newsletterOptIn = checked ?? false),
@@ -36,7 +36,7 @@ class _CheckboxSectionState extends State<CheckboxSection> {
             ),
           ),
           const SizedBox(height: 12),
-          CheckboxListTile(
+          SketchyCheckboxListTile(
             value: _mascotOptIn,
             onChanged: (checked) =>
                 setState(() => _mascotOptIn = checked ?? false),

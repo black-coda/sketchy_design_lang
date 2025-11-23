@@ -18,7 +18,7 @@ import 'package:flutter/widgets.dart';
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
 import 'sketchy_frame.dart';
-import 'text.dart' as sketchy;
+import 'sketchy_text.dart' as sketchy;
 
 export 'package:flutter/material.dart'
     show
@@ -31,9 +31,9 @@ export 'package:flutter/material.dart'
         TextInputType;
 
 /// Sketchy text input.
-class TextField extends StatefulWidget {
+class SketchyTextField extends StatefulWidget {
   /// Creates a sketchy-styled text field.
-  const TextField({
+  const SketchyTextField({
     super.key,
     this.controller,
     this.focusNode,
@@ -141,10 +141,10 @@ class TextField extends StatefulWidget {
   final bool autofocus;
 
   @override
-  State<TextField> createState() => _TextFieldState();
+  State<SketchyTextField> createState() => _SketchyTextFieldState();
 }
 
-class _TextFieldState extends State<TextField> {
+class _SketchyTextFieldState extends State<SketchyTextField> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
 
@@ -156,7 +156,7 @@ class _TextFieldState extends State<TextField> {
   }
 
   @override
-  void didUpdateWidget(covariant TextField oldWidget) {
+  void didUpdateWidget(covariant SketchyTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != null && widget.controller != _controller) {
       _controller = widget.controller!;

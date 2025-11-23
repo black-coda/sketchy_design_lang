@@ -41,7 +41,7 @@ class _InputsSectionState extends State<InputsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // TextField with decoration
-          TextField(
+          SketchyTextField(
             controller: _nameController,
             style: bodyStyle(theme),
             decoration: InputDecoration(
@@ -52,7 +52,7 @@ class _InputsSectionState extends State<InputsSection> {
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
+          SketchyTextField(
             controller: _emailController,
             style: bodyStyle(theme),
             decoration: InputDecoration(
@@ -63,7 +63,7 @@ class _InputsSectionState extends State<InputsSection> {
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
+          SketchyTextField(
             controller: _ageController,
             style: bodyStyle(theme),
             decoration: InputDecoration(

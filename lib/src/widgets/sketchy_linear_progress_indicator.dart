@@ -9,9 +9,9 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_frame.dart';
 
 /// Sketchy progress bar.
-class LinearProgressIndicator extends StatefulWidget {
+class SketchyLinearProgressIndicator extends StatefulWidget {
   /// Creates a linear progress indicator.
-  const LinearProgressIndicator({
+  const SketchyLinearProgressIndicator({
     super.key,
     this.value,
     this.backgroundColor,
@@ -54,11 +54,12 @@ class LinearProgressIndicator extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  State<LinearProgressIndicator> createState() =>
-      _LinearProgressIndicatorState();
+  State<SketchyLinearProgressIndicator> createState() =>
+      _SketchyLinearProgressIndicatorState();
 }
 
-class _LinearProgressIndicatorState extends State<LinearProgressIndicator> {
+class _SketchyLinearProgressIndicatorState
+    extends State<SketchyLinearProgressIndicator> {
   double get _minHeight => widget.minHeight ?? 20;
 
   @override
@@ -72,7 +73,7 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator> {
   }
 
   @override
-  void didUpdateWidget(covariant LinearProgressIndicator oldWidget) {
+  void didUpdateWidget(covariant SketchyLinearProgressIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller?.removeListener(_handleTick);

@@ -4,7 +4,7 @@ import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
 import 'calendar_utils.dart';
 import 'sketchy_frame.dart';
-import 'text.dart';
+import 'sketchy_text.dart';
 
 /// Sketchy calendar.
 ///

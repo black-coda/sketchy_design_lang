@@ -6,10 +6,10 @@ class HeroAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-    builder: (context, theme) => AppBar(
+    builder: (context, theme) => SketchyAppBar(
       margin: const EdgeInsets.fromLTRB(16, 24, 16, 16),
       padding: const EdgeInsets.all(16),
-      leading: Tooltip(
+      leading: SketchyTooltip(
         message: 'meh.',
         preferBelow: true,
         child: SketchyFrame(

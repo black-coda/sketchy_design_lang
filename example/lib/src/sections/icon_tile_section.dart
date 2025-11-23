@@ -24,45 +24,45 @@ class _IconTileSectionState extends State<IconTileSection> {
         children: [
           Row(
             children: [
-              IconButton(
+              SketchyIconButton(
                 icon: const FaIcon(FontAwesomeIcons.plus),
                 onPressed: () {},
               ),
               const SizedBox(width: 12),
-              IconButton(
+              SketchyIconButton(
                 icon: const FaIcon(FontAwesomeIcons.pen),
                 onPressed: () {},
               ),
               const SizedBox(width: 12),
-              IconButton(
+              SketchyIconButton(
                 icon: const FaIcon(FontAwesomeIcons.paperPlane),
                 onPressed: () {},
               ),
             ],
           ),
           const SizedBox(height: 16),
-          ListTile(
+          SketchyListTile(
             leading: const FaIcon(FontAwesomeIcons.pen),
             title: Text('Brand refresh', style: bodyStyle(theme)),
             subtitle: Text(
               'Rally design + docs for review',
               style: mutedStyle(theme),
             ),
-            trailing: IconButton(
+            trailing: SketchyIconButton(
               icon: const FaIcon(FontAwesomeIcons.check),
               onPressed: () {},
               iconSize: 32,
             ),
           ),
           const SizedBox(height: 12),
-          ListTile(
+          SketchyListTile(
             leading: const FaIcon(FontAwesomeIcons.copy),
             title: Text('Follow-up nudges', style: bodyStyle(theme)),
             subtitle: Text(
               'Mute autopings after 10pm',
               style: mutedStyle(theme),
             ),
-            trailing: Switch(
+            trailing: SketchySwitch(
               value: _followUpsEnabled,
               onChanged: (value) => setState(() {
                 _followUpsEnabled = value;

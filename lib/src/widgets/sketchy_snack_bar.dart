@@ -6,12 +6,12 @@ import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
 import 'sketchy_surface.dart';
-import 'text.dart' as sketchy;
+import 'sketchy_text.dart' as sketchy;
 
 /// Displays transient "Sketchy message" banners.
-class SnackBar extends StatefulWidget {
+class SketchySnackBar extends StatefulWidget {
   /// Creates a snack bar.
-  const SnackBar({
+  const SketchySnackBar({
     required this.content,
     super.key,
     this.backgroundColor,
@@ -53,10 +53,10 @@ class SnackBar extends StatefulWidget {
   final ShapeBorder? shape;
 
   /// Defines the behavior of the snack bar.
-  final SnackBarBehavior? behavior;
+  final SketchySnackBarBehavior? behavior;
 
   /// An action that the user can take based on the snack bar.
-  final SnackBarAction? action;
+  final SketchySnackBarAction? action;
 
   /// The amount of time the snack bar should be displayed.
   final Duration duration;
@@ -104,10 +104,10 @@ class SnackBar extends StatefulWidget {
   }
 
   @override
-  State<SnackBar> createState() => _SnackBarState();
+  State<SketchySnackBar> createState() => _SketchySnackBarState();
 }
 
-class _SnackBarState extends State<SnackBar> {
+class _SketchySnackBarState extends State<SketchySnackBar> {
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
     builder: (context, theme) => SketchySurface(
@@ -200,7 +200,7 @@ class _SnackBarOverlayState extends State<_SnackBarOverlay>
             child: SlideTransition(
               position: _offset,
               child: UnconstrainedBox(
-                child: SnackBar(
+                child: SketchySnackBar(
                   content: widget.content,
                   duration: widget.duration,
                   textCase: widget.textCase,
@@ -216,9 +216,9 @@ class _SnackBarOverlayState extends State<_SnackBarOverlay>
 
 /// Placeholder classes for Material compatibility if they are not exported by
 /// widgets / Action to be taken in the snack bar.
-class SnackBarAction {
+class SketchySnackBarAction {
   /// Creates a snack bar action.
-  const SnackBarAction({
+  const SketchySnackBarAction({
     required this.label,
     required this.onPressed,
     this.textColor,
@@ -239,7 +239,7 @@ class SnackBarAction {
 }
 
 /// The behavior of the snack bar.
-enum SnackBarBehavior {
+enum SketchySnackBarBehavior {
   /// Fixed behavior.
   fixed,
 

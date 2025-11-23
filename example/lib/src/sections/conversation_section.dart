@@ -62,7 +62,7 @@ class _ConversationSectionState extends State<ConversationSection>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TabBar(
+            SketchyTabBar(
               controller: _conversationTabController,
               tabs: _conversationTabs.map(Text.new).toList(),
               detachSelected: true,
@@ -105,9 +105,9 @@ class _ConversationSectionState extends State<ConversationSection>
                     style: mutedStyle(theme),
                   ),
                 ),
-                OutlinedButton(
+                SketchyButton(
                   onPressed: () {
-                    SnackBar.show(
+                    SketchySnackBar.show(
                       context,
                       message: 'Saved ${_conversationTabs[tabIndex]} note',
                     );

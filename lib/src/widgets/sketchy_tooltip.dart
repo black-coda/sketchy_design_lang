@@ -5,12 +5,12 @@ import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
-import 'text.dart' as sketchy;
+import 'sketchy_text.dart' as sketchy;
 
 /// Basic tooltip that appears on hover similar to Flutter's Material tooltip.
-class Tooltip extends StatefulWidget {
+class SketchyTooltip extends StatefulWidget {
   /// Creates a tooltip that displays [message] near the pointer.
-  const Tooltip({
+  const SketchyTooltip({
     required this.message,
     required this.child,
     this.preferBelow = false,
@@ -31,10 +31,10 @@ class Tooltip extends StatefulWidget {
   final TextCase? textCase;
 
   @override
-  State<Tooltip> createState() => _TooltipState();
+  State<SketchyTooltip> createState() => _SketchyTooltipState();
 }
 
-class _TooltipState extends State<Tooltip> {
+class _SketchyTooltipState extends State<SketchyTooltip> {
   OverlayEntry? _entry;
   Timer? _hideTimer;
   Offset? _pointerPosition;

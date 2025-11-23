@@ -24,11 +24,11 @@ class _ComboSectionState extends State<ComboSection> {
         children: [
           Text('Cadence', style: fieldLabelStyle(theme)),
           const SizedBox(height: 4),
-          DropdownButton<String>(
+          SketchyDropdownButton<String>(
             value: _selectedCadence,
             items: _cadenceOptions
                 .map(
-                  (c) => DropdownMenuItem<String>(
+                  (c) => SketchyDropdownMenuItem<String>(
                     value: c,
                     child: Text(c, style: bodyStyle(theme)),
                   ),

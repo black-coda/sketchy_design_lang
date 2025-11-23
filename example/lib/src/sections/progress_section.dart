@@ -54,11 +54,14 @@ class _ProgressSectionState extends State<ProgressSection>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LinearProgressIndicator(controller: _progressController, value: 0),
+          SketchyLinearProgressIndicator(
+            controller: _progressController,
+            value: 0,
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
-              OutlinedButton(
+              SketchyButton(
                 onPressed: _startProgress,
                 child: Text(
                   'Start',
@@ -66,7 +69,7 @@ class _ProgressSectionState extends State<ProgressSection>
                 ),
               ),
               const SizedBox(width: 8),
-              OutlinedButton(
+              SketchyButton(
                 onPressed: _stopProgress,
                 child: Text(
                   'Stop',
@@ -74,7 +77,7 @@ class _ProgressSectionState extends State<ProgressSection>
                 ),
               ),
               const SizedBox(width: 8),
-              OutlinedButton(
+              SketchyButton(
                 onPressed: _resetProgress,
                 child: Text('Reset', style: buttonLabelStyle(theme)),
               ),

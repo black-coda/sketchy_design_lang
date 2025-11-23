@@ -31,12 +31,12 @@ class _ChipSectionState extends State<ChipSection> {
                   theme: theme,
                   title: 'Chip',
                   chips: [
-                    const Chip(
+                    const SketchyChip(
                       label: Text('New drop'),
                       compact: true,
                       tone: SketchyChipTone.neutral,
                     ),
-                    Chip(
+                    SketchyChip(
                       label: const Text('Shipped!'),
                       compact: true,
                       backgroundColor: theme.primaryColor.withValues(
@@ -44,7 +44,7 @@ class _ChipSectionState extends State<ChipSection> {
                       ),
                       tone: SketchyChipTone.accent,
                     ),
-                    Chip(
+                    SketchyChip(
                       label: const Text(''),
                       compact: true,
                       backgroundColor: theme.primaryColor.withValues(
@@ -62,23 +62,23 @@ class _ChipSectionState extends State<ChipSection> {
                   theme: theme,
                   title: 'Choice',
                   chips: [
-                    ChoiceChip(
+                    SketchyChoiceChip(
                       label: const Text('Pinned'),
                       selected: _pinnedChip,
                       onSelected: (val) => setState(() => _pinnedChip = val),
                     ),
-                    ChoiceChip(
+                    SketchyChoiceChip(
                       label: const Text('Snooze'),
                       selected: _snoozedChip,
                       onSelected: (val) => setState(() => _snoozedChip = val),
                     ),
-                    ChoiceChip(
+                    SketchyChoiceChip(
                       label: const Text('Archive'),
                       selected: _archiveChip,
                       avatar: const FaIcon(FontAwesomeIcons.square),
                       onSelected: (val) => setState(() => _archiveChip = val),
                     ),
-                    ChoiceChip(
+                    SketchyChoiceChip(
                       label: const Text(''),
                       selected: _iconOnlyChip,
                       avatar: const FaIcon(FontAwesomeIcons.paperPlane),
@@ -97,7 +97,7 @@ class _ChipSectionState extends State<ChipSection> {
                   theme: theme,
                   title: 'Badge',
                   chips: [
-                    Chip(
+                    SketchyChip(
                       label: const Text('Beta'),
                       compact: true,
                       tone: SketchyChipTone.accent,
@@ -105,13 +105,13 @@ class _ChipSectionState extends State<ChipSection> {
                         alpha: 0.2,
                       ),
                     ),
-                    Chip(
+                    SketchyChip(
                       label: const Text('Muted'),
                       compact: true,
                       tone: SketchyChipTone.neutral,
                       backgroundColor: theme.paperColor,
                     ),
-                    const Chip(
+                    const SketchyChip(
                       label: Text('Beta tag'),
                       compact: true,
                       tone: SketchyChipTone.accent,
@@ -126,17 +126,17 @@ class _ChipSectionState extends State<ChipSection> {
                   theme: theme,
                   title: 'Suggestion',
                   chips: [
-                    ActionChip(
+                    SketchyActionChip(
                       label: const Text('#sketchythings'),
                       onPressed: () {},
                       tone: SketchyChipTone.neutral,
                     ),
-                    ActionChip(
+                    SketchyActionChip(
                       label: const Text('Palette'),
                       onPressed: () {},
                       tone: SketchyChipTone.accent,
                     ),
-                    ActionChip(
+                    SketchyActionChip(
                       label: const Text(''),
                       onPressed: () {},
                       tone: SketchyChipTone.accent,

@@ -20,8 +20,8 @@ import 'sketchy_frame.dart';
 /// color: Colors.blueGrey,
 /// ),
 /// ```
-class Divider extends StatelessWidget {
-  const Divider({super.key});
+class SketchyDivider extends StatelessWidget {
+  const SketchyDivider({super.key});
 
   @override
   Widget build(BuildContext context) => const SizedBox(

@@ -2,14 +2,13 @@ import 'package:flutter/material.dart' show ListTileControlAffinity;
 import 'package:flutter/widgets.dart';
 
 import '../theme/sketchy_theme.dart';
-import 'radio.dart';
+import 'sketchy_checkbox.dart';
 
-/// A list tile with a radio button.
-class RadioListTile<T> extends StatelessWidget {
-  /// Creates a tile wrapping a [Radio].
-  const RadioListTile({
+/// A list tile with a checkbox.
+class SketchyCheckboxListTile extends StatelessWidget {
+  /// Creates a tile wrapping a [SketchyCheckbox].
+  const SketchyCheckboxListTile({
     required this.value,
-    required this.groupValue,
     required this.onChanged,
     this.title,
     this.subtitle,
@@ -21,14 +20,11 @@ class RadioListTile<T> extends StatelessWidget {
     super.key,
   });
 
-  /// The value this radio button represents.
-  final T value;
+  /// Whether this checkbox is checked.
+  final bool? value;
 
-  /// The currently selected value for this group of radio buttons.
-  final T? groupValue;
-
-  /// Called when the user selects this radio button.
-  final ValueChanged<T?>? onChanged;
+  /// Called when the value of the checkbox should change.
+  final ValueChanged<bool?>? onChanged;
 
   /// The primary content of the list tile.
   final Widget? title;
@@ -42,11 +38,10 @@ class RadioListTile<T> extends StatelessWidget {
   /// Whether this list tile is part of a vertically dense list.
   final bool? dense;
 
-  /// A widget to display on the opposite side of the tile from the radio
-  /// button.
+  /// A widget to display on the opposite side of the tile from the checkbox.
   final Widget? secondary;
 
-  /// Whether to render icons and text in the active color.
+  /// Whether to render icons and text in the activeColor.
   ///
   /// The active color is determined by the theme.
   final bool selected;
@@ -56,17 +51,16 @@ class RadioListTile<T> extends StatelessWidget {
 
   void _handleTap() {
     if (onChanged != null) {
-      onChanged?.call(value);
+      onChanged?.call(!(value ?? false));
     }
   }
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
     builder: (context, theme) {
-      final control = Radio<T>(
-        value: value,
-        groupValue: groupValue,
-        onChanged: onChanged,
+      final control = SketchyCheckbox(
+        value: value ?? false,
+        onChanged: onChanged != null ? (val) => onChanged?.call(val) : (val) {},
       );
 
       final labelColumn = Column(

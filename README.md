@@ -67,9 +67,9 @@ class SketchyDemo extends StatelessWidget {
         roughness: 0.7,
       ),
       themeMode: SketchyThemeMode.system,
-      home: Scaffold(
-        appBar: AppBar(title: Text('Wireframe Vibes')),
-        body: Center(child: OutlinedButton(onPressed: () {}, child: Text('Do the thing'))),
+      home: SketchyScaffold(
+        appBar: SketchyAppBar(title: SketchyText('Wireframe Vibes')),
+        body: Center(child: SketchyOutlinedButton(onPressed: () {}, child: SketchyText('Do the thing'))),
       ),
     );
   }
@@ -108,13 +108,13 @@ are also available, though `theme.typography` via the consumer is preferred.
 **Traditional pattern:**
 ```dart
 final theme = SketchyTheme.of(context);
-return Text('Hello', style: TextStyle(color: theme.inkColor));
+return SketchyText('Hello', style: TextStyle(color: theme.inkColor));
 ```
 
 **Consumer pattern (recommended):**
 ```dart
 return SketchyTheme.consumer(
-  builder: (context, theme) => Text(
+  builder: (context, theme) => SketchyText(
     'Hello',
     style: TextStyle(color: theme.inkColor),
   ),
@@ -145,7 +145,7 @@ widgets read the theme roughness and adapt automatically.
 ### Isolated Material usage
 
 While Sketchy is designed to be independent of Material, `SketchyApp` and
-`TextField` use isolated Material contexts internally to provide advanced
+`SketchyTextField` use isolated Material contexts internally to provide advanced
 text editing capabilities (like selection handles, cursors, and clipboard access)
 without leaking Material styles into your app. You do **not** need to wrap your
 app in `MaterialApp` or `Theme`; `SketchyApp` handles the necessary localization
@@ -159,60 +159,60 @@ Sketchy mirrors common UI building blocks. Highlights:
 
 | Category   | Widgets                                                                                                     |
 | ---------- | ----------------------------------------------------------------------------------------------------------- |
-| Inputs     | `TextField`, `DropdownButton`, `Slider`, `Checkbox`, `Switch`, `Radio`, `CheckboxListTile`, `RadioListTile` |
-| Actions    | `OutlinedButton`, `IconButton`, `Chip`                                                                      |
-| Containers | `Card`, `ListTile`, `Divider`                                                                               |
-| Feedback   | `Dialog`, `Tooltip`, `Chip`, `SketchyTypingIndicator`, `SnackBar`                                           |
-| Navigation | `TabBar`, `AppBar`, `Scaffold`                                                                              |
+| Inputs     | `SketchyTextField`, `SketchyDropdownButton`, `SketchySlider`, `SketchyCheckbox`, `SketchySwitch`, `SketchyRadio`, `SketchyCheckboxListTile`, `SketchyRadioListTile` |
+| Actions    | `SketchyOutlinedButton`, `SketchyIconButton`, `SketchyChip`                                                                      |
+| Containers | `SketchyCard`, `SketchyListTile`, `SketchyDivider`                                                                               |
+| Feedback   | `SketchyDialog`, `SketchyTooltip`, `SketchyChip`, `SketchyTypingIndicator`, `SketchySnackBar`                                           |
+| Navigation | `SketchyTabBar`, `SketchyAppBar`, `SketchyScaffold`                                                                              |
 
 ### Quick examples
 
 ```dart
-OutlinedButton(
+SketchyOutlinedButton(
   onPressed: saveNote,
-  child: Text('Save', style: SketchyTheme.of(context).typography.label),
+  child: SketchyText('Save', style: SketchyTheme.of(context).typography.label),
 );
 
-CheckboxListTile(
+SketchyCheckboxListTile(
   value: wantsEmails,
   onChanged: (checked) =>
       setState(() => wantsEmails = checked ?? wantsEmails),
-  title: Text('Email me weekly',
+  title: SketchyText('Email me weekly',
       style: SketchyTheme.of(context).typography.body),
-  subtitle: const Text('Includes product updates + comics.'),
+  subtitle: const SketchyText('Includes product updates + comics.'),
 );
 
-RadioListTile<String>(
+SketchyRadioListTile<String>(
   value: 'instant',
   groupValue: deliverySpeed,
   onChanged: (value) => setState(() => deliverySpeed = value ?? 'instant'),
-  title: Text('Send instantly',
+  title: SketchyText('Send instantly',
       style: SketchyTheme.of(context).typography.body),
 );
 
-// `CheckboxListTile` and `RadioListTile` keep the control and its label (any widget)
+// `SketchyCheckboxListTile` and `SketchyRadioListTile` keep the control and its label (any widget)
 // in sync and makes the entire row tappable.
 
-Slider(
+SketchySlider(
   value: roughness,
   onChanged: (value) => setState(() => roughness = value),
   min: 0,
   max: 1,
 );
 
-Dialog(
+SketchyDialog(
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
     children: [
-      Text('Plan review', style: SketchyTheme.of(context).typography.title),
+      SketchyText('Plan review', style: SketchyTheme.of(context).typography.title),
       const SizedBox(height: 16),
-      const Text('Update palette + capture perf traces.'),
+      const SketchyText('Update palette + capture perf traces.'),
       Align(
         alignment: Alignment.centerRight,
-        child: OutlinedButton(
+        child: SketchyOutlinedButton(
           onPressed: Navigator.of(context).pop,
-          child: const Text('Close'),
+          child: const SketchyText('Close'),
         ),
       ),
     ],
@@ -266,7 +266,7 @@ SketchySurface(
     cornerRadius: 24,
     fill: SketchyFill.hachure,
   ),
-  child: const Text('Sticky note'),
+  child: const SketchyText('Sticky note'),
 );
 ```
 

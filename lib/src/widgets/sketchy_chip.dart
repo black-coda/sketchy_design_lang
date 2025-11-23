@@ -6,9 +6,9 @@ import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_text_case.dart';
 import '../theme/sketchy_theme.dart';
 import 'sketchy_surface.dart';
-import 'text.dart' as sketchy;
+import 'sketchy_text.dart' as sketchy;
 
-/// Visual tones supported by [Chip].
+/// Visual tones supported by [SketchyChip].
 enum SketchyChipTone {
   /// Primary accent tone.
   accent,
@@ -18,9 +18,9 @@ enum SketchyChipTone {
 }
 
 /// A material design chip.
-class Chip extends StatelessWidget {
+class SketchyChip extends StatelessWidget {
   /// Creates a chip.
-  const Chip({
+  const SketchyChip({
     required this.label,
     this.avatar,
     this.deleteIcon,
@@ -144,9 +144,9 @@ class Chip extends StatelessWidget {
 }
 
 /// A material design action chip.
-class ActionChip extends StatelessWidget {
+class SketchyActionChip extends StatelessWidget {
   /// Creates an action chip.
-  const ActionChip({
+  const SketchyActionChip({
     required this.label,
     this.avatar,
     this.labelStyle,
@@ -266,9 +266,9 @@ class ActionChip extends StatelessWidget {
 }
 
 /// A material design choice chip.
-class ChoiceChip extends StatelessWidget {
+class SketchyChoiceChip extends StatelessWidget {
   /// Creates a choice chip.
-  const ChoiceChip({
+  const SketchyChoiceChip({
     required this.label,
     required this.selected,
     this.avatar,

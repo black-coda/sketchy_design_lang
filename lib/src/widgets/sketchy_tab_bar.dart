@@ -11,9 +11,9 @@ export 'package:flutter/material.dart'
     show DefaultTabController, Tab, TabBarIndicatorSize, TabController;
 
 /// Segmented control used to switch between sections.
-class TabBar extends StatefulWidget {
+class SketchyTabBar extends StatefulWidget {
   /// Creates a new tab bar with the provided tabs.
-  const TabBar({
+  const SketchyTabBar({
     required this.tabs,
     this.controller,
     this.isScrollable = false,
@@ -83,7 +83,7 @@ class TabBar extends StatefulWidget {
   /// The text style of the unselected tab labels.
   final TextStyle? unselectedLabelStyle;
 
-  /// An optional callback that's called when the [TabBar] is tapped.
+  /// An optional callback that's called when the [SketchyTabBar] is tapped.
   final ValueChanged<int>? onTap;
 
   // Sketchy specifics
@@ -105,10 +105,10 @@ class TabBar extends StatefulWidget {
   final bool eraseSelectedBorder;
 
   @override
-  State<TabBar> createState() => _TabBarState();
+  State<SketchyTabBar> createState() => _SketchyTabBarState();
 }
 
-class _TabBarState extends State<TabBar> {
+class _SketchyTabBarState extends State<SketchyTabBar> {
   TabController? _controller;
   int _currentIndex = 0;
 
@@ -119,7 +119,7 @@ class _TabBarState extends State<TabBar> {
   }
 
   @override
-  void didUpdateWidget(TabBar oldWidget) {
+  void didUpdateWidget(SketchyTabBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       _updateController();

@@ -21,7 +21,7 @@ class _RadioSectionState extends State<RadioSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RadioListTile<String>(
+          SketchyRadioListTile<String>(
             value: 'Lafayette',
             groupValue: _selectedRadio,
             onChanged: (value) {
@@ -31,7 +31,7 @@ class _RadioSectionState extends State<RadioSection> {
             title: Text('Lafayette', style: bodyStyle(theme)),
           ),
           const SizedBox(height: 8),
-          RadioListTile<String>(
+          SketchyRadioListTile<String>(
             value: 'Thomas Jefferson',
             groupValue: _selectedRadio,
             onChanged: (value) {

@@ -20,7 +20,7 @@ class DividerSection extends StatelessWidget {
             style: bodyStyle(theme),
           ),
           const SizedBox(height: 12),
-          const Divider(),
+          const SketchyDivider(),
           const SizedBox(height: 12),
           Text(
             'Duis aute irure dolor in reprehenderit in voluptate velit esse '

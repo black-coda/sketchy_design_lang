@@ -22,7 +22,7 @@ class DialogSection extends StatelessWidget {
             style: mutedStyle(theme),
           ),
           const SizedBox(height: 12),
-          OutlinedButton(
+          SketchyButton(
             child: Text('Open dialog', style: buttonLabelStyle(theme)),
             onPressed: () {
               unawaited(
@@ -41,7 +41,7 @@ class DialogSection extends StatelessWidget {
                             child: child,
                           ),
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      Dialog(
+                      SketchyDialog(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class DialogSection extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      OutlinedButton(
+                                      SketchyButton(
                                         onPressed: () =>
                                             Navigator.of(context).pop(),
                                         child: Text(

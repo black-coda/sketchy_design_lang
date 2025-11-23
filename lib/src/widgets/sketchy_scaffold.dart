@@ -16,9 +16,9 @@ export 'package:flutter/material.dart'
         FloatingActionButtonLocation;
 
 /// Minimal scaffold that avoids pulling in Material widgets.
-class Scaffold extends StatelessWidget {
+class SketchyScaffold extends StatelessWidget {
   /// Creates a visual scaffold for material design widgets.
-  const Scaffold({
+  const SketchyScaffold({
     super.key,
     this.appBar,
     this.body,
@@ -120,7 +120,7 @@ class Scaffold extends StatelessWidget {
   /// Determines if the [endDrawer] can be opened with a drag gesture.
   final bool endDrawerEnableOpenDragGesture;
 
-  /// Restoration ID to save and restore the state of the [Scaffold].
+  /// Restoration ID to save and restore the state of the [SketchyScaffold].
   final String? restorationId;
 
   @override

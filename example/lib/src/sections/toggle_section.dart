@@ -21,7 +21,7 @@ class _ToggleSectionState extends State<ToggleSection> {
     required ValueChanged<bool> onChanged,
   }) => Row(
     children: [
-      Switch(value: value, onChanged: onChanged),
+      SketchySwitch(value: value, onChanged: onChanged),
       const SizedBox(width: 12),
       Expanded(child: Text(label, style: bodyStyle(theme))),
     ],

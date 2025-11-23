@@ -1,6 +1,3 @@
-/// Utilities for calendar date calculations.
-library;
-
 import 'package:flutter/widgets.dart';
 
 const int _kMillisecondsPerDay = 24 * 60 * 60 * 1000;

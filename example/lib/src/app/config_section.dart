@@ -59,7 +59,7 @@ class ConfigSection extends StatelessWidget {
       final isActive = themeMode == mode;
       return Padding(
         padding: const EdgeInsets.only(right: 8),
-        child: OutlinedButton(
+        child: SketchyButton(
           onPressed: isActive ? null : () => onThemeModeChanged(mode),
           child: Text(
             label,
@@ -89,7 +89,7 @@ class ConfigSection extends StatelessWidget {
         theme,
         label: 'Roughness',
         width: 240,
-        child: Slider(
+        child: SketchySlider(
           value: roughness,
           onChanged: (value) => onRoughnessChanged(value.clamp(0.0, 1.0)),
         ),
@@ -98,11 +98,11 @@ class ConfigSection extends StatelessWidget {
         theme,
         label: 'Font',
         width: 240,
-        child: DropdownButton<String>(
+        child: SketchyDropdownButton<String>(
           value: fontFamily,
           items: fontOptions.entries
               .map(
-                (entry) => DropdownMenuItem<String>(
+                (entry) => SketchyDropdownMenuItem<String>(
                   value: entry.value,
                   child: Text(entry.key, style: theme.typography.body),
                 ),
@@ -117,11 +117,11 @@ class ConfigSection extends StatelessWidget {
         theme,
         label: 'Title Casing',
         width: 240,
-        child: DropdownButton<TextCase>(
+        child: SketchyDropdownButton<TextCase>(
           value: textCase,
           items: TextCase.values
               .map(
-                (casing) => DropdownMenuItem<TextCase>(
+                (casing) => SketchyDropdownMenuItem<TextCase>(
                   value: casing,
                   child: Text(
                     textCaseLabel(casing),

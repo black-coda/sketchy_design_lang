@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart'
-    hide DropdownButton, DropdownMenuItem, Scaffold;
+    hide
+        DropdownButton,
+        DropdownMenuItem,
+        Scaffold; // These are not used from Material anymore
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 void main() {
-  testWidgets('DropdownButton popup sizes to content', (tester) async {
+  testWidgets('SketchyDropdownButton popup sizes to content', (tester) async {
     await tester.pumpWidget(
       SketchyApp(
         title: 'Test',
         theme: SketchyThemeData.fromTheme(SketchyThemes.monochrome),
-        home: Scaffold(
+        home: SketchyScaffold(
           body: Center(
-            child: DropdownButton<String>(
+            child: SketchyDropdownButton<String>(
               value: 'One',
-              items: [
-                'One',
-                'Two',
-                'Three',
-              ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+              items: ['One', 'Two', 'Three']
+                  .map((e) => SketchyDropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
               onChanged: (_) {},
             ),
           ),
@@ -26,10 +27,10 @@ void main() {
     );
 
     // Verify combo is present
-    expect(find.byType(DropdownButton<String>), findsOneWidget);
+    expect(find.byType(SketchyDropdownButton<String>), findsOneWidget);
 
     // Find the combo and tap it
-    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.tap(find.byType(SketchyDropdownButton<String>));
     await tester.pumpAndSettle();
 
     // Find the popup content

@@ -17,7 +17,7 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-    builder: (context, theme) => Card(
+    builder: (context, theme) => SketchyCard(
       child: SizedBox(
         height: height,
         child: Padding(

@@ -50,7 +50,7 @@ class SketchyDesignSystemPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
-    builder: (context, theme) => Scaffold(
+    builder: (context, theme) => SketchyScaffold(
       appBar: const HeroAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

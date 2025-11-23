@@ -4,7 +4,7 @@ import '../primitives/sketchy_primitives.dart';
 import '../theme/sketchy_theme.dart';
 import 'sketchy_surface.dart';
 
-/// Alignment options for [ListTile].
+/// Alignment options for [SketchyListTile].
 enum SketchyTileAlignment {
   /// Bubble aligns to the start (left in LTR).
   start,
@@ -14,9 +14,9 @@ enum SketchyTileAlignment {
 }
 
 /// Sketchy-styled list tile widget.
-class ListTile extends StatelessWidget {
+class SketchyListTile extends StatelessWidget {
   /// Creates a new list tile with optional leading/trailing widgets.
-  const ListTile({
+  const SketchyListTile({
     super.key,
     this.leading,
     this.title,

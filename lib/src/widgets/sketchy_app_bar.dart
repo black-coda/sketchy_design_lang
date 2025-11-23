@@ -6,9 +6,9 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_surface.dart';
 
 /// Rough-styled app bar used by Sketchy screens.
-class AppBar extends StatelessWidget implements PreferredSizeWidget {
+class SketchyAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Creates a sketchy app bar.
-  const AppBar({
+  const SketchyAppBar({
     super.key,
     this.leading,
     this.automaticallyImplyLeading = true,
@@ -113,24 +113,24 @@ class AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// How opaque the bottom part of the app bar is.
   final double bottomOpacity;
 
-  /// Defines the height of the toolbar component of an [AppBar].
+  /// Defines the height of the toolbar component of an [SketchyAppBar].
   final double? toolbarHeight;
 
   /// Defines the width of [leading] widget.
   final double? leadingWidth;
 
-  /// The default text style for the AppBar's [leading], and [actions] widgets,
-  /// but not its [title].
+  /// The default text style for the SketchyAppBar's [leading], and [actions]
+  /// widgets, but not its [title].
   final TextStyle? toolbarTextStyle;
 
-  /// The default text style for the AppBar's [title] widget.
+  /// The default text style for the SketchyAppBar's [title] widget.
   final TextStyle? titleTextStyle;
 
   /// Specifies the style to use for the system overlays that overlap the
-  /// AppBar.
+  /// SketchyAppBar.
   final SystemUiOverlayStyle? systemOverlayStyle;
 
-  /// Forces the AppBar to be transparent.
+  /// Forces the SketchyAppBar to be transparent.
   final bool forceMaterialTransparency;
 
   /// The content will be clipped (or not) according to this option.

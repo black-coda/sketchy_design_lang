@@ -5,9 +5,9 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_frame.dart';
 
 /// Rough-styled push button following the Sketchy aesthetic.
-class OutlinedButton extends StatelessWidget {
+class SketchyButton extends StatelessWidget {
   /// Creates a sketchy button that renders [child] within a hand-drawn frame.
-  const OutlinedButton({
+  const SketchyButton({
     required this.onPressed,
     required this.child,
     this.style,

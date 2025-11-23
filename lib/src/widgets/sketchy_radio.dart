@@ -24,8 +24,8 @@ import 'sketchy_frame.dart';
 /// ),
 /// ),
 /// ```
-class Radio<T> extends StatefulWidget {
-  const Radio({
+class SketchyRadio<T> extends StatefulWidget {
+  const SketchyRadio({
     required this.value,
     required this.groupValue,
     required this.onChanged,
@@ -42,11 +42,11 @@ class Radio<T> extends StatefulWidget {
   final ValueChanged<T?>? onChanged;
 
   @override
-  State<Radio<T>> createState() => _RadioState<T>();
+  State<SketchyRadio<T>> createState() => _SketchyRadioState<T>();
 }
 
 // ignore: library_private_types_in_public_api
-class _RadioState<T> extends State<Radio<T>> {
+class _SketchyRadioState<T> extends State<SketchyRadio<T>> {
   bool _isSelected = false;
   T? _groupValue;
 

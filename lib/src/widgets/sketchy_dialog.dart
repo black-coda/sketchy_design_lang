@@ -10,9 +10,9 @@ const _kDialogMaxWidth = 560.0;
 const _kDialogMargin = 24.0;
 
 /// Sketchy dialog.
-class Dialog extends StatelessWidget {
+class SketchyDialog extends StatelessWidget {
   /// Builds a sketchy-styled dialog containing [child].
-  const Dialog({
+  const SketchyDialog({
     super.key,
     this.child,
     this.backgroundColor,
@@ -125,9 +125,9 @@ class Dialog extends StatelessWidget {
 }
 
 /// A Material Design alert dialog.
-class AlertDialog extends StatelessWidget {
+class SketchyAlertDialog extends StatelessWidget {
   /// Creates an alert dialog.
-  const AlertDialog({
+  const SketchyAlertDialog({
     super.key,
     this.title,
     this.titlePadding,
@@ -239,7 +239,7 @@ class AlertDialog extends StatelessWidget {
   final bool scrollable;
 
   @override
-  Widget build(BuildContext context) => Dialog(
+  Widget build(BuildContext context) => SketchyDialog(
     backgroundColor: backgroundColor,
     elevation: elevation,
     insetPadding: insetPadding,

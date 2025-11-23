@@ -5,9 +5,9 @@ import '../theme/sketchy_theme.dart';
 import 'sketchy_surface.dart';
 
 /// Rough-styled icon button wrapper.
-class IconButton extends StatelessWidget {
+class SketchyIconButton extends StatelessWidget {
   /// Creates a new icon button with the given [icon].
-  const IconButton({
+  const SketchyIconButton({
     required this.icon,
     this.onPressed,
     this.iconSize = 40.0,
