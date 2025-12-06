@@ -3,6 +3,7 @@ import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 import '../models/chat_models.dart';
 import '../models/mock_data.dart';
+import 'chat_bubble.dart';
 
 /// Widget for displaying a single chat message.
 class ChatMessageWidget extends StatelessWidget {
@@ -27,8 +28,8 @@ class ChatMessageWidget extends StatelessWidget {
     return SketchyTheme.consumer(
       builder: (context, theme) {
         final alignment = isCurrentUser
-            ? SketchyChatBubbleAlignment.end
-            : SketchyChatBubbleAlignment.start;
+            ? ChatBubbleAlignment.end
+            : ChatBubbleAlignment.start;
 
         // Build header content: name + [AI badge + model] + timestamp (right)
         final headerContent = Row(

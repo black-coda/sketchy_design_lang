@@ -1,11 +1,8 @@
 import 'package:flutter/widgets.dart';
-
-import '../primitives/sketchy_primitives.dart';
-import '../theme/sketchy_theme.dart';
-import 'sketchy_surface.dart';
+import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 /// Alignment options for [SketchyChatBubble].
-enum SketchyChatBubbleAlignment {
+enum ChatBubbleAlignment {
   /// Bubble aligns to the start (left in LTR).
   start,
 
@@ -24,7 +21,7 @@ class SketchyChatBubble extends StatefulWidget {
     super.key,
     this.topContent,
     this.bottomContent,
-    this.alignment = SketchyChatBubbleAlignment.start,
+    this.alignment = ChatBubbleAlignment.start,
     this.bubbleColor,
     this.maxWidth,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -43,7 +40,7 @@ class SketchyChatBubble extends StatefulWidget {
   final Widget? bottomContent;
 
   /// Alignment of the bubble within its parent.
-  final SketchyChatBubbleAlignment alignment;
+  final ChatBubbleAlignment alignment;
 
   /// Background color of the bubble (defaults based on alignment).
   final Color? bubbleColor;
@@ -82,7 +79,7 @@ class _SketchyChatBubbleState extends State<SketchyChatBubble> {
   @override
   Widget build(BuildContext context) => SketchyTheme.consumer(
     builder: (context, theme) {
-      final isEnd = widget.alignment == SketchyChatBubbleAlignment.end;
+      final isEnd = widget.alignment == ChatBubbleAlignment.end;
       final bubbleColor =
           widget.bubbleColor ??
           (isEnd ? theme.secondaryColor : theme.primaryColor);

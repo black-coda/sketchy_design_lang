@@ -1,29 +1,13 @@
-import 'package:flutter/material.dart'
-    show
-        FocusNode,
-        InputBorder,
-        InputDecoration,
-        Material,
-        MaterialType,
-        TextCapitalization,
-        TextEditingController,
-        TextInputAction,
-        Theme;
-import 'package:flutter/material.dart' as material;
 import 'package:flutter/widgets.dart';
-
-import '../primitives/sketchy_primitives.dart';
-import '../theme/sketchy_theme.dart';
-import 'sketchy_icon_button.dart';
-import 'sketchy_surface.dart';
-import 'sketchy_symbols.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 /// A chat message input field with sketchy styling.
 ///
 /// Includes optional action buttons for attachments, emoji, and mentions.
-class SketchyChatInput extends StatefulWidget {
+class ChatInput extends StatefulWidget {
   /// Creates a sketchy chat input.
-  const SketchyChatInput({
+  const ChatInput({
     super.key,
     this.controller,
     this.focusNode,
@@ -92,10 +76,10 @@ class SketchyChatInput extends StatefulWidget {
   final bool autofocus;
 
   @override
-  State<SketchyChatInput> createState() => _SketchyChatInputState();
+  State<ChatInput> createState() => _ChatInputState();
 }
 
-class _SketchyChatInputState extends State<SketchyChatInput> {
+class _ChatInputState extends State<ChatInput> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
   late final SketchyPrimitive _framePrimitive;
@@ -115,7 +99,7 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
   }
 
   @override
-  void didUpdateWidget(covariant SketchyChatInput oldWidget) {
+  void didUpdateWidget(covariant ChatInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != null && widget.controller != _controller) {
       _controller.removeListener(_onTextChanged);
@@ -165,8 +149,8 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
             children: [
               if (widget.showAttachmentButton)
                 SketchyIconButton(
-                  icon: SketchySymbol(
-                    symbol: SketchySymbols.paperclip,
+                  icon: FaIcon(
+                    FontAwesomeIcons.paperclip,
                     size: 18,
                     color: theme.inkColor.withValues(alpha: 0.6),
                   ),
@@ -175,8 +159,8 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
                 ),
               if (widget.showEmojiButton)
                 SketchyIconButton(
-                  icon: SketchySymbol(
-                    symbol: SketchySymbols.smiley,
+                  icon: FaIcon(
+                    FontAwesomeIcons.faceSmile,
                     size: 18,
                     color: theme.inkColor.withValues(alpha: 0.6),
                   ),
@@ -185,8 +169,8 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
                 ),
               if (widget.showMentionButton)
                 SketchyIconButton(
-                  icon: SketchySymbol(
-                    symbol: SketchySymbols.at,
+                  icon: FaIcon(
+                    FontAwesomeIcons.at,
                     size: 18,
                     color: theme.inkColor.withValues(alpha: 0.6),
                   ),
@@ -195,8 +179,8 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
                 ),
               if (widget.showEditButton)
                 SketchyIconButton(
-                  icon: SketchySymbol(
-                    symbol: SketchySymbols.pencil,
+                  icon: FaIcon(
+                    FontAwesomeIcons.pencil,
                     size: 18,
                     color: theme.inkColor.withValues(alpha: 0.6),
                   ),
@@ -228,44 +212,18 @@ class _SketchyChatInputState extends State<SketchyChatInput> {
               const SizedBox(width: 8),
             ],
             Expanded(
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  textSelectionTheme: material.TextSelectionThemeData(
-                    cursorColor: theme.inkColor,
-                    selectionColor: theme.primaryColor.withValues(alpha: 0.3),
-                    selectionHandleColor: theme.inkColor,
-                  ),
-                ),
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: material.TextField(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    style: theme.typography.body.copyWith(
-                      color: theme.textColor,
-                    ),
-                    cursorColor: theme.inkColor,
-                    decoration: InputDecoration(
-                      hintText: widget.hintText,
-                      hintStyle: theme.typography.body.copyWith(
-                        color: theme.disabledTextColor,
-                      ),
-                      border: InputBorder.none,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 4,
-                      ),
-                    ),
-                    onChanged: widget.onChanged,
-                    onSubmitted: (_) => _onSubmit(),
-                    textInputAction: TextInputAction.send,
-                    textCapitalization: TextCapitalization.sentences,
-                    maxLines: 4,
-                    minLines: 1,
-                    autofocus: widget.autofocus,
-                  ),
-                ),
+              child: SketchyTextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(hintText: widget.hintText),
+                onChanged: widget.onChanged,
+                onSubmitted: (_) => _onSubmit(),
+                textInputAction: TextInputAction.send,
+                textCapitalization: TextCapitalization.sentences,
+                maxLines: 4,
+                minLines: 1,
+                autofocus: widget.autofocus,
+                showFrame: false,
               ),
             ),
             const SizedBox(width: 8),

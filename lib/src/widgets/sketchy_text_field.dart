@@ -59,6 +59,7 @@ class SketchyTextField extends StatefulWidget {
     this.inputFormatters,
     this.enabled,
     this.autofocus = false,
+    this.showFrame = true,
   });
 
   /// Controls the text being edited.
@@ -140,6 +141,12 @@ class SketchyTextField extends StatefulWidget {
   /// focused.
   final bool autofocus;
 
+  /// Whether to show the sketchy frame around the text field.
+  ///
+  /// Set to `false` when embedding in a custom container that provides its
+  /// own frame (e.g., ChatInput).
+  final bool showFrame;
+
   @override
   State<SketchyTextField> createState() => _SketchyTextFieldState();
 }
@@ -203,6 +210,64 @@ class _SketchyTextFieldState extends State<SketchyTextField> {
           ? applyTextCase(decoration.hintText!, casing)
           : null;
 
+      // The core text field with theme setup
+      final textField = Theme(
+        data: Theme.of(context).copyWith(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: theme.inkColor,
+            selectionColor: theme.primaryColor.withValues(alpha: 0.3),
+            selectionHandleColor: theme.inkColor,
+          ),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: material.TextField(
+            controller: _controller,
+            focusNode: _focusNode,
+            style: effectiveStyle,
+            cursorColor: theme.inkColor,
+            decoration: InputDecoration(
+              hintText: displayHint,
+              hintStyle: effectiveHintStyle,
+              border: InputBorder.none,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 4,
+              ),
+              counterText: '', // Hide default counter
+              prefixIcon: decoration.prefixIcon,
+              suffixIcon: decoration.suffixIcon,
+              errorText: decoration.errorText,
+            ),
+            onChanged: widget.onChanged,
+            onSubmitted: widget.onSubmitted,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            textCapitalization: widget.textCapitalization,
+            obscureText: widget.obscureText,
+            autocorrect: widget.autocorrect,
+            enableSuggestions: widget.enableSuggestions,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            expands: widget.expands,
+            readOnly: widget.readOnly,
+            showCursor: widget.showCursor,
+            maxLength: widget.maxLength,
+            onTap: widget.onTap,
+            onTapOutside: widget.onTapOutside,
+            inputFormatters: widget.inputFormatters,
+            enabled: widget.enabled,
+            autofocus: widget.autofocus,
+          ),
+        ),
+      );
+
+      // Frameless mode - just return the text field
+      if (!widget.showFrame) {
+        return textField;
+      }
+
       // Calculate height based on lines if not expanding
       final height = widget.expands
           ? null
@@ -226,59 +291,7 @@ class _SketchyTextFieldState extends State<SketchyTextField> {
               height: height,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               fill: SketchyFill.none,
-              child: Center(
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    textSelectionTheme: TextSelectionThemeData(
-                      cursorColor: theme.inkColor,
-                      selectionColor: theme.primaryColor.withValues(alpha: 0.3),
-                      selectionHandleColor: theme.inkColor,
-                    ),
-                  ),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: material.TextField(
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      style: effectiveStyle,
-                      cursorColor: theme.inkColor,
-                      decoration: InputDecoration(
-                        hintText: displayHint,
-                        hintStyle: effectiveHintStyle,
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 4,
-                        ),
-                        counterText: '', // Hide default counter
-                        prefixIcon: decoration.prefixIcon,
-                        suffixIcon: decoration.suffixIcon,
-                        errorText: decoration.errorText,
-                      ),
-                      onChanged: widget.onChanged,
-                      onSubmitted: widget.onSubmitted,
-                      keyboardType: widget.keyboardType,
-                      textInputAction: widget.textInputAction,
-                      textCapitalization: widget.textCapitalization,
-                      obscureText: widget.obscureText,
-                      autocorrect: widget.autocorrect,
-                      enableSuggestions: widget.enableSuggestions,
-                      maxLines: widget.maxLines,
-                      minLines: widget.minLines,
-                      expands: widget.expands,
-                      readOnly: widget.readOnly,
-                      showCursor: widget.showCursor,
-                      maxLength: widget.maxLength,
-                      onTap: widget.onTap,
-                      onTapOutside: widget.onTapOutside,
-                      inputFormatters: widget.inputFormatters,
-                      enabled: widget.enabled,
-                      autofocus: widget.autofocus,
-                    ),
-                  ),
-                ),
-              ),
+              child: Center(child: textField),
             ),
           ),
         ],

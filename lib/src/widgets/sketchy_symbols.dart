@@ -29,35 +29,23 @@ enum SketchySymbols {
   /// Close/Cancel icon (X).
   x,
 
-  /// Paperclip/attachment icon.
-  paperclip,
-
-  /// Smiley face/emoji icon.
-  smiley,
-
-  /// At symbol (@) for mentions.
-  at,
-
-  /// Gear/settings icon.
-  gear,
-
   /// Hash/pound symbol (#).
   hash,
 
   /// Menu (hamburger) icon.
   menu,
 
-  /// Pencil/edit icon.
-  pencil,
-
-  /// External link icon.
+  /// External link icon (arrow pointing out of box).
   externalLink,
 
-  /// Checkmark icon.
-  check,
+  /// Gear/settings icon.
+  gear,
 
   /// People/users icon.
   people,
+
+  /// Checkmark icon.
+  check,
 }
 
 /// Custom painter-based symbol rendered in the sketch style using
@@ -187,80 +175,6 @@ class _SketchySymbolPainter extends CustomPainter {
           generator.line(inset, inset, size.width - inset, size.height - inset),
           generator.line(size.width - inset, inset, inset, size.height - inset),
         ]);
-      case SketchySymbols.paperclip:
-        // Paperclip shape
-        final w = size.width;
-        final h = size.height;
-        draw([
-          generator.linearPath([
-            PointD(w * 0.7, h * 0.15),
-            PointD(w * 0.85, h * 0.3),
-            PointD(w * 0.85, h * 0.7),
-            PointD(w * 0.7, h * 0.85),
-            PointD(w * 0.3, h * 0.85),
-            PointD(w * 0.15, h * 0.7),
-            PointD(w * 0.15, h * 0.4),
-            PointD(w * 0.3, h * 0.25),
-            PointD(w * 0.55, h * 0.25),
-            PointD(w * 0.7, h * 0.4),
-            PointD(w * 0.7, h * 0.6),
-            PointD(w * 0.55, h * 0.75),
-            PointD(w * 0.4, h * 0.75),
-            PointD(w * 0.3, h * 0.6),
-            PointD(w * 0.3, h * 0.45),
-          ]),
-        ]);
-      case SketchySymbols.smiley:
-        // Simple smiley face
-        final cx = size.width / 2;
-        final cy = size.height / 2;
-        final r = size.width * 0.4;
-        draw([
-          // Face outline
-          generator.ellipse(cx, cy, r * 2, r * 2),
-          // Left eye
-          generator.ellipse(cx - r * 0.35, cy - r * 0.2, r * 0.2, r * 0.25),
-          // Right eye
-          generator.ellipse(cx + r * 0.35, cy - r * 0.2, r * 0.2, r * 0.25),
-          // Smile
-          generator.arc(cx, cy, r * 1.2, r * 1.0, 0.2, 2.94, false),
-        ]);
-      case SketchySymbols.at:
-        // @ symbol
-        final cx = size.width / 2;
-        final cy = size.height / 2;
-        final r = size.width * 0.35;
-        draw([
-          // Outer circle
-          generator.ellipse(cx, cy, r * 2.2, r * 2.2),
-          // Inner 'a' part - simplified spiral
-          generator.arc(cx + r * 0.2, cy, r * 0.8, r * 0.8, -0.5, 5.5, false),
-        ]);
-      case SketchySymbols.gear:
-        // Settings gear
-        final cx = size.width / 2;
-        final cy = size.height / 2;
-        final outerR = size.width * 0.4;
-        final innerR = size.width * 0.2;
-        // Inner circle
-        draw([generator.ellipse(cx, cy, innerR * 2, innerR * 2)]);
-        // Gear teeth (simplified as lines)
-        const teeth = 6;
-        for (var i = 0; i < teeth; i++) {
-          final angle = (i / teeth) * math.pi * 2;
-          final cosA = math.cos(angle);
-          final sinA = math.sin(angle);
-          draw([
-            generator.line(
-              cx + innerR * 0.8 * cosA,
-              cy + innerR * 0.8 * sinA,
-              cx + outerR * cosA,
-              cy + outerR * sinA,
-            ),
-          ]);
-        }
-        // Outer rough circle
-        draw([generator.ellipse(cx, cy, outerR * 1.6, outerR * 1.6)]);
       case SketchySymbols.hash:
         // # symbol
         final w = size.width;
@@ -282,80 +196,77 @@ class _SketchySymbolPainter extends CustomPainter {
           generator.line(w * 0.15, h * 0.5, w * 0.85, h * 0.5),
           generator.line(w * 0.15, h * 0.75, w * 0.85, h * 0.75),
         ]);
-      case SketchySymbols.pencil:
-        // Pencil icon
-        final w = size.width;
-        final h = size.height;
-        draw([
-          // Pencil body
-          generator.linearPath([
-            PointD(w * 0.15, h * 0.85),
-            PointD(w * 0.1, h * 0.9),
-            PointD(w * 0.25, h * 0.75),
-          ]),
-          generator.line(w * 0.25, h * 0.75, w * 0.85, h * 0.15),
-          generator.line(w * 0.15, h * 0.85, w * 0.75, h * 0.25),
-          // Tip
-          generator.line(w * 0.75, h * 0.25, w * 0.85, h * 0.15),
-        ]);
       case SketchySymbols.externalLink:
-        // External link icon (box with arrow pointing out)
+        // Arrow pointing out of a box (Font Awesome style)
         final w = size.width;
         final h = size.height;
         draw([
-          // Box (missing top-right corner)
+          // Box (open on top-right corner)
           generator.linearPath([
-            PointD(w * 0.6, h * 0.15),
+            PointD(w * 0.55, h * 0.15),
             PointD(w * 0.15, h * 0.15),
             PointD(w * 0.15, h * 0.85),
             PointD(w * 0.85, h * 0.85),
-            PointD(w * 0.85, h * 0.4),
+            PointD(w * 0.85, h * 0.45),
           ]),
-          // Arrow
+          // Arrow line
           generator.line(w * 0.45, h * 0.55, w * 0.85, h * 0.15),
-          generator.line(w * 0.85, h * 0.15, w * 0.65, h * 0.15),
-          generator.line(w * 0.85, h * 0.15, w * 0.85, h * 0.35),
+          // Arrow head
+          generator.line(w * 0.85, h * 0.15, w * 0.6, h * 0.15),
+          generator.line(w * 0.85, h * 0.15, w * 0.85, h * 0.4),
+        ]);
+      case SketchySymbols.gear:
+        // Gear/cog icon
+        final cx = size.width / 2;
+        final cy = size.height / 2;
+        final outerR = size.width * 0.45;
+        final innerR = size.width * 0.25;
+        // Draw center circle
+        draw([generator.ellipse(cx, cy, innerR * 2, innerR * 2)]);
+        // Draw gear teeth (8 teeth)
+        for (var i = 0; i < 8; i++) {
+          final angle = i * math.pi / 4;
+          final cosA = math.cos(angle);
+          final sinA = math.sin(angle);
+          draw([
+            generator.line(
+              cx + innerR * 0.8 * cosA,
+              cy + innerR * 0.8 * sinA,
+              cx + outerR * cosA,
+              cy + outerR * sinA,
+            ),
+          ]);
+        }
+      case SketchySymbols.people:
+        // Two people silhouettes
+        final w = size.width;
+        final h = size.height;
+        // Front person (larger, centered-right)
+        draw([
+          // Head
+          generator.ellipse(w * 0.6, h * 0.25, w * 0.28, h * 0.28),
+          // Body arc
+          generator.arc(
+            w * 0.6, h * 0.9, w * 0.5, h * 0.6, math.pi, math.pi * 2, false,
+          ),
+        ]);
+        // Back person (smaller, left)
+        draw([
+          // Head
+          generator.ellipse(w * 0.32, h * 0.3, w * 0.22, h * 0.22),
+          // Body arc
+          generator.arc(
+            w * 0.32, h * 0.85, w * 0.38, h * 0.5, math.pi, math.pi * 2, false,
+          ),
         ]);
       case SketchySymbols.check:
         // Checkmark
-        final w = size.width;
-        final h = size.height;
         draw([
           generator.linearPath([
-            PointD(w * 0.15, h * 0.5),
-            PointD(w * 0.4, h * 0.75),
-            PointD(w * 0.85, h * 0.25),
+            PointD(size.width * 0.15, size.height * 0.5),
+            PointD(size.width * 0.4, size.height * 0.75),
+            PointD(size.width * 0.85, size.height * 0.2),
           ]),
-        ]);
-      case SketchySymbols.people:
-        // People/users icon (two figures)
-        final w = size.width;
-        final h = size.height;
-        draw([
-          // First person (front) - head
-          generator.ellipse(w * 0.4, h * 0.25, w * 0.25, h * 0.25),
-          // First person - body/shoulders (bottom half of ellipse)
-          generator.arc(
-            w * 0.4,
-            h * 0.7,
-            w * 0.4,
-            h * 0.5,
-            math.pi,
-            math.pi * 2,
-            false,
-          ),
-          // Second person (back, slightly offset) - head
-          generator.ellipse(w * 0.65, h * 0.2, w * 0.2, h * 0.2),
-          // Second person - body/shoulders
-          generator.arc(
-            w * 0.65,
-            h * 0.6,
-            w * 0.35,
-            h * 0.4,
-            math.pi,
-            math.pi * 2,
-            false,
-          ),
         ]);
     }
   }

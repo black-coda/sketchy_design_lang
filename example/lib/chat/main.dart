@@ -15,7 +15,8 @@ class SketchChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SketchyApp(
     title: 'Sketch Chat',
-    theme: SketchyThemeData.fromTheme(SketchyThemes.chat, roughness: 0.3),
+    theme: SketchyThemeData.fromTheme(SketchyThemes.chat),
     home: const ChatPage(),
+    debugShowCheckedModeBanner: false,
   );
 }

@@ -5,6 +5,7 @@ import 'package:sketchy_design_lang/sketchy_design_lang.dart';
 
 import '../models/chat_models.dart';
 import '../models/mock_data.dart';
+import 'chat_input.dart';
 import 'chat_message_widget.dart';
 
 /// The main chat area showing messages and input.
@@ -112,7 +113,7 @@ class _ChatMainAreaState extends State<ChatMainArea> {
           const SketchyDivider(),
           Padding(
             padding: const EdgeInsets.all(12),
-            child: SketchyChatInput(
+            child: ChatInput(
               controller: _inputController,
               hintText: 'Message #${widget.channel.name}',
               onSubmitted: _onSendMessage,

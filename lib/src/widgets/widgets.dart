@@ -4,8 +4,6 @@ export 'sketchy_avatar.dart';
 export 'sketchy_button.dart';
 export 'sketchy_calendar.dart';
 export 'sketchy_card.dart';
-export 'sketchy_chat_bubble.dart';
-export 'sketchy_chat_input.dart';
 export 'sketchy_checkbox.dart';
 export 'sketchy_checkbox_list_tile.dart';
 export 'sketchy_chip.dart';
