@@ -7,6 +7,7 @@ export 'sketchy_card.dart';
 export 'sketchy_checkbox.dart';
 export 'sketchy_checkbox_list_tile.dart';
 export 'sketchy_chip.dart';
+export 'sketchy_circular_progress_indicator.dart';
 export 'sketchy_control_affinity.dart';
 export 'sketchy_dialog.dart';
 export 'sketchy_divider.dart';
